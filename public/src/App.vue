@@ -12,6 +12,7 @@
         <md-button @click.native="refresh">
           <md-icon>autorenew</md-icon>
         </md-button>
+        <md-checkbox v-model="useProxy" title="Allows to bypass CORS restrictions">Use proxy</md-checkbox>
       </md-layout>
     </md-layout>
   </md-toolbar>
@@ -63,6 +64,7 @@ export default {
   data: () => ({
     api: null,
     error: null,
+    useProxy: getParameterByName('proxy') === 'true' || false,
     url: getParameterByName('url') || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json'
   }),
   mounted() {
@@ -71,10 +73,11 @@ export default {
   methods: {
     refresh() {
       let newUrl = updateQueryStringParameter(window.location.href, 'url', this.url)
+      newUrl = updateQueryStringParameter(newUrl, 'proxy', this.useProxy)
       if (newUrl !== window.location.href) {
         window.location.href = newUrl
       }
-      this.$http.get('./proxy?url=' + this.url).then(response => response.json()).then(api => {
+      this.$http.get(this.useProxy ? ('./proxy?url=' + this.url) : this.url).then(response => response.json()).then(api => {
         this.api = api
         this.error = null
       }, error => {

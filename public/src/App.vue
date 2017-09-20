@@ -1,6 +1,6 @@
 <template>
 <div>
-  <md-toolbar>
+  <md-toolbar v-if="showToolbar">
     <md-layout md-row md-align="center">
       <md-layout md-flex="50" md-flex-offset="25">
         <md-input-container>
@@ -67,7 +67,8 @@ export default {
     useProxy: getParameterByName('proxy') === 'true' || false,
     url: getParameterByName('url') || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json',
     headers: (getParameterByName('headers') && JSON.parse(decodeURIComponent(getParameterByName('headers')))) || {},
-    queryParams : (getParameterByName('query-params') && JSON.parse(decodeURIComponent(getParameterByName('query-params')))) || {}
+    queryParams : (getParameterByName('query-params') && JSON.parse(decodeURIComponent(getParameterByName('query-params')))) || {},
+    showToolbar: !(getParameterByName('hide-toolbar') === 'true')
   }),
   mounted() {
     this.refresh()

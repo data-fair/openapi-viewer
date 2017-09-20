@@ -16,7 +16,7 @@
       </md-layout>
     </md-layout>
   </md-toolbar>
-  <open-api v-if="api && !error" :api="api"></open-api>
+  <open-api v-if="api && !error" :api="api" :headers="headers" :query-params="queryParams"></open-api>
   <md-layout md-row md-align="center" v-if="error" style="margin-top:64px">
     <md-layout md-flex="50" md-flex-offset="25">
       <md-whiteframe md-elevation="2" style="padding:24px">Cannot retrieve data for this URL or JSON is not well formed</md-whiteframe>
@@ -65,7 +65,9 @@ export default {
     api: null,
     error: null,
     useProxy: getParameterByName('proxy') === 'true' || false,
-    url: getParameterByName('url') || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json'
+    url: getParameterByName('url') || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json',
+    headers: (getParameterByName('headers') && JSON.parse(decodeURIComponent(getParameterByName('headers')))) || {},
+    queryParams : (getParameterByName('query-params') && JSON.parse(decodeURIComponent(getParameterByName('query-params')))) || {}
   }),
   mounted() {
     this.refresh()

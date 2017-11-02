@@ -34,7 +34,7 @@
     "vue": "^2.1.10",
     "vue-loader": "^10.3.0",
     "vue-material": "^0.7.1",
-    "vue-openapi": "^0.5.0",
+    "vue-openapi": "^0.5.2",
     "vue-resource": "^1.2.0",
     "vue-template-compiler": "^2.1.10",
     "webpack": "^1.13.3"

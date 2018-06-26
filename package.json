@@ -5,7 +5,7 @@
   "main": "server/app.js",
   "scripts": {
     "build": "webpack",
-    "dev": "NODE_ENV=development webpack --watch & browser-sync start --config bs-config.js & NODE_ENV=development nodemon server/app.js"
+    "dev": "webpack --watch & browser-sync start --config bs-config.js & nodemon server/app.js"
   },
   "author": "",
   "license": "AGPLv3",

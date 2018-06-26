@@ -21,7 +21,7 @@ module.exports = {
       }
     }, {
       test: /\.css$/,
-      loader: process.env.NODE_ENV !== 'development' ? 'style-loader!css-loader?minimize' : 'style-loader!css-loader?-minimize'
+      loader: process.env.NODE_ENV === 'production' ? 'style-loader!css-loader?minimize' : 'style-loader!css-loader?-minimize'
     }, {
       test: /\.png$/,
       loader: 'url-loader',
@@ -38,8 +38,8 @@ module.exports = {
       'vue$': 'vue/dist/vue.common.js'
     }
   },
-  devtool: process.env.NODE_ENV !== 'development' ? 'source-map' : 'eval',
-  plugins: process.env.NODE_ENV !== 'development' ? [
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval',
+  plugins: process.env.NODE_ENV === 'production' ? [
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.DedupePlugin()
   ] : []

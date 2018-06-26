@@ -15,7 +15,8 @@ ADD package-lock.json /webapp/package-lock.json
 
 # Adding UI files and building bundle
 ADD public /webapp/public
-RUN npm install && ENV NODE_ENV production && npm run build && npm prune --production
+RUN npm install && NODE_ENV=production npm run build && npm prune --production
+ENV NODE_ENV production
 
 EXPOSE 8080
 

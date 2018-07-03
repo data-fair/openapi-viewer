@@ -27,6 +27,7 @@
 
 <script>
 import OpenApi from 'vue-openapi'
+import yaml from 'js-yaml'
 
 // https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 function getParameterByName(name, url) {
@@ -80,7 +81,13 @@ export default {
       if (newUrl !== window.location.href) {
         window.location.href = newUrl
       }
-      this.$http.get(this.useProxy ? ('./proxy?url=' + this.url) : this.url).then(response => response.json()).then(api => {
+      this.$http.get(this.useProxy ? ('./proxy?url=' + this.url) : this.url).then(response => {
+        try {
+          return yaml.safeLoad(response.bodyText, 'utf8');
+        } catch (e) {
+          return response.json()
+        }
+      }).then(api => {
         this.api = api
         this.error = null
       }, error => {

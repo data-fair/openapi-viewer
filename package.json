@@ -1,6 +1,6 @@
 {
   "name": "openapi-viewer",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "",
   "main": "server/app.js",
   "scripts": {

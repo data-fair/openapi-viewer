@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import OpenApi from 'vue-openapi'
+import OpenApi from '@koumoul/vue-openapi'
 import yaml from 'js-yaml'
 
 // https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
@@ -99,6 +99,9 @@ export default {
 </script>
 
 <style>
+body.md-theme-default {
+  background-color: transparent;
+}
 .md-input-container input {
   margin-top: 14px;
 }

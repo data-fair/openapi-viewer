@@ -16,6 +16,7 @@
     "request": "^2.87.0"
   },
   "devDependencies": {
+    "@koumoul/vue-openapi": "^0.10.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
@@ -35,7 +36,6 @@
     "vue": "^2.5.16",
     "vue-loader": "^10.3.0",
     "vue-material": "^0.7.1",
-    "vue-openapi": "^0.10.0",
     "vue-resource": "^1.5.1",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^1.13.3"

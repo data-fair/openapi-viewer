@@ -99,9 +99,20 @@ export default {
 </script>
 
 <style>
-body.md-theme-default {
+.openapi {
+  padding: 8px;
+}
+
+body.md-theme-default.openapi-viewer {
   background-color: transparent;
 }
+body.md-theme-default.openapi-viewer .openapi .md-list {
+  background-color: transparent;
+}
+body.md-theme-default.openapi-viewer .openapi .md-list .md-list-item-container {
+  background-color: transparent;
+}
+
 .md-input-container input {
   margin-top: 14px;
 }

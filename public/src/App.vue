@@ -3,7 +3,7 @@
   <md-toolbar v-if="showToolbar">
     <md-layout md-row md-align="center">
       <md-layout md-flex="50" md-flex-offset="25">
-        <md-input-container>
+        <md-input-container class="search-input">
           <label>OpenAPI JSON location</label>
           <md-input v-model="url" @keyup.enter.native="refresh"></md-input>
         </md-input-container>
@@ -113,7 +113,7 @@ body.md-theme-default.openapi-viewer .openapi .md-list .md-list-item-container {
   background-color: transparent;
 }
 
-.md-input-container input {
+.md-input-container.search-input input {
   margin-top: 14px;
 }
 </style>

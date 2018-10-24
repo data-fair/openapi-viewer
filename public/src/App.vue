@@ -1,5 +1,5 @@
 <template>
-<div>
+<div data-iframe-height>
   <md-toolbar v-if="showToolbar">
     <md-layout md-row md-align="center">
       <md-layout md-flex="50" md-flex-offset="25">

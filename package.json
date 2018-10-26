@@ -17,7 +17,7 @@
     "request": "^2.87.0"
   },
   "devDependencies": {
-    "@koumoul/vue-openapi": "^0.11.2",
+    "@koumoul/vue-openapi": "^0.12.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",

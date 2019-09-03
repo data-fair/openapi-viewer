@@ -57,6 +57,9 @@ function updateQueryStringParameter(uri, key, value) {
   }
 }
 
+const proxyParam = getParameterByName('proxy')
+const urlParam = getParameterByName('url')
+
 export default {
   name: 'app',
   components: {
@@ -65,8 +68,8 @@ export default {
   data: () => ({
     api: null,
     error: null,
-    useProxy: getParameterByName('proxy') === 'true' || false,
-    url: getParameterByName('url') || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json',
+    useProxy: proxyParam === 'true' || false,
+    url: urlParam || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json',
     headers: (getParameterByName('headers') && JSON.parse(decodeURIComponent(getParameterByName('headers')))) || {},
     queryParams : (getParameterByName('query-params') && JSON.parse(decodeURIComponent(getParameterByName('query-params')))) || {},
     showToolbar: !(getParameterByName('hide-toolbar') === 'true')
@@ -76,9 +79,9 @@ export default {
   },
   methods: {
     refresh() {
-      let newUrl = updateQueryStringParameter(window.location.href, 'url', this.url)
-      newUrl = updateQueryStringParameter(newUrl, 'proxy', this.useProxy)
-      if (newUrl !== window.location.href) {
+      if (!urlParam || !proxyParam) {
+        let newUrl = updateQueryStringParameter(window.location.href, 'url', this.url)
+        newUrl = updateQueryStringParameter(newUrl, 'proxy', this.useProxy)
         window.location.href = newUrl
       }
       this.$http.get(this.useProxy ? ('./proxy?url=' + this.url) : this.url).then(response => {

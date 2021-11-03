@@ -1,22 +1,24 @@
 FROM node:8.9.1-alpine
 MAINTAINER "contact@koumoul.com"
 
+ENV NODE_ENV production
+
 WORKDIR /webapp
-VOLUME /webapp/resources
-ADD webpack.config.js /webapp/webpack.config.js
-ADD .babelrc /webapp/.babelrc
+ADD webpack.config.js webpack.config.js
+ADD .babelrc .babelrc
 
 # Adding server files
-ADD server /webapp/server
-ADD config /webapp/config
+ADD server server
+ADD config config
 
-ADD package.json /webapp/package.json
-ADD package-lock.json /webapp/package-lock.json
+ADD package.json package.json
+ADD package-lock.json package-lock.json
 
 # Adding UI files and building bundle
-ADD public /webapp/public
+ADD public public
 RUN npm install && NODE_ENV=production npm run build && npm prune --production
-ENV NODE_ENV production
+
+ADD README.md VERSION.json* .
 
 EXPOSE 8080
 

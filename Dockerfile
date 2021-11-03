@@ -1,7 +1,5 @@
-FROM node:16.13.0-alpine
+FROM node:14.18.1-alpine
 MAINTAINER "contact@koumoul.com"
-
-RUN npm install -g npm@8.1.2
 
 WORKDIR /webapp
 ADD webpack.config.js webpack.config.js

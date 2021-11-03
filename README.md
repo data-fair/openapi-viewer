@@ -5,6 +5,12 @@ This service is designed to easily browse and test a REST API described with the
 See it in action :
  * https://koumoul.com/openapi-viewer/
 
+## Supports
+
+[<img src="https://koumoul.com/static/logo-slogan-aligned.png" title="Koumoul" height="60">](https://koumoul.com)
+
+[<img src="https://www.dawizz.fr/wp-content/uploads/2018/04/logo-Dawizz-all-about-your-data-home.png" title="Dawizz" height="50">](https://dawizz.fr)
+
 ## Install
 
 Clone this project and install dependencies with `npm install` or `yarn` then :

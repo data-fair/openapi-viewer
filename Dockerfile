@@ -1,7 +1,7 @@
-FROM node:8.9.1-alpine
+FROM node:16.13.0-alpine
 MAINTAINER "contact@koumoul.com"
 
-ENV NODE_ENV production
+RUN npm install -g npm@8.1.2
 
 WORKDIR /webapp
 ADD webpack.config.js webpack.config.js
@@ -20,6 +20,7 @@ RUN npm install && NODE_ENV=production npm run build && npm prune --production
 
 ADD README.md VERSION.json* .
 
+ENV NODE_ENV production
 EXPOSE 8080
 
 CMD ["node", "server/app.js"]

@@ -36,4 +36,4 @@ You can use the followings query parameters to prefill viewer
 Can be usefull if the API description can't be reached with CORS headers. Do not use the proxy if you want to access an API description located on *localhost*.
  * **headers** : URI encoded JSON dictionnary of headers that will be used to prefill parameters if they match. Can be usefull to prefill *x-api-key* or *authorization* headers.
  * **query-params** : URI encoded JSON dictionnary of query parameters that will be used to prefill parameters if they match. Can be usefull to prefill an *organizationId* parameter in a multi-tenant application.
- * **hide-toolbar** : true or false of you want to hide toolbar. This can be usefull for iframe integration. Defaults to false.
+ * **hide-toolbar** : true or false if you want to hide toolbar. This can be usefull for iframe integration. Defaults to false.

@@ -1,4 +1,4 @@
-FROM node:14.18.1-alpine
+FROM node:20.10.0-alpine
 MAINTAINER "contact@koumoul.com"
 
 WORKDIR /webapp
@@ -21,4 +21,4 @@ ADD README.md VERSION.json* .
 ENV NODE_ENV production
 EXPOSE 8080
 
-CMD ["node", "server/app.js"]
+CMD ["node", "--max-http-header-size", "64000", "server/app.js"]

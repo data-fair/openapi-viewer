@@ -1,22 +1,22 @@
-FROM node:20.10.0-alpine
+FROM node:20.18.0-alpine3.20
 MAINTAINER "contact@koumoul.com"
 
 WORKDIR /webapp
-ADD webpack.config.js webpack.config.js
-ADD .babelrc .babelrc
+COPY webpack.config.js webpack.config.js
+COPY .babelrc .babelrc
 
 # Adding server files
-ADD server server
-ADD config config
+COPY server server
+COPY config config
 
-ADD package.json package.json
-ADD package-lock.json package-lock.json
+COPY package.json package.json
+COPY package-lock.json package-lock.json
 
 # Adding UI files and building bundle
-ADD public public
-RUN npm install && NODE_ENV=production npm run build && npm prune --production
+COPY public public
+RUN npm ci && NODE_ENV=production npm run build && npm prune --production && rm -rf public/src
 
-ADD README.md VERSION.json* .
+COPY README.md VERSION.json* ./
 
 ENV NODE_ENV production
 EXPOSE 8080

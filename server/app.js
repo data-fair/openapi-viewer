@@ -1,13 +1,19 @@
 const config = require('config')
 const express = require('express')
-const path = require('path')
-const request = require('request')
+const path = require('node:path')
+const axios = require('axios').default
 
 let app = module.exports = express()
 
 // Business routers
 app.get('/proxy', (req, res) => {
-  request.get(req.query.url).pipe(res)
+  axios.get(req.query.url, {
+    responseType: 'stream'
+  }).then((response) => {
+    response.data.pipe(res)
+  }).catch((err) => {
+    res.status(500).send(err.message)
+  })
 })
 
 // Static routing

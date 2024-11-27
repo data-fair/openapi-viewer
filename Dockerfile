@@ -1,5 +1,6 @@
-FROM node:20.18.0-alpine3.20
+FROM node:20.18.1-alpine3.20
 MAINTAINER "contact@koumoul.com"
+RUN npm i -g npm@10.9
 
 WORKDIR /webapp
 COPY webpack.config.js webpack.config.js

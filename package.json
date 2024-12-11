@@ -11,9 +11,9 @@
   "license": "AGPLv3",
   "repository": "github:koumoul-dev/openapi-viewer",
   "dependencies": {
-    "axios": "^1.7.7",
+    "axios": "^1.7.9",
     "config": "^1.31.0",
-    "express": "^4.21.1"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "@koumoul/vue-openapi": "^0.12.5",

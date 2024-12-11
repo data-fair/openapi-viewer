@@ -60,3 +60,9 @@ process.on('SIGINT', () => {
   console.log('Server is shutting down')
   process.exit(0)
 })
+
+// SIGTERM handling
+process.on('SIGTERM', () => {
+  console.log('Server is shutting down')
+  process.exit(0)
+})

@@ -35,7 +35,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.common.js'
+      vue: process.env.NODE_ENV === 'production' ? 'vue/dist/vue.min.js' : 'vue/dist/vue.js'
     }
   },
   devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval',

@@ -28,6 +28,7 @@ const staticOptions = {
     res.set('cache-control', 'private, max-age=' + oneWeek)
   }
 }
+app.use('/assets', express.static(path.join(__dirname, '../public/assets'), staticOptions))
 app.use('/bundles', express.static(path.join(__dirname, '../public/bundles'), staticOptions))
 
 app.use('/*', (req, res) => {
@@ -52,4 +53,10 @@ app.listen(config.port, (err) => {
   console.log('Listening on http://localhost:%s', config.port)
     // Emit this event for the test suite
   app.emit('listening')
+})
+
+// Ctrl+C handling
+process.on('SIGINT', () => {
+  console.log('Server is shutting down')
+  process.exit(0)
 })

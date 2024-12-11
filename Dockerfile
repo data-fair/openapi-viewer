@@ -1,25 +1,43 @@
-FROM node:20.18.1-alpine3.20
-MAINTAINER "contact@koumoul.com"
-RUN npm i -g npm@10.9
+FROM node:22.12.0-alpine3.20 AS base
+
+FROM base AS builder
 
 WORKDIR /webapp
 COPY webpack.config.js webpack.config.js
 COPY .babelrc .babelrc
 
-# Adding server files
-COPY server server
-COPY config config
-
-COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY package.json .
+COPY package-lock.json .
+RUN npm ci
 
 # Adding UI files and building bundle
 COPY public public
-RUN npm ci && NODE_ENV=production npm run build && npm prune --production && rm -rf public/src
+RUN NODE_ENV=production npm run build
 
-COPY README.md VERSION.json* ./
+FROM builder AS intermediate
 
-ENV NODE_ENV production
+COPY package.json package.json
+COPY package-lock.json package-lock.json
+RUN npm ci --omit=dev
+
+####################
+FROM base AS final
+LABEL maintainer="contact@koumoul.com"
+ENV NODE_ENV=production
+
+WORKDIR /webapp
+
+COPY README.md .
+COPY config config
+COPY server server
+
+COPY --from=builder /webapp/public/index.html public/index.html
+COPY --from=builder /webapp/public/assets/ public/assets/
+COPY --from=builder /webapp/public/bundles/ public/bundles/
+
+COPY --from=intermediate /webapp/node_modules node_modules
+
+COPY VERSION.json* ./
+
 EXPOSE 8080
-
 CMD ["node", "--max-http-header-size", "64000", "server/app.js"]

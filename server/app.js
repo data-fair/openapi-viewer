@@ -7,6 +7,10 @@ let app = module.exports = express()
 
 // Business routers
 app.get('/proxy', (req, res) => {
+  if (!req.query.url || typeof req.query.url !== 'string') {
+    return res.status(400).send('url query parameter is required')
+  }
+
   axios.get(req.query.url, {
     responseType: 'stream'
   }).then((response) => {

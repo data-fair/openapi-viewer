@@ -1,4 +1,5 @@
 FROM node:22.12.0-alpine3.20 AS base
+RUN npm i -g npm@10.9.2 && npm cache clean --force && rm -rf /tmp/node-compile-cache
 
 FROM base AS builder
 

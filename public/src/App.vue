@@ -12,7 +12,7 @@
         <md-button @click.native="refresh">
           <md-icon>autorenew</md-icon>
         </md-button>
-        <md-checkbox v-model="useProxy" title="Allows to bypass CORS restrictions">Use proxy</md-checkbox>
+        <md-checkbox v-if="allowProxy" v-model="useProxy" title="Allows to bypass CORS restrictions">Use proxy</md-checkbox>
       </md-layout>
     </md-layout>
   </md-toolbar>
@@ -65,15 +65,19 @@ export default {
   components: {
     OpenApi
   },
-  data: () => ({
-    api: null,
-    error: null,
-    useProxy: proxyParam === 'true' || false,
-    url: urlParam || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json',
-    headers: (getParameterByName('headers') && JSON.parse(decodeURIComponent(getParameterByName('headers')))) || {},
-    queryParams : (getParameterByName('query-params') && JSON.parse(decodeURIComponent(getParameterByName('query-params')))) || {},
-    showToolbar: !(getParameterByName('hide-toolbar') === 'true')
-  }),
+  data() {
+    const allowProxy = typeof window !== 'undefined' && window.CONFIG && window.CONFIG.allowProxy
+    return {
+      api: null,
+      error: null,
+      allowProxy,
+      useProxy: allowProxy ? (proxyParam === 'true' || false) : false,
+      url: urlParam || 'https://koumoul.com/s/geocoder/api/v1/api-docs.json',
+      headers: (getParameterByName('headers') && JSON.parse(decodeURIComponent(getParameterByName('headers')))) || {},
+      queryParams: (getParameterByName('query-params') && JSON.parse(decodeURIComponent(getParameterByName('query-params')))) || {},
+      showToolbar: !(getParameterByName('hide-toolbar') === 'true')
+    }
+  },
   mounted() {
     this.refresh()
   },

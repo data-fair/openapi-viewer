@@ -2,23 +2,25 @@ const config = require('config')
 const express = require('express')
 const path = require('node:path')
 const axios = require('axios').default
+const fs = require('node:fs')
 
 let app = module.exports = express()
 
-// Business routers
-app.get('/proxy', (req, res) => {
-  if (!req.query.url || typeof req.query.url !== 'string') {
-    return res.status(400).send('url query parameter is required')
-  }
+if (config.allowProxy === true) {
+  app.get('/proxy', (req, res) => {
+    if (!req.query.url || typeof req.query.url !== 'string') {
+      return res.status(400).send('url query parameter is required')
+    }
 
-  axios.get(req.query.url, {
-    responseType: 'stream'
-  }).then((response) => {
-    response.data.pipe(res)
-  }).catch((err) => {
-    res.status(500).send(err.message)
+    axios.get(req.query.url, {
+      responseType: 'stream'
+    }).then((response) => {
+      response.data.pipe(res)
+    }).catch((err) => {
+      res.status(500).send(err.message)
+    })
   })
-})
+}
 
 // Static routing
 const oneWeek = 7 * 24 * 60 * 60
@@ -31,9 +33,14 @@ const staticOptions = {
 app.use('/assets', express.static(path.join(__dirname, '../public/assets'), staticOptions))
 app.use('/bundles', express.static(path.join(__dirname, '../public/bundles'), staticOptions))
 
+const htmlPath = path.join(__dirname, '../public/index.html')
+const htmlContent = fs.readFileSync(htmlPath, 'utf8')
+    .replaceAll('// [DYNAMIC]', 'window.CONFIG = ' + JSON.stringify({ allowProxy: config.allowProxy }))
+
 app.use('/*', (req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=0')
-  res.sendFile(path.join(__dirname, '../public/index.html'))
+  res.setHeader('Content-Type', 'text/html')
+  res.send(htmlContent)
 })
 
 // Error handling to complement express default error handling. TODO do something useful of errors.

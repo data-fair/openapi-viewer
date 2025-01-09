@@ -1,0 +1,46 @@
+{
+  "name": "@data-fair/openapi-viewer",
+  "version": "1.6.6",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build-types": "df-build-types ./",
+    "check-types": "tsc",
+    "dev-api": "npm -w api run dev",
+    "dev-deps": "docker compose --profile dev up -d --wait",
+    "dev-ui": "npm -w ui run dev",
+    "dev-zellij": "export DEV_SHELL=$(basename \"$SHELL\") && zellij --layout .zellij.kdl && rm data/zellij-deps-ready",
+    "lint": "eslint . && npm -w ui run lint",
+    "lint-fix": "eslint --fix . && npm -w ui run lint-fix",
+    "prepare": "husky || true",
+    "stop-dev-deps": "docker compose --profile dev stop",
+    "test": "npm run test-base test-it/*.ts",
+    "test-only": "NODE_ENV=test node --experimental-strip-types --test-force-exit --test-only --test-concurrency=1 --test test-it/*.ts",
+    "quality": "npm run dev-deps && npm run lint && npm run build-types && npm run check-types && npm -w ui run build && npm run test && npm audit --omit=dev --audit-level=critical"
+  },
+  "author": "",
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/data-fair/openapi-viewer.git"
+  },
+  "workspaces": [
+    "ui",
+    "api"
+  ],
+  "dependencies": {
+    "@data-fair/lib-types-builder": "^1.6.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@types/config": "^3.3.5",
+    "eslint": "^9.17.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "eslint-plugin-vuetify": "^2.5.1",
+    "husky": "^9.1.7",
+    "neostandard": "^0.12.0",
+    "typescript": "^5.7.3"
+  }
+}

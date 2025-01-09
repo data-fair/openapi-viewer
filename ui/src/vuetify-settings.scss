@@ -1,0 +1,11 @@
+@use 'vuetify' with (
+  $color-pack: false,
+  $heading-font-family: 'HeadingFontFamily',
+  $body-font-family: 'BodyFontFamily'
+);
+
+// v-icon has an opacity when it is prepended in a list of items.
+// ref: https://github.com/vuetifyjs/vuetify/issues/18760
+.v-icon {
+  --v-medium-emphasis-opacity: 1 !important;
+}

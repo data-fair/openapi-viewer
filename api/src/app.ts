@@ -7,7 +7,7 @@ export const app = express()
 
 // no fancy embedded arrays, just string and arrays of strings in req.query
 app.set('query parser', 'simple')
-app.use(createSiteMiddleware('customers'))
+app.use(createSiteMiddleware('openapi-viewer'))
 
 app.set('json spaces', 2)
 app.use(express.json())

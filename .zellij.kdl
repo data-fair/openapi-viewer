@@ -1,7 +1,7 @@
 layout {
     pane {
       split_direction "vertical"
-      pane name="customers" borderless=true {
+      pane name="openapi-viewer" borderless=true {
         command "${DEV_SHELL}"
         args "-ic" "nvm use > /dev/null 2>&1 && bash"
       }

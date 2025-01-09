@@ -1,0 +1,28 @@
+name: Quality checks
+
+on:
+  workflow_call:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout git repository
+      uses: actions/checkout@v4
+    
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 22
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm ci --no-audit --no-fund --omit=optional
+        npm i --no-save @rollup/rollup-linux-x64-gnu
+
+    - name: Run quality checks
+      run: npm run quality
+
+    - name: Docker logs in case of failure
+      if: failure()
+      run: docker compose logs data-fair

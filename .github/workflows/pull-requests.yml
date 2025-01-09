@@ -1,0 +1,9 @@
+# for pull requests we do not build a docker image, we simply run quality checks
+
+name: Check pull requests
+
+on: pull_request
+
+jobs:
+  quality:
+    uses: ./.github/workflows/reuse-quality.yml

@@ -9,6 +9,9 @@
     "allowJs": true,
     "checkJs": true,
     "skipLibCheck": true,
+    "paths": {
+      "#api/types": ["./api/types/index.ts"],
+    }
   },
   "exclude": ["node_modules", ".type", "ui", "dev", "data", "test-it"]
 }

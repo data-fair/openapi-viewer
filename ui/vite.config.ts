@@ -41,7 +41,12 @@ export default defineConfig({
         {
           '~/context': ['$uiConfig', '$sitePath', '$fetch'],
           '@mdi/js': [
-            'mdiCodeJson'
+            'mdiCodeJson',
+            'mdiEmail',
+            'mdiGavel',
+            'mdiHome',
+            'mdiLabel',
+            'mdiSecurity'
           ]
         }
       ],

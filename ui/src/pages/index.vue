@@ -1,24 +1,32 @@
 <template>
-  <top-bar v-if="$route.query['hide-toolbar'] !== 'false'"/>
-  <h1>Hello world</h1>
-  <v-alert
-    v-if="!url.startsWith('http://') && !url.startsWith('https://')"
-    type="warning"
-    variant="outlined"
-    :text="'URL must start with http:// or https://'"
-  />
-  <v-alert
-    v-if="urlFetch.error.value"
-    type="error"
-    variant="outlined"
-    :text="urlFetch.error.value"
-  />
+  <top-bar v-if="$route.query['hide-toolbar'] !== 'false'" />
+  <v-container>
+    <v-alert
+      v-if="!url.startsWith('http://') && !url.startsWith('https://')"
+      type="warning"
+      variant="outlined"
+      :text="'URL must start with http:// or https://'"
+    />
+    <v-alert
+      v-if="urlFetch.error.value"
+      type="error"
+      title="Cannot retrieve data for this URL"
+      variant="outlined"
+      :text="urlFetch.error.value"
+    />
+    <home
+      v-if="urlFetch.data.value"
+      :info="urlFetch.data.value.info"
+    />
+  </v-container>
   <pre>{{ urlFetch.data.value }}</pre>
 </template>
 
 <script setup lang="ts">
+import { OpenAPISpecs } from '#api/types'
+
 const url = useStringSearchParam('url')
-const urlFetch = useFetch(url, { notifError: false })
+const urlFetch = useFetch<OpenAPISpecs>(url, { notifError: false })
 
 // TODO validate urlFetch.data.value
 </script>

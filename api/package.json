@@ -1,0 +1,18 @@
+{
+  "name": "api",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_ENV=development node --watch --experimental-strip-types index.ts"
+  },
+  "imports": {
+    "#config": "./src/config.ts"
+  },
+  "dependencies": {
+    "@data-fair/lib-express": "^1.12.2",
+    "@data-fair/lib-node": "^2.2.1",
+    "config": "^3.3.12",
+    "express": "^5.0.1",
+    "http-terminator": "^3.2.0"
+  }
+}

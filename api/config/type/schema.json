@@ -1,0 +1,28 @@
+{
+  "$id": "https://github.com/data-fair/customers/api/config",
+  "x-exports": [
+    "types",
+    "validate"
+  ],
+  "x-ajv": {
+    "coerceTypes": "array"
+  },
+  "type": "object",
+  "title": "Api config",
+  "additionalProperties": false,
+  "required": [
+    "port",
+    "serveUi"
+  ],
+  "properties": {
+    "port": {
+      "type": "number"
+    },
+    "serveUi": {
+      "type": "boolean"
+    },
+    "util": {},
+    "get": {},
+    "has": {}
+  }
+}

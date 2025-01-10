@@ -9,78 +9,10 @@
       "pattern": "^3\\.1\\.\\d+(-.+)?$"
     },
     "info": {
-      "$comment": "https://spec.openapis.org/oas/v3.1.0#info-object",
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "summary": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "termsOfService": {
-          "type": "string",
-          "format": "uri"
-        },
-        "contact": {
-          "$comment": "https://spec.openapis.org/oas/v3.1.0#contact-object",
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "url": {
-              "type": "string",
-              "format": "uri"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            }
-          },
-          "unevaluatedProperties": false
-        },
-        "license": {
-          "$comment": "https://spec.openapis.org/oas/v3.1.0#license-object",
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "identifier": {
-              "type": "string"
-            },
-            "url": {
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          "required": [
-            "name"
-          ],
-          "dependentSchemas": {
-            "identifier": {
-              "not": {
-                "required": [
-                  "url"
-                ]
-              }
-            }
-          },
-          "unevaluatedProperties": false
-        },
-        "version": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "title",
-        "version"
-      ],
-      "unevaluatedProperties": false
+      "$ref": "#/$defs/info"
+    },
+    "externalDocs": {
+      "$ref": "#/$defs/external-documentation"
     }
   },
   "required": [
@@ -104,5 +36,114 @@
       ]
     }
   ],
-  "unevaluatedProperties": false
+  "unevaluatedProperties": false,
+  "$defs": {
+    "info": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#info-object",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "termsOfService": {
+          "type": "string",
+          "format": "uri"
+        },
+        "contact": {
+          "$ref": "#/$defs/contact"
+        },
+        "license": {
+          "$ref": "#/$defs/license"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "version"
+      ],
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
+    },
+    "contact": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#contact-object",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
+    },
+    "license": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#license-object",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "dependentSchemas": {
+        "identifier": {
+          "not": {
+            "required": [
+              "url"
+            ]
+          }
+        }
+      },
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
+    },
+    "external-documentation": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#external-documentation-object",
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
+    },
+    "specification-extensions": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#specification-extensions",
+      "patternProperties": {
+        "^x-": true
+      }
+    }
+  }
 }

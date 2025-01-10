@@ -43,6 +43,7 @@ export default defineConfig({
           '@mdi/js': [
             'mdiCodeJson',
             'mdiEmail',
+            'mdiBookOpenVariant',
             'mdiGavel',
             'mdiHome',
             'mdiLabel',

@@ -1,8 +1,9 @@
 <template>
   <top-bar v-if="$route.query['hide-toolbar'] !== 'false'" />
+  <navigation-drawer />
   <v-container>
     <v-alert
-      v-if="!url.startsWith('http://') && !url.startsWith('https://')"
+      v-if="!validUrl"
       type="warning"
       variant="outlined"
       :text="'URL must start with http:// or https://'"
@@ -15,8 +16,9 @@
       :text="urlFetch.error.value"
     />
     <home
-      v-if="urlFetch.data.value"
+      v-if="urlFetch.data.value && validUrl"
       :info="urlFetch.data.value.info"
+      :external-docs="urlFetch.data.value.externalDocs"
     />
   </v-container>
   <pre>{{ urlFetch.data.value }}</pre>
@@ -26,6 +28,7 @@
 import { OpenAPISpecs } from '#api/types'
 
 const url = useStringSearchParam('url')
+const validUrl = computed(() => url.value.startsWith('http://') || url.value.startsWith('https://'))
 const urlFetch = useFetch<OpenAPISpecs>(url, { notifError: false })
 
 // TODO validate urlFetch.data.value

@@ -11,6 +11,22 @@
     "info": {
       "$ref": "#/$defs/info"
     },
+    "jsonSchemaDialect": {
+      "type": "string",
+      "format": "uri",
+      "default": "https://spec.openapis.org/oas/3.1/dialect/base"
+    },
+    "servers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/server"
+      },
+      "default": [
+        {
+          "url": "/"
+        }
+      ]
+    },
     "externalDocs": {
       "$ref": "#/$defs/external-documentation"
     }
@@ -118,6 +134,54 @@
           }
         }
       },
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
+    },
+    "server": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#server-object",
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "description": {
+          "type": "string"
+        },
+        "variables": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/server-variable"
+          }
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
+    },
+    "server-variable": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#server-variable-object",
+      "type": "object",
+      "properties": {
+        "enum": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "default": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "default"
+      ],
       "$ref": "#/$defs/specification-extensions",
       "unevaluatedProperties": false
     },

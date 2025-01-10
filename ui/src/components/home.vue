@@ -22,14 +22,35 @@
         v-html="marked(info.description || '')"
       />
 
-      <h2>Serveurs</h2>
+      <h2 class="mt-2">
+        Serveurs
+      </h2>
+
+      <v-list
+        class="pt-0"
+        density="compact"
+        style="background-color:transparent"
+      >
+        <v-list-item
+          v-for="server in servers"
+          :key="server.url"
+        >
+          <template #title>
+            <span class="text-h6">
+              {{ server.url }}
+            </span>
+            <span v-if="server.description">
+              - {{ server.description }}
+            </span>
+          </template>
+        </v-list-item>
+      </v-list>
     </v-col>
     <v-col cols="4">
       <v-card
         variant="elevated"
       >
         <v-list
-          style="background-color: transparent;"
           density="compact"
           nav
         >
@@ -145,7 +166,11 @@ import type { OpenAPISpecs } from '#api/types'
 
 import { marked } from 'marked'
 
-const { info, externalDocs } = defineProps<{ info: OpenAPISpecs['info'], externalDocs: OpenAPISpecs['externalDocs'] }>()
+const { info, externalDocs, servers } = defineProps<{
+  info: OpenAPISpecs['info'],
+  externalDocs: OpenAPISpecs['externalDocs'],
+  servers: OpenAPISpecs['servers']
+}>()
 </script>
 
 <style scoped>

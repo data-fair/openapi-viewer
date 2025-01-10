@@ -19,6 +19,7 @@
       v-if="urlFetch.data.value && validUrl"
       :info="urlFetch.data.value.info"
       :external-docs="urlFetch.data.value.externalDocs"
+      :servers="urlFetch.data.value.servers"
     />
   </v-container>
   <pre>{{ urlFetch.data.value }}</pre>

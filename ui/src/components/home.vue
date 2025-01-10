@@ -25,7 +25,6 @@
       <h2 class="mt-2">
         Serveurs
       </h2>
-
       <v-list
         class="pt-0"
         density="compact"
@@ -45,6 +44,45 @@
           </template>
         </v-list-item>
       </v-list>
+
+      <template v-if="schemas">
+        <h2 class="mt-2">
+          Schemas
+        </h2>
+        <v-list
+          class="pt-0"
+          density="compact"
+          style="background-color:transparent"
+        >
+          <v-list-item
+            v-for="(schema, index) in schemas"
+            :key="index"
+            @click="openSchemaDialog(schema, schema)"
+          >
+            <template #title>
+              <span class="text-h6">{{ schema.title }}</span>
+            </template>
+          </v-list-item>
+        </v-list>
+
+        <!-- Dialog pour afficher le schéma -->
+        <v-dialog
+          v-model="dialog"
+          max-width="800"
+        >
+          <template #default>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{ selectedSchemaName.title }}</span>
+              </v-card-title>
+              <v-divider />
+              <v-card-text>
+                <schema-viewer :json-schema="selectedSchema" />
+              </v-card-text>
+            </v-card>
+          </template>
+        </v-dialog>
+      </template>
     </v-col>
     <v-col cols="4">
       <v-card
@@ -166,11 +204,22 @@ import type { OpenAPISpecs } from '#api/types'
 
 import { marked } from 'marked'
 
-const { info, externalDocs, servers } = defineProps<{
+const { info, externalDocs, servers, schemas } = defineProps<{
   info: OpenAPISpecs['info'],
   externalDocs: OpenAPISpecs['externalDocs'],
-  servers: OpenAPISpecs['servers']
+  servers: OpenAPISpecs['servers'],
+  schemas: Map<string, any[]> | undefined
 }>()
+
+const dialog = ref(false)
+const selectedSchema = ref<any>(null)
+const selectedSchemaName = ref<string>('')
+
+function openSchemaDialog (name: string, schema: any) {
+  selectedSchema.value = schema
+  selectedSchemaName.value = name
+  dialog.value = true
+}
 </script>
 
 <style scoped>

@@ -20,6 +20,7 @@
       :info="urlFetch.data.value.info"
       :external-docs="urlFetch.data.value.externalDocs"
       :servers="urlFetch.data.value.servers"
+      :schemas="urlFetch.data.value.components?.schemas"
     />
   </v-container>
   <pre>{{ urlFetch.data.value }}</pre>

@@ -27,6 +27,9 @@
         }
       ]
     },
+    "components": {
+      "$ref": "#/$defs/components"
+    },
     "externalDocs": {
       "$ref": "#/$defs/external-documentation"
     }
@@ -185,6 +188,25 @@
       "$ref": "#/$defs/specification-extensions",
       "unevaluatedProperties": false
     },
+    "components": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#components-object",
+      "type": "object",
+      "properties": {
+        "schemas": {
+          
+        }
+      },
+      "patternProperties": {
+        "^(schemas|responses|parameters|examples|requestBodies|headers|securitySchemes|links|callbacks|pathItems)$": {
+          "$comment": "Enumerating all of the property names in the regex above is necessary for unevaluatedProperties to work as expected",
+          "propertyNames": {
+            "pattern": "^[a-zA-Z0-9._-]+$"
+          }
+        }
+      },
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
+    },
     "external-documentation": {
       "$comment": "https://spec.openapis.org/oas/v3.1.0#external-documentation-object",
       "type": "object",
@@ -202,6 +224,13 @@
       ],
       "$ref": "#/$defs/specification-extensions",
       "unevaluatedProperties": false
+    },
+    "schema": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#schema-object",
+      "type": [
+        "object",
+        "boolean"
+      ]
     },
     "specification-extensions": {
       "$comment": "https://spec.openapis.org/oas/v3.1.0#specification-extensions",

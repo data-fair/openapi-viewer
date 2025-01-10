@@ -193,7 +193,10 @@
       "type": "object",
       "properties": {
         "schemas": {
-          
+          "type": "object",
+          "additionalProperties": {
+            "$dynamicRef": "#meta"
+          }
         }
       },
       "patternProperties": {
@@ -227,6 +230,7 @@
     },
     "schema": {
       "$comment": "https://spec.openapis.org/oas/v3.1.0#schema-object",
+      "$dynamicAnchor": "meta",
       "type": [
         "object",
         "boolean"

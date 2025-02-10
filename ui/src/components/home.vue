@@ -57,7 +57,7 @@
           <v-list-item
             v-for="(schema, index) in schemas"
             :key="index"
-            @click="openSchemaDialog(schema, schema)"
+            @click="openSchemaDialog(schema.title, schema)"
           >
             <template #title>
               <span class="text-h6">{{ schema.title }}</span>
@@ -73,7 +73,7 @@
           <template #default>
             <v-card>
               <v-card-title>
-                <span class="text-h5">{{ selectedSchemaName.title }}</span>
+                <span class="text-h5">{{ selectedSchemaName }}</span>
               </v-card-title>
               <v-divider />
               <v-card-text>

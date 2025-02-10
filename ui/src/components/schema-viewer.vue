@@ -16,7 +16,7 @@
       // TODO later
     </v-tabs-window-item>
     <v-tabs-window-item value="Raw">
-      <pre>{{ jsonSchema }}</pre>
+      <pre class="text-body-2">{{ jsonSchema }}</pre>
     </v-tabs-window-item>
   </v-tabs-window>
 </template>

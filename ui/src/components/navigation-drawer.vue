@@ -99,8 +99,8 @@
 </template>
 
 <script setup lang="ts">
-import { OpenAPISpecs } from '#api/types'
-import { Operation } from '../../../api/types/OpenAPISpecs'
+import type { OpenAPISpecs } from '#api/types'
+import type { Operation } from '../../../api/types/OpenAPISpecs'
 
 const props = defineProps<{
   paths: OpenAPISpecs['paths']

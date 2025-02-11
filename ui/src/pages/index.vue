@@ -25,6 +25,9 @@
     <operation
       v-else-if="urlFetch.data.value && validUrl && selectedOperation"
       :operation="selectedOperation"
+      :servers="urlFetch.data.value.servers"
+      :security="urlFetch.data.value.security"
+      :security-schemes="urlFetch.data.value.components?.securitySchemes"
     />
     <v-alert
       v-else-if="urlFetch.data.value && validUrl && !selectedOperation"
@@ -38,7 +41,6 @@
 
 <script setup lang="ts">
 import type { OpenAPISpecs } from '#api/types'
-import type { Operation } from '../../../api/types/OpenAPISpecs'
 
 const route = useRoute()
 const url = useStringSearchParam('url')
@@ -49,11 +51,11 @@ const selectedOperation = computed(() => {
   const hash = route.hash.replace('#', '')
   if (hash.includes('|')) {
     const [firstPart, secondPart] = hash.split('|')
-    return urlFetch.data.value?.paths?.[firstPart]?.[secondPart] as Operation
+    return urlFetch.data.value?.paths?.[firstPart]?.[secondPart]
   } else {
     for (const path in urlFetch.data.value?.paths) {
       for (const method in urlFetch.data.value.paths[path]) {
-        const operation = urlFetch.data.value.paths[path][method] as Operation | undefined
+        const operation = urlFetch.data.value.paths[path][method]
         if (operation?.operationId === hash) {
           return operation
         }

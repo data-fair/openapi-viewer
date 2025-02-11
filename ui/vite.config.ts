@@ -41,6 +41,7 @@ export default defineConfig({
         {
           '~/context': ['$uiConfig', '$sitePath', '$fetch'],
           '@mdi/js': [
+            'mdiAlertCircle',
             'mdiCodeJson',
             'mdiEmail',
             'mdiBookOpenVariant',

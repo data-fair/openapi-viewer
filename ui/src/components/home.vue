@@ -19,7 +19,7 @@
 
       <div
         v-if="info.description"
-        v-html="marked(info.description || '')"
+        v-html="marked(info.description)"
       />
 
       <h2 class="mt-2">

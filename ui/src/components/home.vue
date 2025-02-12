@@ -57,7 +57,7 @@
           <v-list-item
             v-for="(schema, index) in schemas"
             :key="index"
-            @click="openSchemaDialog(schema.title, schema)"
+            @click="openSchemaDialog(schema.title as string, schema)"
           >
             <template #title>
               <span class="text-h6">{{ schema.title }}</span>
@@ -200,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import type { OpenAPISpecs } from '#api/types'
+import type { OpenAPISpecs, Components } from '#api/types'
 
 import { marked } from 'marked'
 
@@ -208,7 +208,7 @@ const { info, externalDocs, servers, schemas } = defineProps<{
   info: OpenAPISpecs['info'],
   externalDocs: OpenAPISpecs['externalDocs'],
   servers: OpenAPISpecs['servers'],
-  schemas: Map<string, any[]> | undefined
+  schemas: Components['schemas'] | undefined
 }>()
 
 const dialog = ref(false)

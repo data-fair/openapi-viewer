@@ -9,7 +9,7 @@
         <v-list-item-title
           class="text-h6"
         >
-          Informations générales
+          Overview
         </v-list-item-title>
       </v-list-item>
 
@@ -99,8 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import type { OpenAPISpecs } from '#api/types'
-import type { Operation } from '../../../api/types/OpenAPISpecs'
+import type { OpenAPISpecs, Operation } from '#api/types'
 
 const props = defineProps<{
   paths: OpenAPISpecs['paths']
@@ -132,7 +131,7 @@ const categorizedPaths = computed(() => {
     const pathItem = paths[path]
     for (const method in pathItem) { // For each method
       if (['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'].includes(method)) {
-        const operation = pathItem[method] as Operation
+        const operation = pathItem[method] as Operation & { deprecated: boolean }
         const tags = operation.tags && operation.tags.length ? operation.tags : ['default']
         const summary = operation.summary || ''
         tags.forEach(tag => {

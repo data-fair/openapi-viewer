@@ -1,1 +1,1 @@
-export type { OpenAPISpecs } from './OpenAPISpecs/index.ts'
+export type * from './OpenAPISpecs/index.ts'

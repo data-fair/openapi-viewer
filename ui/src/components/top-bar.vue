@@ -13,6 +13,17 @@
       :prepend-inner-icon="mdiCodeJson"
     />
     <v-spacer />
+    <!-- <v-select
+      v-model="selectedExample"
+      class="mr-4"
+      density="compact"
+      label="Examples"
+      max-width="200"
+      variant="solo-filled"
+      clearable
+      hide-details
+      :items="exampleFiles"
+    /> -->
   </v-app-bar>
 </template>
 

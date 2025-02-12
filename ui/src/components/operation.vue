@@ -46,28 +46,11 @@
     />
   </div>
 
-  // Formulaire VJSF
-  Si le champ de sécurité est global, il devrai être conservé entre les pages.
-  tout le reste est reset au changement de hash
-  Le formulaire VJSF :
-  - Security -> Les cookies sont en readonly, query et header non
-  -          -> Pour chaque, on doit afficher proprement le nom, le type et la location, la description markdown et demander la valeur
-  -          -> Partie global et partie par opération
-
-  - Server -> si qu'un seul serveur on on affiche même pas le choix
-
-  // Securities form
-  <v-form>
-    <vjsf
-      v-if="securities.length"
-      v-model="securitiesValues"
-      :schema="secutiriesSchema"
-      :options="vjsfOptions"
-    />
-  </v-form>
-  {{ securities }}
-
   <pre>
+    Securities :
+    {{ securities }}
+
+    Operation :
     {{ operation }}
   </pre>
 
@@ -75,15 +58,15 @@
 </template>
 
 <script setup lang="ts">
-import type { OpenAPISpecs, Operation } from '../../../api/types/OpenAPISpecs'
+import type { Operation, SecurityRequirement, Server, SecuritySchemeOrReference } from '#api/types'
 import { marked } from 'marked'
 import Vjsf from '@koumoul/vjsf'
 
-const { operation, servers, security, securitySchemes } = defineProps<{
+const { operation, servers, globalSecurities, securitySchemes } = defineProps<{
   operation: Operation
-  servers: OpenAPISpecs['servers']
-  security: OpenAPISpecs['security']
-  securitySchemes: Record<string, any[]> | undefined
+  servers: Server[] | undefined
+  globalSecurities: SecurityRequirement[] | undefined
+  securitySchemes: SecuritySchemeOrReference | undefined // A json schema
 }>()
 
 const securities = computed<{
@@ -93,23 +76,47 @@ const securities = computed<{
   description?: string
 }[]>(() => {
   if (!securitySchemes) return []
-  const globalSecurities = security?.map(sec => {
+  const globalS = globalSecurities?.map(sec => {
     return securitySchemes[Object.keys(sec)[0]]
   }).filter(Boolean) || []
 
-  const operationSecurities = operation.security?.map(sec => {
+  const operationS = operation.security?.map(sec => {
     return securitySchemes[Object.keys(sec)[0]]
   }).filter(Boolean) || []
 
-  return [...globalSecurities, ...operationSecurities] as any
+  return [...globalS, ...operationS] as any
 })
 
-const securitiesValues = ref(securities.value)
+/*
+type GenericEndpointQuery = {
+  headers: {
+    [k: string]: string
+  }
+}
+
+const endpointQuerySchema: any = {
+  type: 'object',
+  properties: {
+    headers: {
+      type: 'object',
+      properties: {
+        'apiKey': {
+          type: 'string',
+          description: `Key=apiKey\n\nMa description`
+        }
+      }
+    }
+  }
+}
 
 // Schema VJSF
 const secutiriesSchema = {
   type: 'array',
   title: 'Security',
+  layout: {
+    listEditMode: 'inline',
+    listActions: []
+  },
   items: {
     type: 'object',
     properties: {
@@ -154,6 +161,7 @@ const vjsfOptions = {
   locale: 'fr',
   titleDepth: 3
 }
+  */
 
 </script>
 

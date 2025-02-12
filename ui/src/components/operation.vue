@@ -46,112 +46,48 @@
     />
   </div>
 
-  <pre>
-    Securities :
-    {{ securities }}
-
-    Operation :
-    {{ operation }}
-  </pre>
-
-  // TODO afficher les champs étendu ? (x-...)
+  <v-col cols="6">
+    <v-form>
+      <vjsf
+        v-model="endpointQueryValues"
+        :schema="endpointQuerySchema"
+        :options="vjsfOptions"
+      />
+    </v-form>
+  </v-col>
 </template>
 
 <script setup lang="ts">
-import type { Operation, SecurityRequirement, Server, SecuritySchemeOrReference } from '#api/types'
+import type { Operation } from '#api/types'
+import type { SchemaObject } from 'ajv'
+
 import { marked } from 'marked'
 import Vjsf from '@koumoul/vjsf'
 
-const { operation, servers, globalSecurities, securitySchemes } = defineProps<{
+// Type de sortie de VJSF
+type GenericEndpointQuery = {
+  header: Record<string, string>,
+  path: Record<string, string>,
+  query: Record<string, string>,
+  body: any
+}
+
+const { operation } = defineProps<{
   operation: Operation
-  servers: Server[] | undefined
-  globalSecurities: SecurityRequirement[] | undefined
-  securitySchemes: SecuritySchemeOrReference | undefined // A json schema
 }>()
 
-const securities = computed<{
-  type: 'apiKey' | 'http' | 'mutualTLS' | 'oauth2' | 'openIdConnect'
-  name: string
-  in: 'query' | 'header' | 'cookie'
-  description?: string
-}[]>(() => {
-  if (!securitySchemes) return []
-  const globalS = globalSecurities?.map(sec => {
-    return securitySchemes[Object.keys(sec)[0]]
-  }).filter(Boolean) || []
-
-  const operationS = operation.security?.map(sec => {
-    return securitySchemes[Object.keys(sec)[0]]
-  }).filter(Boolean) || []
-
-  return [...globalS, ...operationS] as any
+const endpointQueryValues = ref<GenericEndpointQuery>({
+  header: {},
+  path: {},
+  query: {},
+  body: {}
 })
 
-/*
-type GenericEndpointQuery = {
-  headers: {
-    [k: string]: string
-  }
-}
+const endpointQuerySchema = ref<SchemaObject | undefined>({})
 
-const endpointQuerySchema: any = {
-  type: 'object',
-  properties: {
-    headers: {
-      type: 'object',
-      properties: {
-        'apiKey': {
-          type: 'string',
-          description: `Key=apiKey\n\nMa description`
-        }
-      }
-    }
-  }
-}
-
-// Schema VJSF
-const secutiriesSchema = {
-  type: 'array',
-  title: 'Security',
-  layout: {
-    listEditMode: 'inline',
-    listActions: []
-  },
-  items: {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-        title: 'Name',
-        readOnly: true
-      },
-      description: {
-        type: 'string',
-        title: 'Description',
-        readOnly: true
-      },
-      in: {
-        type: 'string',
-        title: 'Location',
-        readOnly: true,
-        layout: {
-          cols: 6
-        }
-      },
-      type: {
-        type: 'string',
-        title: 'Type',
-        readOnly: true,
-        layout: {
-          cols: 6
-        }
-      },
-      value: {
-        type: 'string'
-      }
-    }
-  }
-}
+onMounted(() => {
+  endpointQuerySchema.value = getVJSFSchema(operation)
+})
 
 const vjsfOptions = {
   density: 'comfortable',
@@ -161,8 +97,6 @@ const vjsfOptions = {
   locale: 'fr',
   titleDepth: 3
 }
-  */
-
 </script>
 
 <style scoped>

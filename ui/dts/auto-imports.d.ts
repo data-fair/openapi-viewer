@@ -19,9 +19,15 @@ declare global {
   const dfTutorialAlert: typeof import('@data-fair/lib-vuetify/tutorial-alert.vue')['default']
   const dfUserAvatar: typeof import('@data-fair/lib-vuetify/user-avatar.vue')['default']
   const effectScope: typeof import('vue')['effectScope']
+  const endpointQuerySchemaBase: typeof import('../src/utils/transform')['endpointQuerySchemaBase']
+  const get: typeof import('../src/utils/transform')['get']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getV: typeof import('../src/utils/transform')['getV']
+  const getVJSFS: typeof import('../src/utils/transform')['getVJSFS']
+  const getVJSFSchema: typeof import('../src/utils/transform')['getVJSFSchema']
   const h: typeof import('vue')['h']
+  const initTransformer: typeof import('../src/utils/transform')['initTransformer']
   const inject: typeof import('vue')['inject']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
@@ -53,11 +59,13 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const onWatcherCleanup: typeof import('vue')['onWatcherCleanup']
+  const partialResolveRefs: typeof import('../src/utils/resolve-refs')['partialResolveRefs']
   const provide: typeof import('vue')['provide']
   const reactive: typeof import('vue')['reactive']
   const readonly: typeof import('vue')['readonly']
   const ref: typeof import('vue')['ref']
   const resolveComponent: typeof import('vue')['resolveComponent']
+  const resolveLocaleRefs: typeof import('../src/utils/resolve-refs')['resolveLocaleRefs']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
@@ -65,6 +73,8 @@ declare global {
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
+  const transform: typeof import('../src/utils/transform')['transform']
+  const transformOperation: typeof import('../src/utils/transform')['transformOperation']
   const triggerRef: typeof import('vue')['triggerRef']
   const unref: typeof import('vue')['unref']
   const useAsyncAction: typeof import('@data-fair/lib-vue/async-action.js')['useAsyncAction']
@@ -122,9 +132,12 @@ declare module 'vue' {
     readonly dfTutorialAlert: UnwrapRef<typeof import('@data-fair/lib-vuetify/tutorial-alert.vue')['default']>
     readonly dfUserAvatar: UnwrapRef<typeof import('@data-fair/lib-vuetify/user-avatar.vue')['default']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
+    readonly endpointQuerySchemaBase: UnwrapRef<typeof import('../src/utils/transform')['endpointQuerySchemaBase']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getVJSFSchema: UnwrapRef<typeof import('../src/utils/transform')['getVJSFSchema']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly initTransformer: UnwrapRef<typeof import('../src/utils/transform')['initTransformer']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
@@ -156,6 +169,7 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
+    readonly partialResolveRefs: UnwrapRef<typeof import('../src/utils/resolve-refs')['partialResolveRefs']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>

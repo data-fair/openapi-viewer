@@ -23,20 +23,16 @@
       :schemas="urlFetch.data.value.components?.schemas"
     />
     <operation
-      v-else-if="urlFetch.data.value && validUrl && selectedOperation"
-      :operation="selectedOperation"
-      :servers="urlFetch.data.value.servers"
-      :global-securities="urlFetch.data.value.security"
-      :security-schemes="urlFetch.data.value.components?.securitySchemes"
+      v-else-if="urlFetch.data.value && validUrl && operationData?.operation"
+      :operation="operationData.operation"
     />
     <v-alert
-      v-else-if="urlFetch.data.value && validUrl && !selectedOperation"
+      v-else-if="urlFetch.data.value && validUrl && !operationData?.operation"
       type="warning"
       variant="outlined"
       text="The hash does not match any operationId or path in the OpenAPI specs"
     />
   </v-container>
-  <pre>{{ urlFetch.data.value }}</pre>
 </template>
 
 <script setup lang="ts">
@@ -47,23 +43,33 @@ const url = useStringSearchParam('url')
 const validUrl = computed(() => url.value.startsWith('http://') || url.value.startsWith('https://'))
 const urlFetch = useFetch<OpenAPISpecs>(url, { notifError: false })
 
-const selectedOperation = computed(() => {
+const operationData = computed(() => {
   const hash = route.hash.replace('#', '')
-  if (hash.includes('|')) {
-    const [firstPart, secondPart] = hash.split('|')
-    return urlFetch.data.value?.paths?.[firstPart]?.[secondPart] as Operation
-  } else {
-    for (const path in urlFetch.data.value?.paths) {
-      for (const method in urlFetch.data.value.paths[path]) {
+
+  if (urlFetch.data.value?.paths) {
+    for (const path in urlFetch.data.value.paths) { // For each route
+      for (const method in urlFetch.data.value.paths[path]) { // For each method
         const operation = urlFetch.data.value.paths[path][method] as Operation
-        if (operation?.operationId === hash) {
-          return operation
+        // If the hash (the selected operation) matches an operationId or a path
+        if (operation?.operationId === hash || `${path}|${method}` === hash) {
+          const pathItemParameters = urlFetch.data.value.paths[path]?.parameters || []
+          return { operation, pathItemParameters }
         }
       }
     }
-    return null
   }
+
+  return null
 })
+
+watch(
+  () => urlFetch.data.value,
+  (newValue) => {
+    if (newValue) {
+      initTransformer(newValue)
+    }
+  }
+)
 
 // TODO validate urlFetch.data.value
 </script>

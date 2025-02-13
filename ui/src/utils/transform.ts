@@ -1,5 +1,6 @@
 import type { Components, OpenAPISpecs, Operation, Parameter as ParameterSpec, ParameterOrReference, PathItem } from '#api/types'
 import { resolveLocaleRefs } from '@json-layout/core'
+import clone from '@data-fair/lib-utils/clone'
 import Ajv from 'ajv'
 
 const ajv = new Ajv()
@@ -20,15 +21,14 @@ export const initTransformer = (schema: OpenAPISpecs) => {
 
 export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: PathItem['parameters']) => {
   if (!getJSONRef || !globalSchema) return endpointQuerySchemaBase
+  const schema = clone(endpointQuerySchemaBase)
 
   // Transform securities
-  const schema = endpointQuerySchemaBase
-  const securities = resolveSecurityList(
+  const securities = resolveSecurities(
     globalSchema?.components?.securitySchemes,
     globalSchema?.security,
     operationSchema.security
   )
-
   for (const [key, sec] of Object.entries(securities)) {
     if (sec.in === 'cookie') continue
     schema.properties[sec.in].properties[key] = {
@@ -38,27 +38,9 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
     }
   }
 
-  /* Transform parameters
-    - Resolve parameters from pathItem and operation
-    - Unique keys based on name and in
-    - Operation parameters override pathItem parameters
-  */
-  const resolveParameters = (parameters: ParameterOrReference[] = []) => {
-    return parameters.reduce((map, param) => {
-      if (param.$ref && getJSONRef) param = { ...getJSONRef('openapi', param.$ref as string), ...param }
-      if (param.name && param.in) {
-        map.set(`${param.name}|${param.in}`, param as Parameter)
-      }
-      return map
-    }, new Map<string, Parameter>())
-  }
-  const paramsMap = new Map([
-    ...resolveParameters(pathItemParameters),
-    ...resolveParameters(operationSchema.parameters)
-  ])
-  const params = Array.from(paramsMap.values())
-
-  for (const param of params) {
+  // Transform parameters
+  const parameters = resolveParameters(pathItemParameters, operationSchema.parameters)
+  for (const param of parameters) {
     if (param.in === 'cookie') continue
     schema.properties[param.in].properties[param.name] = {
       type: 'string',
@@ -67,9 +49,10 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
     }
   }
 
-  schema.properties.header.required = params.filter(param => param.in === 'header' && param.required).map(param => param.name)
-  schema.properties.query.required = params.filter(param => param.in === 'query' && param.required).map(param => param.name)
-  schema.properties.path.required = params.filter(param => param.in === 'path').map(param => param.name)
+  // Setup requerds fields for vjsf
+  schema.properties.header.required = parameters.filter(param => param.in === 'header' && param.required).map(param => param.name)
+  schema.properties.query.required = parameters.filter(param => param.in === 'query' && param.required).map(param => param.name)
+  schema.properties.path.required = parameters.filter(param => param.in === 'path').map(param => param.name) // All path parameters are required
 
   return schema
 }
@@ -80,7 +63,7 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
  * -> Resolve the operation security schemes
  * -> Merge the two
  */
-const resolveSecurityList = (
+const resolveSecurities = (
   securitySchemes: Components['securitySchemes'],
   globalSecurities: OpenAPISpecs['security'],
   operationSecurities: Operation['security']
@@ -111,6 +94,32 @@ const resolveSecurityList = (
       description?: string
     }
   }
+}
+
+/* Resolve parameters for a given operation :
+ * -> Resolve parameters from pathItem and operation
+ * -> Merge unique keys based on "name" and "in" fields
+ *    (Operation parameters override pathItem parameters)
+*/
+const resolveParameters = (
+  pathItemParameters: PathItem['parameters'],
+  operationParameters: Operation['parameters']
+) => {
+  const resolveRefsParameters = (parameters: ParameterOrReference[] = []) => {
+    return parameters.reduce((map, param) => {
+      if (param.$ref && getJSONRef) param = { ...getJSONRef('openapi', param.$ref as string), ...param }
+      if (param.name && param.in) {
+        map.set(`${param.name}|${param.in}`, param as Parameter)
+      }
+      return map
+    }, new Map<string, Parameter>())
+  }
+  const paramsMap = new Map([
+    ...resolveRefsParameters(pathItemParameters),
+    ...resolveRefsParameters(operationParameters)
+  ])
+
+  return Array.from(paramsMap.values())
 }
 
 // Base VJSF schema

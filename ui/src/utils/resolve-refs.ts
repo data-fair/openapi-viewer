@@ -1,5 +1,5 @@
 import type { SchemaObject } from 'ajv'
-import clone from '@data-fair/lib-utils/clone.ts'
+import clone from '@data-fair/lib-utils/clone'
 
 /**
  * Partially resolve a openapi doc schema but not recursively.

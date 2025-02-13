@@ -28,6 +28,7 @@
     <operation
       v-else-if="urlFetch.data.value && validUrl && operationData?.operation"
       :operation="operationData.operation"
+      :path-item-parameters="operationData.pathItemParameters"
     />
     <v-alert
       v-else-if="urlFetch.data.value && validUrl && !operationData?.operation"

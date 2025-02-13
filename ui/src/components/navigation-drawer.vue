@@ -60,9 +60,9 @@
             >
               {{ tag }}
               <v-tooltip
-                v-if="tags?.find(t => t.name === tag)?.externalDocs"
+                v-if="tagsMap[tag]?.externalDocs"
                 location="top"
-                :text="tags?.find(t => t.name === tag)?.externalDocs?.description"
+                :text="tagsMap[tag].externalDocs?.description"
               >
                 <template #activator="{ props }">
                   <v-btn
@@ -74,7 +74,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     :icon="mdiBookOpenVariant"
-                    :href="tags.find(t => t.name === tag).externalDocs.url"
+                    :href="tagsMap[tag].externalDocs?.url"
                   />
                 </template>
               </v-tooltip>
@@ -82,7 +82,7 @@
             <v-tooltip
               v-if="tags"
               activator="parent"
-              :text="tags.find(t => t.name === tag)?.description"
+              :text="tagsMap[tag]?.description"
             />
           </v-list-item>
         </template>
@@ -123,11 +123,11 @@
 </template>
 
 <script setup lang="ts">
-import type { OpenAPISpecs, Operation } from '#api/types'
+import type { OpenAPISpecs, Operation, Tag } from '#api/types'
 
 const { paths, tags } = defineProps<{
-  paths: OpenAPISpecs['paths']
-  tags: OpenAPISpecs['tags']
+  paths: OpenAPISpecs['paths'] | undefined,
+  tags: OpenAPISpecs['tags'] | undefined
 }>()
 
 const colorMethods: Record<string, string> = {
@@ -193,6 +193,14 @@ const orderedTags = computed(() => {
     .sort()
 
   return [...providedTags, ...extraTags]
+})
+
+const tagsMap = computed(() => {
+  const map: Record<string, Tag> = {}
+  tags?.forEach(tag => {
+    map[tag.name] = tag
+  })
+  return map
 })
 
 </script>

@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Operation } from '#api/types'
+import type { Operation, PathItem } from '#api/types'
 import type { SchemaObject } from 'ajv'
 
 import { marked } from 'marked'
@@ -72,8 +72,9 @@ type GenericEndpointQuery = {
   body: any
 }
 
-const { operation } = defineProps<{
+const { operation, pathItemParameters } = defineProps<{
   operation: Operation
+  pathItemParameters: PathItem['parameters']
 }>()
 
 const endpointQueryValues = ref<GenericEndpointQuery>({
@@ -83,14 +84,14 @@ const endpointQueryValues = ref<GenericEndpointQuery>({
   body: {}
 })
 
-const endpointQuerySchema = ref<SchemaObject | undefined>({})
+const endpointQuerySchema = ref<SchemaObject>({})
 
 onMounted(() => {
-  endpointQuerySchema.value = getVJSFSchema(operation)
+  endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
 })
 
 watch(() => operation, () => {
-  endpointQuerySchema.value = getVJSFSchema(operation)
+  endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
 })
 
 const vjsfOptions = {

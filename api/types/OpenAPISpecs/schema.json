@@ -42,6 +42,12 @@
         "$ref": "#/$defs/security-requirement"
       }
     },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tag"
+      }
+    },
     "externalDocs": {
       "$ref": "#/$defs/external-documentation"
     }
@@ -991,6 +997,26 @@
       "else": {
         "$ref": "#/$defs/header"
       }
+    },
+    "tag": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#tag-object",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "externalDocs": {
+          "$ref": "#/$defs/external-documentation"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "$ref": "#/$defs/specification-extensions",
+      "unevaluatedProperties": false
     },
     "reference": {
       "$comment": "https://spec.openapis.org/oas/v3.1.0#reference-object",

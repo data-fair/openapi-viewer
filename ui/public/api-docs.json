@@ -7108,6 +7108,7 @@
         "deprecated": true,
         "summary": "Etat de santé du service simplifié.",
         "tags": [
+          "Test ordre tag",
           "Administration",
           "Applications"
         ],

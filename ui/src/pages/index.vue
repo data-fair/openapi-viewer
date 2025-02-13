@@ -1,6 +1,9 @@
 <template>
   <top-bar v-if="$route.query['hide-toolbar'] !== 'false'" />
-  <navigation-drawer :paths="urlFetch.data.value?.paths" />
+  <navigation-drawer
+    :paths="urlFetch.data.value?.paths"
+    :tags="urlFetch.data.value?.tags"
+  />
   <v-container>
     <v-alert
       v-if="!validUrl"

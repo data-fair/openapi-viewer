@@ -89,6 +89,10 @@ onMounted(() => {
   endpointQuerySchema.value = getVJSFSchema(operation)
 })
 
+watch(() => operation, () => {
+  endpointQuerySchema.value = getVJSFSchema(operation)
+})
+
 const vjsfOptions = {
   density: 'comfortable',
   initialValidation: 'always',

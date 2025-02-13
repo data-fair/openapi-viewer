@@ -9,13 +9,14 @@ let globalSchema: OpenAPISpecs | undefined
 
 export const initTransformer = (schema: OpenAPISpecs) => {
   schema.$id = 'openapi'
-  getJSONRef = resolveLocaleRefs(schema, ajv)
+  // getJSONRef = resolveLocaleRefs(schema, ajv)
   globalSchema = schema
 }
 
 export const getVJSFSchema = (operationSchema: Operation) => {
   if (!getJSONRef || !globalSchema) return
 
+  // Transform securities
   const schema = endpointQuerySchemaBase
   const securities = resolveSecurityList(
     globalSchema?.components?.securitySchemes,
@@ -31,6 +32,13 @@ export const getVJSFSchema = (operationSchema: Operation) => {
       description: `Type: ${sec.type}\n\n${sec.description}`,
     }
   }
+
+  // Transform parameters
+  // for (const param of operationSchema.parameters || []) {
+  //   if (param.$ref) param = { ...param, ...getJSONRef('openapi', param.$ref) }
+  //   console.log(param)
+  // }
+
   return schema
 }
 

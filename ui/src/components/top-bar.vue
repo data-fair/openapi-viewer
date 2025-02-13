@@ -9,7 +9,7 @@
       label="OpenAPI JSON Location"
       variant="solo-filled"
       clearable
-      hide-details
+      hide-details="auto"
       :prepend-inner-icon="mdiCodeJson"
     />
     <v-spacer />
@@ -21,7 +21,7 @@
       max-width="200"
       variant="solo-filled"
       clearable
-      hide-details
+      hide-details="auto"
       :items="exampleFiles"
     /> -->
   </v-app-bar>

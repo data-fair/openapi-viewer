@@ -5,10 +5,9 @@
       v-if="operation.deprecated"
       density="compact"
       color="warning"
+      text="Deprecated"
       :prepend-icon="mdiAlertCircle"
-    >
-      Déprécié
-    </v-chip>
+    />
   </h1>
 
   <div

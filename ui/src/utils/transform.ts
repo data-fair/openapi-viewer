@@ -149,7 +149,7 @@ export const endpointQuerySchemaBase = {
     },
     body: {
       type: 'object',
-      title: 'Body',
+      title: 'Request body',
       properties: {} as Record<string, any>,
       required: [] as string[]
     }

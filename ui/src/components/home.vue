@@ -6,9 +6,8 @@
         <v-chip
           density="compact"
           :prepend-icon="mdiLabel"
-        >
-          {{ info.version }}
-        </v-chip>
+          :text="info.version"
+        />
       </h1>
       <div
         v-if="info.summary"

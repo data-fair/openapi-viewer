@@ -35,9 +35,8 @@
             density="compact"
             :disabled="item.deprecated"
             :color="colorMethods[item.method]"
-          >
-            {{ item.method.toUpperCase() }}
-          </v-chip>
+            :text="item.method.toUpperCase()"
+          />
         </template>
         <v-tooltip
           v-if="item.summary"
@@ -107,9 +106,8 @@
               density="compact"
               :disabled="item.deprecated"
               :color="colorMethods[item.method]"
-            >
-              {{ item.method.toUpperCase() }}
-            </v-chip>
+              :text="item.method.toUpperCase()"
+            />
           </template>
           <v-tooltip
             v-if="item.summary"

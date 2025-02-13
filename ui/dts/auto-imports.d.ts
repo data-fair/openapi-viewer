@@ -32,12 +32,14 @@ declare global {
   const isRef: typeof import('vue')['isRef']
   const markRaw: typeof import('vue')['markRaw']
   const mdiAlertCircle: typeof import('@mdi/js')['mdiAlertCircle']
+  const mdiAsterisk: typeof import('@mdi/js')['mdiAsterisk']
   const mdiBookOpenVariant: typeof import('@mdi/js')['mdiBookOpenVariant']
   const mdiCodeJson: typeof import('@mdi/js')['mdiCodeJson']
   const mdiEmail: typeof import('@mdi/js')['mdiEmail']
   const mdiGavel: typeof import('@mdi/js')['mdiGavel']
   const mdiHome: typeof import('@mdi/js')['mdiHome']
   const mdiLabel: typeof import('@mdi/js')['mdiLabel']
+  const mdiMapMarker: typeof import('@mdi/js')['mdiMapMarker']
   const mdiSecurity: typeof import('@mdi/js')['mdiSecurity']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
@@ -139,12 +141,14 @@ declare module 'vue' {
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly mdiAlertCircle: UnwrapRef<typeof import('@mdi/js')['mdiAlertCircle']>
+    readonly mdiAsterisk: UnwrapRef<typeof import('@mdi/js')['mdiAsterisk']>
     readonly mdiBookOpenVariant: UnwrapRef<typeof import('@mdi/js')['mdiBookOpenVariant']>
     readonly mdiCodeJson: UnwrapRef<typeof import('@mdi/js')['mdiCodeJson']>
     readonly mdiEmail: UnwrapRef<typeof import('@mdi/js')['mdiEmail']>
     readonly mdiGavel: UnwrapRef<typeof import('@mdi/js')['mdiGavel']>
     readonly mdiHome: UnwrapRef<typeof import('@mdi/js')['mdiHome']>
     readonly mdiLabel: UnwrapRef<typeof import('@mdi/js')['mdiLabel']>
+    readonly mdiMapMarker: UnwrapRef<typeof import('@mdi/js')['mdiMapMarker']>
     readonly mdiSecurity: UnwrapRef<typeof import('@mdi/js')['mdiSecurity']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>

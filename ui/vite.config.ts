@@ -42,12 +42,14 @@ export default defineConfig({
           '~/context': ['$uiConfig', '$sitePath', '$fetch'],
           '@mdi/js': [
             'mdiAlertCircle',
+            'mdiAsterisk',
             'mdiCodeJson',
             'mdiEmail',
             'mdiBookOpenVariant',
             'mdiGavel',
             'mdiHome',
             'mdiLabel',
+            'mdiMapMarker',
             'mdiSecurity'
           ]
         }

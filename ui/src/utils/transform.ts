@@ -42,8 +42,11 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
   const parameters = resolveParameters(pathItemParameters, operationSchema.parameters)
   for (const param of parameters) {
     if (param.in === 'cookie') continue
+    const paramSchema = param.schema as Record<string, any>
+    if (!paramSchema) continue // Parameters should have a content key or schema key. Content isn't supported yet
     schema.properties[param.in].properties[param.name] = {
-      type: 'string',
+      ...paramSchema,
+      type: paramSchema.type || 'string',
       title: param.name,
       description: `${param.deprecated ? '/!\\ Deprecated' : ''}\n\n${param.description}`,
     }

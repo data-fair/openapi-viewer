@@ -310,7 +310,7 @@
                   v-html="marked('Fichier à charger et autres informations')"
                 />
                 <v-tabs
-                  v-model="tab"
+                  v-model="requestTab"
                 >
                   <v-tab value="examples">
                     Examples
@@ -321,56 +321,14 @@
                 </v-tabs>
 
                 <v-tabs-window
-                  v-model="tab"
+                  v-model="requestTab"
                 >
                   <v-tabs-window-item value="examples">
                     <prism
                       language="javascript"
                       style="max-height: 400px;"
                     >
-                      <pre>
-{
-  "name": "John Doe",
-  "age": 30,
-  "cars": [
-    {
-      "name": "Ford",
-      "models": [
-        "Fiesta",
-        "Focus",
-        "Mustang"
-      ]
-    },
-    {
-      "name": "BMW",
-      "models": [
-        "320",
-        "X3",
-        "X5"
-      ]
-    }
-  ],
-  "address": {
-    "street": "Main Streethfghhhhhhhhhhhhhhhhhhhhhhh gfffffffffffffffff reeeeeeeeeeeeeeee dsssssssssss hgggggggggg",
-    "city": "New York"
-  },
-  "isMarried": true,
-  "spouse": {
-    "name": "Jane Doe",
-    "age": 25
-  },
-  "children": [
-    {
-      "name": "Alice",
-      "age": 5
-    },
-    {
-      "name": "Bob",
-      "age": 3
-    }
-  ]
-}
-                      </pre>
+                      {{ JSON.stringify({ "name": "John Doe", "age": 30, "cars": [ { "name": "Ford", "models": [ "Fiesta", "Focus", "Mustang" ] }, { "name": "BMW", "models": [ "320", "X3", "X5" ] } ], "address": { "street": "Main Streethfghhhhhhhhhhhhhhhhhhhhhhh gfffffffffffffffff reeeeeeeeeeeeeeee dsssssssssss hgggggggggg", "city": "New York" }, "isMarried": true, "spouse": { "name": "Jane Doe", "age": 25 }, "children": [ { "name": "Alice", "age": 5 }, { "name": "Bob", "age": 3 } ] }, null, 2) }}
                     </prism>
                   </v-tabs-window-item>
 
@@ -441,7 +399,8 @@
           </template>
           <template #text>
             <v-tabs
-              v-model="responsesTab"
+              :key="operation.responses"
+              v-model="responsesCodeTab"
             >
               <v-tab
                 v-for="status in Object.keys(operation.responses)"
@@ -459,7 +418,7 @@
             </v-tabs>
 
             <v-tabs-window
-              v-model="responsesTab"
+              v-model="responsesCodeTab"
             >
               <v-tabs-window-item
                 v-for="(response, status) in operation.responses"
@@ -468,11 +427,74 @@
               >
                 <div
                   v-if="response.description"
+                  class="mb-4 mt-2"
                   v-html="marked(response.description)"
                 />
+
+                <!-- Content -->
+                <template v-if="response.content">
+                  <v-row>
+                    <v-col cols="6">
+                      <v-tabs
+                        v-model="responsesExamplesSchemaTab[status]"
+                      >
+                        <v-tab
+                          value="examples"
+                        >
+                          Examples
+                        </v-tab>
+                        <v-tab
+                          value="schema"
+                          :disabled="!response.content[responsesContentType[status]]?.schema"
+                        >
+                          Schema
+                        </v-tab>
+                      </v-tabs>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-select
+                        v-model="responsesContentType[status]"
+                        density="compact"
+                        hide-details="auto"
+                        label="Content-Type"
+                        :items="Object.keys(response.content)"
+                        @click.stop
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-tabs-window
+                    v-model="responsesExamplesSchemaTab[status]"
+                  >
+                    <v-tabs-window-item value="examples">
+                      <prism
+                        language="javascript"
+                        style="max-height: 400px;"
+                      >
+                        Functionality not supported yet
+                      </prism>
+                    </v-tabs-window-item>
+                    <v-tabs-window-item value="schema">
+                      <prism
+                        language="javascript"
+                        style="max-height: 400px;"
+                      >
+                        {{ JSON.stringify(response.content[responsesContentType[status]]?.schema, null, 2) }}
+                      </prism>
+                    </v-tabs-window-item>
+                  </v-tabs-window>
+                </template>
+
+                <!-- Header -->
                 <template v-if="response.headers">
-                  <h4 v-if="response.headers">
+                  <h4>
                     Response Headers
+                  </h4>
+                  <span class="font-italic">Functionality not supported yet</span><!-- TODO -->
+                </template>
+                <!-- Links -->
+                <template v-if="response.links">
+                  <h4>
+                    Links
                   </h4>
                   <span class="font-italic">Functionality not supported yet</span><!-- TODO -->
                 </template>
@@ -509,12 +531,14 @@ import Vjsf from '@koumoul/vjsf'
 import Prism from 'vue-prism-component'
 
 // Maquette
-const panelLeft = ref<string[]>(['security', 'parameters', 'requestBody'])
-const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
-const tab = ref<string>('examples')
-const responsesTab = ref<string>('default')
+const requestTab = ref<string>('examples')
 const contentType = ref<string>('application/json')
 // ------------------
+const panelLeft = ref<string[]>(['security', 'parameters', 'requestBody'])
+const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
+const responsesCodeTab = ref<string>('default')
+const responsesContentType = ref<Record<string, string>>({})
+const responsesExamplesSchemaTab = ref<Record<string, string>>({})
 
 // Type de sortie de VJSF
 type GenericEndpointQuery = {
@@ -544,6 +568,9 @@ onMounted(() => {
 
 watch(() => operation, () => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
+  if (operation.responses && Object.keys(operation.responses).length) {
+    responsesCodeTab.value = Object.keys(operation.responses)[0]
+  }
 })
 
 const vjsfOptions = {
@@ -555,19 +582,25 @@ const vjsfOptions = {
   titleDepth: 3
 }
 
+/*
+ * Match the status code with a color
+ * Ex: 200 => success
+ *     302 => secondary
+ *     4XX => error
+ */
 const getCodeColors = (status: string) => {
   switch (true) {
-    case /1\d\d/.test(status):
-      return 'info'
-    case /2\d\d/.test(status):
+    case /1(X{2}|\d{2})/.test(status):
+      return 'primary'
+    case /2(X{2}|\d{2})/.test(status):
       return 'success'
-    case /3\d\d/.test(status):
-      return 'accent'
+    case /3(X{2}|\d{2})/.test(status):
+      return 'secondary'
     case /418/.test(status):
       return '#E040FB'
-    case /4\d\d/.test(status):
-      return 'info'
-    case /5\d\d/.test(status):
+    case /4(X{2}|\d{2})/.test(status):
+      return 'warning'
+    case /5(X{2}|\d{2})/.test(status):
       return 'error'
     default:
       return 'default'

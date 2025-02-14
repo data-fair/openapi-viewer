@@ -5,7 +5,8 @@ name: Build simple commit
 
 on:
   push:
-    branches: ['*']
+    # branches: ['*']
+    branches: ['master']
     tags-ignore: [ 'v*.*.*' ]
 
 jobs:

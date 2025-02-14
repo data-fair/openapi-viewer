@@ -325,7 +325,7 @@
                 >
                   <v-tabs-window-item value="examples">
                     <prism
-                      language="javascript"
+                      language="json"
                       style="max-height: 400px;"
                     >
                       {{ JSON.stringify({ "name": "John Doe", "age": 30, "cars": [ { "name": "Ford", "models": [ "Fiesta", "Focus", "Mustang" ] }, { "name": "BMW", "models": [ "320", "X3", "X5" ] } ], "address": { "street": "Main Streethfghhhhhhhhhhhhhhhhhhhhhhh gfffffffffffffffff reeeeeeeeeeeeeeee dsssssssssss hgggggggggg", "city": "New York" }, "isMarried": true, "spouse": { "name": "Jane Doe", "age": 25 }, "children": [ { "name": "Alice", "age": 5 }, { "name": "Bob", "age": 3 } ] }, null, 2) }}
@@ -370,7 +370,20 @@
             <h2>Curl / Url</h2>
           </template>
           <template #text>
-            La commande curl<br>L'url de la requete
+            <h3>Curl command</h3>
+            <prism
+              language="bash"
+              style="max-height: 400px;"
+            >
+              curl -X GET "https://api.datafair.io/v1/datasets" -H "accept: application/json" -H "x-apiKey: YOUR_API
+            </prism>
+            <h3>Request URL</h3>
+            <prism
+              language="bash"
+              style="max-height: 400px;"
+            >
+              https://api.datafair.io/v1/datasets
+            </prism>
           </template>
         </v-expansion-panel>
 
@@ -382,11 +395,7 @@
             <h2>Server Response</h2>
           </template>
           <template #text>
-            Code : 500<br>
-
-            Response body<br>
-
-            Response headers<br>
+            <!-- TODO -->TODO
           </template>
         </v-expansion-panel>
         <v-expansion-panel
@@ -467,7 +476,7 @@
                   >
                     <v-tabs-window-item value="examples">
                       <prism
-                        language="javascript"
+                        language="json"
                         style="max-height: 400px;"
                       >
                         Functionality not supported yet
@@ -475,7 +484,7 @@
                     </v-tabs-window-item>
                     <v-tabs-window-item value="schema">
                       <prism
-                        language="javascript"
+                        language="json"
                         style="max-height: 400px;"
                       >
                         {{ JSON.stringify(response.content[responsesContentType[status]]?.schema, null, 2) }}
@@ -528,6 +537,11 @@ import type { SchemaObject } from 'ajv'
 
 import { marked } from 'marked'
 import Vjsf from '@koumoul/vjsf'
+
+import 'prismjs'
+import 'prismjs/themes/prism-okaidia.min.css'
+import 'prismjs/components/prism-json.js'
+import 'prismjs/components/prism-bash.js'
 import Prism from 'vue-prism-component'
 
 // Maquette

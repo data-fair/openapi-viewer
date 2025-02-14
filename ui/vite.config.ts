@@ -43,13 +43,14 @@ export default defineConfig({
           '@mdi/js': [
             'mdiAlertCircle',
             'mdiAsterisk',
+            'mdiBookOpenVariant',
             'mdiCodeJson',
             'mdiEmail',
-            'mdiBookOpenVariant',
             'mdiGavel',
             'mdiHome',
             'mdiLabel',
             'mdiMapMarker',
+            'mdiPlay',
             'mdiSecurity'
           ]
         }

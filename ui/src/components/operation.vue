@@ -149,6 +149,22 @@
                 <div class="text-caption">
                   Type: string
                 </div>
+
+                <!-- Examples -->
+                <div class="text-caption">
+                  <span class="font-weight-bold">Examples:</span><br>
+                  Valeur pour vrai (summary)<br>
+                  Un exemple de valeur pour vrai (description)<br>
+                  <code>
+                    true
+                  </code>
+                  <v-divider />
+                  Valeur pour faux (summary)<br>
+                  Un exemple de valeur pour faux (description)<br>
+                  <code>
+                    false
+                  </code>
+                </div>
               </v-col>
               <v-col cols="6">
                 <v-text-field
@@ -175,6 +191,13 @@
                 </div>
                 <div class="text-caption">
                   Type: boolean
+                </div>
+                <!-- Examples -->
+                <div class="text-caption">
+                  <span class="font-weight-bold">Example:</span><br>
+                  <code>
+                    false
+                  </code>
                 </div>
               </v-col>
               <v-col cols="6">
@@ -214,6 +237,19 @@
                 <div class="text-caption">
                   <span class="font-weight-bold">Values:</span> id, slug, href, page, title, description, image, spatial, temporal, keywords, frequency, file, originalFile, attachments, remoteFile, storage, createdAt, createdBy, updatedAt, updatedBy, dataUpdatedAt, dataUpdatedBy, finalizedAt, owner, status, errorStatus, errorRetry, primaryKey, schema, count, bbox, timePeriod, timeZone, projection, license, origin, extensions, masterData, publications, publicationSites, requestedPublicationSites, hasFiles, attachmentsAsImage, isVirtual, virtual, isRest, rest, isMetaOnly, topics, thumbnails, exports, extras, analysis, permissions, previews, readApiKey, esWarning, draft
                 </div>
+                <!-- Examples -->
+                <div class="text-caption">
+                  <span class="font-weight-bold">Example:</span><br>
+                  Voir la documentation externe<br>
+                  Ce lien fournit un example très détaillé du fonctionnement de ce parametre<br>
+                  <a
+                    href="https://docs.koumoul.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    https://docs.koumoul.com/
+                  </a>
+                </div>
               </v-col>
               <v-col cols="6">
                 <v-autocomplete
@@ -237,7 +273,7 @@
           <div class="d-flex justify-space-between w-100">
             <div class="d-flex align-center">
               <h2 class="mt-0">
-                <span class="text-decoration-underline">Request body</span>
+                Request body
               </h2>
               <v-chip
                 size="small"
@@ -249,8 +285,9 @@
               />
             </div>
 
-            <div class="d-flex align-center mr-2">
+            <div class="d-flex align-center mx-2">
               <v-select
+                v-model="contentType"
                 label="Content-Type"
                 :items="[
                   'application/json',
@@ -267,7 +304,92 @@
         </template>
 
         <template #text>
-          <div v-html="marked('Fichier à charger et autres informations')" />
+          <v-row>
+            <v-col cols="6">
+              <div
+                v-html="marked('Fichier à charger et autres informations')"
+              />
+              <v-tabs
+                v-model="tab"
+              >
+                <v-tab value="examples">
+                  Examples
+                </v-tab>
+                <v-tab value="schema">
+                  Schema
+                </v-tab>
+              </v-tabs>
+
+              <v-card
+                class="overflow-auto"
+                max-height="400"
+              >
+                <v-card-text>
+                  <v-tabs-window
+                    v-model="tab"
+                  >
+                    <v-tabs-window-item value="examples">
+                      <pre>
+                        <code>
+{
+  "name": "John Doe",
+  "age": 30,
+  "cars": [
+    {
+      "name": "Ford",
+      "models": [
+        "Fiesta",
+        "Focus",
+        "Mustang"
+      ]
+    },
+    {
+      "name": "BMW",
+      "models": [
+        "320",
+        "X3",
+        "X5"
+      ]
+    }
+  ],
+  "address": {
+    "street": "Main Streethfghhhhhhhhhhhhhhhhhhhhhhh gfffffffffffffffff reeeeeeeeeeeeeeee dsssssssssss hgggggggggg",
+    "city": "New York"
+  },
+  "isMarried": true,
+  "spouse": {
+    "name": "Jane Doe",
+    "age": 25
+  },
+  "children": [
+    {
+      "name": "Alice",
+      "age": 5
+    },
+    {
+      "name": "Bob",
+      "age": 3
+    }
+  ]
+}
+                        </code>
+                      </pre>
+                    </v-tabs-window-item>
+
+                    <v-tabs-window-item value="schema">
+                      Two
+                    </v-tabs-window-item>
+                  </v-tabs-window>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="6">
+              <v-textarea
+                label="Payload"
+                hide-details="auto"
+              />
+            </v-col>
+          </v-row>
         </template>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -280,6 +402,21 @@
       />
     </v-form> -->
   </v-col>
+
+  <v-fab
+    color="primary"
+    location="right bottom"
+    size="large"
+    :app="true"
+    icon
+  >
+    <v-icon :icon="mdiPlay" />
+    <v-tooltip
+      activator="parent"
+      location="left"
+      text="Execute"
+    />
+  </v-fab>
 </template>
 
 <script setup lang="ts">
@@ -289,7 +426,11 @@ import type { SchemaObject } from 'ajv'
 import { marked } from 'marked'
 import Vjsf from '@koumoul/vjsf'
 
+// Maquette
 const panel = ref<string[]>(['security', 'parameters', 'requestBody'])
+const tab = ref<string>('examples')
+const contentType = ref<string>('application/json')
+// ------------------
 
 // Type de sortie de VJSF
 type GenericEndpointQuery = {

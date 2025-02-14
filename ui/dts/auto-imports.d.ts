@@ -40,6 +40,7 @@ declare global {
   const mdiHome: typeof import('@mdi/js')['mdiHome']
   const mdiLabel: typeof import('@mdi/js')['mdiLabel']
   const mdiMapMarker: typeof import('@mdi/js')['mdiMapMarker']
+  const mdiPlay: typeof import('@mdi/js')['mdiPlay']
   const mdiSecurity: typeof import('@mdi/js')['mdiSecurity']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
@@ -149,6 +150,7 @@ declare module 'vue' {
     readonly mdiHome: UnwrapRef<typeof import('@mdi/js')['mdiHome']>
     readonly mdiLabel: UnwrapRef<typeof import('@mdi/js')['mdiLabel']>
     readonly mdiMapMarker: UnwrapRef<typeof import('@mdi/js')['mdiMapMarker']>
+    readonly mdiPlay: UnwrapRef<typeof import('@mdi/js')['mdiPlay']>
     readonly mdiSecurity: UnwrapRef<typeof import('@mdi/js')['mdiSecurity']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>

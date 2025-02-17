@@ -146,8 +146,8 @@ const resolveExamples = (parameter: Parameter) => {
       else if (example.value) examples.push(example.value)
     }
   }
-  if (parameter.schema?.examples) parameter.schema.examples.push(examples)
-  else if (parameter.schema?.items?.examples) parameter.schema.items.examples.push(examples)
+  if (parameter.schema?.examples) parameter.schema.examples.concat(examples)
+  else if (parameter.schema?.items?.examples) parameter.schema.items.examples.concat(examples)
   else if (parameter.schema?.items) parameter.schema.items.examples = examples
   else parameter.schema = examples
 }

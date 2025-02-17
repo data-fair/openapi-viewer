@@ -7673,6 +7673,7 @@
             "name": "owner",
             "description": "Restreindre sur le propriétaire (par exemple \"organization:myorg\" ou \"user:myuser\")",
             "required": false,
+            "example": "organization:myorg",
             "schema": {
               "type": "array",
               "items": {

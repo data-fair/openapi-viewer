@@ -11,6 +11,10 @@ let globalSchema: OpenAPISpecs | undefined
 type Parameter = ParameterSpec & {
   in: 'query' | 'header' | 'path' | 'cookie'
   name: string
+  description?: string
+  examples?: Map<string, Record<string, any>>
+  example?: any
+  schema?: Record<string, any>
 }
 
 export const initTransformer = (schema: OpenAPISpecs) => {
@@ -33,8 +37,8 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
     if (sec.in === 'cookie') continue
     schema.properties[sec.in].properties[key] = {
       type: 'string',
-      title: sec.name,
-      description: `Type: ${sec.type}\n\n${sec.description}`,
+      title: (sec.description?.length || 0) < 50 ? sec.description : sec.name,
+      description: `Type: ${sec.type}\n\n${sec.description}${(sec.description?.length || 0) < 50 ? `\n\nKey: ${sec.name}` : ''}`,
     }
   }
 
@@ -43,12 +47,14 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
   for (const param of parameters) {
     if (param.in === 'cookie') continue
     const paramSchema = param.schema as Record<string, any>
-    if (!paramSchema) continue // Parameters should have a content key or schema key. Content isn't supported yet
+    if (!paramSchema) continue // Parameters should have a content key or schema key. // TODO: Content isn't supported yet
+    resolveExamples(param)
     schema.properties[param.in].properties[param.name] = {
       ...paramSchema,
       type: paramSchema.type || 'string',
-      title: param.name,
-      description: `${param.deprecated ? '/!\\ Deprecated' : ''}\n\n${param.description}`,
+      title: (param.description?.length || 0) < 50 ? param.description : param.name,
+      description: `${param.deprecated ? '/!\\ Deprecated' : ''}\n\n${param.description}${(param.description?.length || 0) < 50 ? `\n\nKey: ${param.name}` : ''}`,
+      disabled: param.deprecated,
     }
   }
 
@@ -110,7 +116,7 @@ const resolveParameters = (
 ) => {
   const resolveRefsParameters = (parameters: ParameterOrReference[] = []) => {
     return parameters.reduce((map, param) => {
-      if (param.$ref && getJSONRef) param = { ...getJSONRef('openapi', param.$ref as string), ...param }
+      if (param.$ref && getJSONRef) param = { ...getJSONRef('openapi', param.$ref as string)[0], ...param }
       if (param.name && param.in) {
         map.set(`${param.name}|${param.in}`, param as Parameter)
       }
@@ -123,6 +129,27 @@ const resolveParameters = (
   ])
 
   return Array.from(paramsMap.values())
+}
+
+/*
+ * Resolve examples for a given operation parameter:
+ * -> Resolve examples from parameter
+ * -> Generate one resolved examples list
+ * -> if they are one example, return it in a list
+ */
+const resolveExamples = (parameter: Parameter) => {
+  const examples = []
+  if (parameter.example) examples.push(parameter.example)
+  else if (parameter.examples) {
+    for (const example of parameter.examples.values()) {
+      if (example.$ref && getJSONRef) examples.push(getJSONRef('openapi', example.$ref)[0])
+      else if (example.value) examples.push(example.value)
+    }
+  }
+  if (parameter.schema?.examples) parameter.schema.examples.push(examples)
+  else if (parameter.schema?.items?.examples) parameter.schema.items.examples.push(examples)
+  else if (parameter.schema?.items) parameter.schema.items.examples = examples
+  else parameter.schema = examples
 }
 
 // Base VJSF schema

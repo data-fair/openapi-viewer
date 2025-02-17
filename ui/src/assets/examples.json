@@ -1,0 +1,10 @@
+[
+  { 
+    "title": "Data-fair doc",
+    "file": "api-docs.json"
+  },
+  {
+    "title": "Petstore",
+    "file": "petstore.json"
+  }
+]

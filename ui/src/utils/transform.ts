@@ -23,7 +23,7 @@ export const initTransformer = (schema: OpenAPISpecs) => {
   globalSchema = schema
 }
 
-export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersSrc: PathItem['parameters']) => {
+export const getVJSFSchema = async (operationSchemaSrc: Operation, pathItemParametersSrc: PathItem['parameters']) => {
   if (!getJSONRef || !globalSchema) return endpointQuerySchemaBase
   const schema = clone(endpointQuerySchemaBase)
   const operationSchema = clone(operationSchemaSrc)
@@ -70,6 +70,62 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
     }
   }
 
+  // Transform requestBody
+  if (operationSchema.requestBody) {
+    let requestBody = operationSchema.requestBody as Record<string, any>
+    if (requestBody.$ref && getJSONRef) {
+      requestBody = getJSONRef('openapi', requestBody.$ref)[0]
+    }
+    schema.properties.body.description = requestBody.description || ''
+    schema.properties.body.oneOfLayout = { label: 'Select a content type' }
+    schema.properties.body.oneOf = []
+
+    for (const contentType of Object.keys(requestBody.content)) {
+      if (contentType === 'multipart/form-data') {
+        const mediaTypeObject = requestBody.content[contentType]
+        if (mediaTypeObject.schema.$ref) mediaTypeObject.schema = getJSONRef('openapi', mediaTypeObject.schema.$ref)[0]
+        resolveExamples(mediaTypeObject)
+        schema.properties.body.oneOf.push({
+          title: contentType,
+          required: ['body'],
+          properties: {
+            key: {
+              const: contentType,
+            },
+            // body: mediaTypeObject.schema.properties
+            body: {
+              type: 'object',
+              title: contentType,
+              properties: {},
+              required: []
+            }
+          }
+        })
+      } else {
+        schema.properties.body.oneOf.push({
+          title: contentType,
+          required: ['body'],
+          properties: {
+            key: {
+              const: contentType,
+            },
+            body: {
+              title: contentType,
+              type: 'string',
+              layout: 'textarea',
+            }
+          }
+        })
+      }
+    }
+    if (schema.properties.body.oneOf.length === 1) {
+      schema.properties.body.default = {
+        key: Object.keys(requestBody.content)[0],
+        body: Object.keys(requestBody.content)[0] === 'multipart/form-data' ? {} : ''
+      }
+    }
+  }
+
   // Setup requerds fields for vjsf
   schema.properties.header.required = parameters.filter(param => param.in === 'header' && param.required).map(param => param.name)
   schema.properties.query.required = parameters.filter(param => param.in === 'query' && param.required).map(param => param.name)
@@ -77,7 +133,9 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
 
   // Clean empty properties
   for (const [key, prop] of Object.entries(schema.properties)) {
-    if (!Object.keys(prop.properties).length) delete schema.properties[key as keyof typeof schema.properties]
+    if (!Object.keys(prop.properties).length && (!prop.oneOf || !prop.oneOf.length)) {
+      delete schema.properties[key as keyof typeof schema.properties]
+    }
   }
 
   return schema
@@ -194,16 +252,25 @@ export const endpointQuerySchemaBase = {
     body: {
       type: 'object',
       title: 'Request body',
-      properties: {} as Record<string, any>,
-      required: [] as string[]
+      description: '',
+      oneOfLayout: {},
+      oneOf: [],
+      default: {}
     }
   }
 } as {
   type: 'object'
-  properties: Record<'header' | 'path' | 'query' | 'body', {
+  properties: Record<'header' | 'path' | 'query', {
     type: 'object'
     title: string
     properties: Record<string, any>
     required: string[]
+  }> & Record<'body', {
+    type: 'object'
+    title: string
+    description: string
+    oneOfLayout: Record<string, any>
+    oneOf: Record<string, any>[]
+    default: Record<string, any>
   }>
 }

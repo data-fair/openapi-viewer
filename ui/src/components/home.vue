@@ -56,10 +56,10 @@
           <v-list-item
             v-for="(schema, index) in schemas"
             :key="index"
-            @click="openSchemaDialog(schema.title as string, schema)"
+            @click="openSchemaDialog((schema.title || index) as string, schema)"
           >
             <template #title>
-              <span class="text-h6">{{ schema.title }}</span>
+              <span class="text-h6">{{ schema.title || index }}</span>
             </template>
           </v-list-item>
         </v-list>

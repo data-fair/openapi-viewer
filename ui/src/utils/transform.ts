@@ -23,9 +23,11 @@ export const initTransformer = (schema: OpenAPISpecs) => {
   globalSchema = schema
 }
 
-export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: PathItem['parameters']) => {
+export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersSrc: PathItem['parameters']) => {
   if (!getJSONRef || !globalSchema) return endpointQuerySchemaBase
   const schema = clone(endpointQuerySchemaBase)
+  const operationSchema = clone(operationSchemaSrc)
+  const pathItemParameters = clone(pathItemParametersSrc)
 
   // Transform securities
   const securities = resolveSecurities(
@@ -37,8 +39,13 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
     if (sec.in === 'cookie') continue
     schema.properties[sec.in].properties[key] = {
       type: 'string',
-      title: (sec.description?.length || 0) < 50 ? sec.description : sec.name,
-      description: `Type: ${sec.type}\n\n${sec.description}${(sec.description?.length || 0) < 50 ? `\n\nKey: ${sec.name}` : ''}`,
+      title: (sec.description?.length || 0) < 75 ? sec.description : sec.name,
+      description:
+        `Type: ${sec.type}
+        ${(sec.description?.length || 0) < 75
+          ? `\n\nKey: ${sec.name}`
+          : `\n\n${sec.description}`
+        }`,
     }
   }
 
@@ -52,8 +59,13 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
     schema.properties[param.in].properties[param.name] = {
       ...paramSchema,
       type: paramSchema.type || 'string',
-      title: (param.description?.length || 0) < 50 ? param.description : param.name,
-      description: `${param.deprecated ? '/!\\ Deprecated' : ''}\n\n${param.description}${(param.description?.length || 0) < 50 ? `\n\nKey: ${param.name}` : ''}`,
+      title: (param.description?.length || 0) < 75 ? param.description : param.name,
+      description:
+        `${param.deprecated ? '/!\\ Deprecated\n\n' : ''}
+        ${(param.description?.length || 0) < 75
+          ? `\n\nKey: ${param.name}`
+          : `\n\n${param.description}`
+        }`,
       disabled: param.deprecated,
     }
   }
@@ -62,6 +74,11 @@ export const getVJSFSchema = (operationSchema: Operation, pathItemParameters: Pa
   schema.properties.header.required = parameters.filter(param => param.in === 'header' && param.required).map(param => param.name)
   schema.properties.query.required = parameters.filter(param => param.in === 'query' && param.required).map(param => param.name)
   schema.properties.path.required = parameters.filter(param => param.in === 'path').map(param => param.name) // All path parameters are required
+
+  // Clean empty properties
+  for (const [key, prop] of Object.entries(schema.properties)) {
+    if (!Object.keys(prop.properties).length) delete schema.properties[key as keyof typeof schema.properties]
+  }
 
   return schema
 }
@@ -181,4 +198,12 @@ export const endpointQuerySchemaBase = {
       required: [] as string[]
     }
   }
+} as {
+  type: 'object'
+  properties: Record<'header' | 'path' | 'query' | 'body', {
+    type: 'object'
+    title: string
+    properties: Record<string, any>
+    required: string[]
+  }>
 }

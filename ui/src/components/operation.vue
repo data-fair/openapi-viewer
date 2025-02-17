@@ -54,8 +54,6 @@
           :options="vjsfOptions"
         />
       </v-form>
-
-      <pre>{{ endpointQuerySchema }}</pre>
     </v-col>
 
     <v-col cols="6">
@@ -274,11 +272,22 @@ const endpointQuerySchema = ref<SchemaObject>({})
 
 onMounted(() => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
+  if (operation.responses) {
+    if (Object.keys(operation.responses).length) {
+      Object.keys(operation.responses).forEach(status => {
+        responsesContentType.value[status] = Object.keys(operation.responses[status].content)[0]
+      })
+      responsesCodeTab.value = Object.keys(operation.responses)[0]
+    }
+  }
 })
 
 watch(() => operation, () => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
   if (operation.responses && Object.keys(operation.responses).length) {
+    Object.keys(operation.responses).forEach(status => {
+      responsesContentType.value[status] = Object.keys(operation.responses[status].content)[0]
+    })
     responsesCodeTab.value = Object.keys(operation.responses)[0]
   }
 })

@@ -129,7 +129,7 @@
               v-model="responsesCodeTab"
             >
               <v-tabs-window-item
-                v-for="(response, status) in operation.responses"
+                v-for="(response, status) in operation.responses as unknown as Record<string, Response>"
                 :key="status"
                 :value="status"
               >
@@ -147,15 +147,15 @@
                         v-model="responsesExamplesSchemaTab[status]"
                       >
                         <v-tab
-                          value="examples"
-                        >
-                          Examples
-                        </v-tab>
-                        <v-tab
                           value="schema"
                           :disabled="!response.content[responsesContentType[status]]?.schema"
                         >
                           Schema
+                        </v-tab>
+                        <v-tab
+                          value="examples"
+                        >
+                          Examples
                         </v-tab>
                       </v-tabs>
                     </v-col>
@@ -173,20 +173,21 @@
                   <v-tabs-window
                     v-model="responsesExamplesSchemaTab[status]"
                   >
+                    <v-tabs-window-item value="schema">
+                      <prism
+                        :key="response.content"
+                        language="json"
+                        style="max-height: 400px;"
+                      >
+                        {{ JSON.stringify(response.content[responsesContentType[status]]?.schema, null, 2) }}
+                      </prism>
+                    </v-tabs-window-item>
                     <v-tabs-window-item value="examples">
                       <prism
                         language="json"
                         style="max-height: 400px;"
                       >
                         Functionality not supported yet
-                      </prism>
-                    </v-tabs-window-item>
-                    <v-tabs-window-item value="schema">
-                      <prism
-                        language="json"
-                        style="max-height: 400px;"
-                      >
-                        {{ JSON.stringify(response.content[responsesContentType[status]]?.schema, null, 2) }}
                       </prism>
                     </v-tabs-window-item>
                   </v-tabs-window>
@@ -256,6 +257,13 @@ type GenericEndpointQuery = {
   body: any
 }
 
+type Response = {
+  description?: string
+  content?: Record<string, { schema?: SchemaObject }>
+  headers?: Record<string, any>
+  links?: Record<string, any>
+}
+
 const { operation, pathItemParameters } = defineProps<{
   operation: Operation
   pathItemParameters: PathItem['parameters']
@@ -275,7 +283,9 @@ onMounted(() => {
   if (operation.responses) {
     if (Object.keys(operation.responses).length) {
       Object.keys(operation.responses).forEach(status => {
-        responsesContentType.value[status] = Object.keys(operation.responses[status].content)[0]
+        if (operation.responses![status].content) {
+          responsesContentType.value[status] = Object.keys(operation.responses![status].content)[0]
+        }
       })
       responsesCodeTab.value = Object.keys(operation.responses)[0]
     }
@@ -286,7 +296,9 @@ watch(() => operation, () => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
   if (operation.responses && Object.keys(operation.responses).length) {
     Object.keys(operation.responses).forEach(status => {
-      responsesContentType.value[status] = Object.keys(operation.responses[status].content)[0]
+      if (operation.responses![status].content) {
+        responsesContentType.value[status] = Object.keys(operation.responses![status].content)[0]
+      }
     })
     responsesCodeTab.value = Object.keys(operation.responses)[0]
   }

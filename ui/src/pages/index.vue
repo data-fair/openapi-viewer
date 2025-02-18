@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
 import type { OpenAPISpecs, Operation } from '#api/types'
+import type { Parameter } from '~/utils/transform'
 import { dereference } from '@apidevtools/json-schema-ref-parser'
 import { computedAsync } from '@vueuse/core'
 
@@ -73,7 +74,7 @@ const operationData = computed(() => {
         const operation = derefDoc.value.paths[path][method] as Operation
         // If the hash (the selected operation) matches an operationId or a path
         if (operation?.operationId === hash || `${path}|${method}` === hash) {
-          const pathItemParameters = derefDoc.value.paths[path]?.parameters || []
+          const pathItemParameters = derefDoc.value.paths[path]?.parameters as Parameter[] || []
           return { operation, pathItemParameters }
         }
       }

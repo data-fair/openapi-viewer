@@ -62,7 +62,38 @@
             v-model="endpointQueryValues"
             :schema="endpointQuerySchema"
             :options="vjsfOptions"
-          />
+          >
+            <template #schema-and-examples="{ schema, examples}">
+              <v-tabs v-model="schemaExamplesTab">
+                <v-tab value="schema">
+                  Schema
+                </v-tab>
+                <v-tab value="examples">
+                  Examples
+                </v-tab>
+              </v-tabs>
+              <v-tabs-window v-model="schemaExamplesTab">
+                <v-tabs-window-item value="schema">
+                  <prism
+                    :key="schema"
+                    language="json"
+                    style="max-height: 400px;"
+                  >
+                    {{ JSON.stringify(schema, null, 2) }}
+                  </prism>
+                </v-tabs-window-item>
+                <v-tabs-window-item value="examples">
+                  <prism
+                    :key="examples"
+                    language="json"
+                    style="max-height: 400px;"
+                  >
+                    {{ JSON.stringify(examples, null, 2) }}
+                  </prism>
+                </v-tabs-window-item>
+              </v-tabs-window>
+            </template>
+          </vjsf>
         </v-defaults-provider>
       </v-form>
 
@@ -118,6 +149,7 @@
             <!-- TODO -->TODO
           </template>
         </v-expansion-panel>
+
         <v-expansion-panel
           v-if="operation.responses"
           value="responses"
@@ -203,6 +235,7 @@
                         {{ JSON.stringify(response.content[responsesContentType[status]]?.schema, null, 2) }}
                       </prism>
                     </v-tabs-window-item>
+
                     <v-tabs-window-item value="examples">
                       <prism
                         language="json"
@@ -238,7 +271,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Operation, PathItem } from '#api/types'
+import type { Operation } from '#api/types'
+import type { Parameter } from '~/utils/transform'
 import type { SchemaObject } from 'ajv'
 
 import { marked } from 'marked'
@@ -254,6 +288,7 @@ const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
 const responsesCodeTab = ref<string>('default')
 const responsesContentType = ref<Record<string, string>>({})
 const responsesExamplesSchemaTab = ref<Record<string, string>>({})
+const schemaExamplesTab = ref<string>('schema')
 
 // Type de sortie de VJSF
 type GenericEndpointQuery = {
@@ -272,7 +307,7 @@ type Response = {
 
 const { operation, pathItemParameters } = defineProps<{
   operation: Operation
-  pathItemParameters: PathItem['parameters']
+  pathItemParameters: Parameter[]
 }>()
 
 const endpointQueryValues = ref<GenericEndpointQuery>({

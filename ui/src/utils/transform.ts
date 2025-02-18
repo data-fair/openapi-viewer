@@ -1,9 +1,9 @@
-import type { Components, OpenAPISpecs, Operation, Parameter as ParameterSpec, ParameterOrReference, PathItem } from '#api/types'
+import type { Components, OpenAPISpecs, Operation, Parameter as ParameterSpec } from '#api/types'
 import clone from '@data-fair/lib-utils/clone'
 
 let globalSchema: OpenAPISpecs | undefined
 
-type Parameter = ParameterSpec & {
+export type Parameter = ParameterSpec & {
   in: 'query' | 'header' | 'path' | 'cookie'
   name: string
   description?: string
@@ -17,7 +17,7 @@ export const initTransformer = (schema: OpenAPISpecs) => {
   globalSchema = schema
 }
 
-export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersSrc: PathItem['parameters']) => {
+export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersSrc: Parameter[]) => {
   const schema = clone(endpointQuerySchemaBase)
   const operationSchema = clone(operationSchemaSrc)
   const pathItemParameters = clone(pathItemParametersSrc)
@@ -43,12 +43,18 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
   }
 
   // Transform parameters
-  const parameters = resolveParameters(pathItemParameters, operationSchema.parameters)
+  const parameters = resolveParameters(pathItemParameters, operationSchema.parameters as Parameter[])
   for (const param of parameters) {
     if (param.in === 'cookie') continue
     const paramSchema = param.schema as Record<string, any>
     if (!paramSchema) continue // Parameters should have a content key or schema key. // TODO: Content isn't supported yet
-    resolveExamples(param)
+
+    // Add specs examples to the schema
+    const examples = resolveExamples(param)
+    if (paramSchema?.examples) paramSchema.examples.concat(examples)
+    else if (paramSchema?.items?.examples) paramSchema.items.examples.concat(examples)
+    else if (paramSchema?.items) paramSchema.items.examples = examples
+
     schema.properties[param.in].properties[param.name] = {
       ...paramSchema,
       type: paramSchema.type || 'string',
@@ -71,15 +77,29 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
     schema.properties.body.oneOf = []
 
     for (const contentType of Object.keys(requestBody.content)) {
+      const slotsLayout = {
+        slots: {
+          after: {
+            name: 'schema-and-examples',
+            props: {
+              schema: requestBody.content[contentType].schema,
+              examples: resolveExamples(requestBody.content[contentType])
+            }
+          }
+        }
+      }
+
       if (contentType === 'multipart/form-data') {
         const schemaFormData = {
           title: contentType,
+          type: 'object',
           required: requestBody.content[contentType].schema?.required || [],
           properties: {
             key: {
               const: contentType,
             }
-          } as Record<string, any>
+          } as Record<string, any>,
+          slotsLayout
         }
 
         for (const [key, value] of Object.entries(requestBody.content[contentType].schema?.properties || {}) as [string, Record<string, any>][]) {
@@ -103,6 +123,24 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
         }
 
         schema.properties.body.oneOf.push(schemaFormData)
+      } else {
+        schema.properties.body.oneOf.push({
+          title: contentType,
+          required: ['body'],
+          properties: {
+            key: {
+              const: contentType,
+            },
+            value: {
+              title: contentType,
+              type: 'string',
+              layout: {
+                comp: 'textarea',
+                ...slotsLayout
+              }
+            }
+          }
+        })
       }
     }
     if (schema.properties.body.oneOf.length === 1) {
@@ -174,13 +212,13 @@ const resolveSecurities = (
  *    (Operation parameters override pathItem parameters)
 */
 const resolveParameters = (
-  pathItemParameters: PathItem['parameters'],
-  operationParameters: Operation['parameters']
+  pathItemParameters: Parameter[],
+  operationParameters: Parameter[]
 ) => {
-  const resolveRefsParameters = (parameters: ParameterOrReference[] = []) => {
+  const resolveRefsParameters = (parameters: Parameter[] = []) => {
     return parameters.reduce((map, param) => {
       if (param.name && param.in) {
-        map.set(`${param.name}|${param.in}`, param as Parameter)
+        map.set(`${param.name}|${param.in}`, param)
       }
       return map
     }, new Map<string, Parameter>())
@@ -199,18 +237,15 @@ const resolveParameters = (
  * -> Generate one resolved examples list
  * -> if they are one example, return it in a list
  */
-const resolveExamples = (parameter: Parameter) => {
+export const resolveExamples = (object: { example?: string, examples?: Map<string, Record<string, any>> }) => {
   const examples = []
-  if (parameter.example) examples.push(parameter.example)
-  else if (parameter.examples) {
-    for (const example of parameter.examples.values()) {
+  if (object.example) examples.push(object.example)
+  else if (object.examples) {
+    for (const example of object.examples.values()) {
       if (example.value) examples.push(example.value)
     }
   }
-  if (parameter.schema?.examples) parameter.schema.examples.concat(examples)
-  else if (parameter.schema?.items?.examples) parameter.schema.items.examples.concat(examples)
-  else if (parameter.schema?.items) parameter.schema.items.examples = examples
-  else parameter.schema = examples
+  return examples
 }
 
 // Base VJSF schema

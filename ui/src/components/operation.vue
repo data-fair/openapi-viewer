@@ -48,12 +48,33 @@
   <v-row>
     <v-col cols="6">
       <v-form>
-        <vjsf
-          v-model="endpointQueryValues"
-          :schema="endpointQuerySchema"
-          :options="vjsfOptions"
-        />
+        <v-defaults-provider
+          :defaults="{
+            global: {
+              hideDetails: 'auto',
+            },
+            VCheckbox: {
+              density: 'compact'
+            },
+          }"
+        >
+          <vjsf
+            v-model="endpointQueryValues"
+            :schema="endpointQuerySchema"
+            :options="vjsfOptions"
+          />
+        </v-defaults-provider>
       </v-form>
+
+      <!-- <v-fab
+        text="Execute"
+        color="primary"
+        location="bottom center"
+        size="large"
+        :prepend-icon="mdiPlay"
+        :app="true"
+        extended
+      /> -->
     </v-col>
 
     <v-col cols="6">
@@ -214,21 +235,6 @@
       </v-expansion-panels>
     </v-col>
   </v-row>
-
-  <v-fab
-    color="primary"
-    location="right bottom"
-    size="large"
-    :app="true"
-    icon
-  >
-    <v-icon :icon="mdiPlay" />
-    <v-tooltip
-      activator="parent"
-      location="left"
-      text="Execute"
-    />
-  </v-fab>
 </template>
 
 <script setup lang="ts">
@@ -251,10 +257,10 @@ const responsesExamplesSchemaTab = ref<Record<string, string>>({})
 
 // Type de sortie de VJSF
 type GenericEndpointQuery = {
-  header: Record<string, string>,
-  path: Record<string, string>,
-  query: Record<string, string>,
-  body: any
+  header?: Record<string, string>,
+  path?: Record<string, string>,
+  query?: Record<string, string>,
+  body?: any
 }
 
 type Response = {
@@ -294,6 +300,8 @@ onMounted(() => {
 
 watch(() => operation, () => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
+  endpointQueryValues.value = {}
+
   if (operation.responses && Object.keys(operation.responses).length) {
     Object.keys(operation.responses).forEach(status => {
       if (operation.responses![status].content) {

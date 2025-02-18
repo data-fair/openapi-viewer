@@ -6,6 +6,7 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import Vuetify from 'vite-plugin-vuetify'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import microTemplate from '@data-fair/lib-utils/micro-template.js'
 import { autoImports } from '@data-fair/lib-vuetify/vite.js'
 import { commonjsDeps } from '@koumoul/vjsf/utils/build.js'
@@ -27,6 +28,13 @@ export default defineConfig({
     },
   },
   plugins: [
+    nodePolyfills({
+      include: ['path'],
+      globals: {
+        Buffer: true,
+        process: true,
+      },
+    }),
     VueRouter({
       dts: './dts/typed-router.d.ts',
     }),

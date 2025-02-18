@@ -1,8 +1,8 @@
 <template>
   <top-bar v-if="$route.query['hide-toolbar'] !== 'false'" />
   <navigation-drawer
-    :paths="urlFetch.data.value?.paths"
-    :tags="urlFetch.data.value?.tags"
+    :paths="derefDoc?.paths"
+    :tags="derefDoc?.tags"
   />
   <v-container>
     <v-alert
@@ -19,19 +19,19 @@
       :text="urlFetch.error.value"
     />
     <home
-      v-if="urlFetch.data.value && validUrl && $route.hash === ''"
-      :info="urlFetch.data.value.info"
-      :external-docs="urlFetch.data.value.externalDocs"
-      :servers="urlFetch.data.value.servers"
-      :schemas="urlFetch.data.value.components?.schemas"
+      v-if="derefDoc && validUrl && $route.hash === ''"
+      :info="derefDoc.info"
+      :external-docs="derefDoc.externalDocs"
+      :servers="derefDoc.servers"
+      :schemas="derefDoc.components?.schemas"
     />
     <operation
-      v-else-if="urlFetch.data.value && validUrl && operationData?.operation"
+      v-else-if="derefDoc && validUrl && operationData?.operation"
       :operation="operationData.operation"
       :path-item-parameters="operationData.pathItemParameters"
     />
     <v-alert
-      v-else-if="urlFetch.data.value && validUrl && !operationData?.operation"
+      v-else-if="derefDoc && validUrl && !operationData?.operation"
       type="warning"
       variant="outlined"
       text="The hash does not match any operationId or path in the OpenAPI specs"
@@ -41,22 +41,39 @@
 
 <script setup lang="ts">
 import type { OpenAPISpecs, Operation } from '#api/types'
+import { dereference } from '@apidevtools/json-schema-ref-parser'
+import { computedAsync } from '@vueuse/core'
 
 const route = useRoute()
 const url = useStringSearchParam('url')
 const validUrl = computed(() => url.value.startsWith('http://') || url.value.startsWith('https://'))
 const urlFetch = useFetch<OpenAPISpecs>(url, { notifError: false })
 
+const evaluating = shallowRef(false)
+const derefDoc = computedAsync(
+  async () => {
+    if (urlFetch.data.value) {
+      try {
+        return await dereference(urlFetch.data.value, { mutateInputSchema: false, circular: 'ignore' }) as OpenAPISpecs
+      } catch (error) {
+        console.error('Error during dereferencing:', error)
+      }
+    }
+  },
+  undefined,
+  evaluating
+)
+
 const operationData = computed(() => {
   const hash = route.hash.replace('#', '')
 
-  if (urlFetch.data.value?.paths) {
-    for (const path in urlFetch.data.value.paths) { // For each route
-      for (const method in urlFetch.data.value.paths[path]) { // For each method
-        const operation = urlFetch.data.value.paths[path][method] as Operation
+  if (derefDoc.value?.paths) {
+    for (const path in derefDoc.value.paths) { // For each route
+      for (const method in derefDoc.value.paths[path]) { // For each method
+        const operation = derefDoc.value.paths[path][method] as Operation
         // If the hash (the selected operation) matches an operationId or a path
         if (operation?.operationId === hash || `${path}|${method}` === hash) {
-          const pathItemParameters = urlFetch.data.value.paths[path]?.parameters || []
+          const pathItemParameters = derefDoc.value.paths[path]?.parameters || []
           return { operation, pathItemParameters }
         }
       }
@@ -67,7 +84,7 @@ const operationData = computed(() => {
 })
 
 watch(
-  () => urlFetch.data.value,
+  () => derefDoc.value,
   (newValue) => {
     if (newValue) {
       initTransformer(newValue)

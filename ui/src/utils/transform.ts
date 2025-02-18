@@ -1,11 +1,6 @@
 import type { Components, OpenAPISpecs, Operation, Parameter as ParameterSpec, ParameterOrReference, PathItem } from '#api/types'
-import { resolveLocaleRefs } from '@json-layout/core'
 import clone from '@data-fair/lib-utils/clone'
-import Ajv from 'ajv'
 
-const ajv = new Ajv()
-
-let getJSONRef: ((schemaId: string, ref: string) => [any, string, string]) | undefined
 let globalSchema: OpenAPISpecs | undefined
 
 type Parameter = ParameterSpec & {
@@ -19,12 +14,10 @@ type Parameter = ParameterSpec & {
 
 export const initTransformer = (schema: OpenAPISpecs) => {
   schema.$id = 'openapi'
-  getJSONRef = resolveLocaleRefs(schema, ajv)
   globalSchema = schema
 }
 
-export const getVJSFSchema = async (operationSchemaSrc: Operation, pathItemParametersSrc: PathItem['parameters']) => {
-  if (!getJSONRef || !globalSchema) return endpointQuerySchemaBase
+export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersSrc: PathItem['parameters']) => {
   const schema = clone(endpointQuerySchemaBase)
   const operationSchema = clone(operationSchemaSrc)
   const pathItemParameters = clone(pathItemParametersSrc)
@@ -39,11 +32,11 @@ export const getVJSFSchema = async (operationSchemaSrc: Operation, pathItemParam
     if (sec.in === 'cookie') continue
     schema.properties[sec.in].properties[key] = {
       type: 'string',
-      title: (sec.description?.length || 0) < 75 ? sec.description : sec.name,
+      title: (sec.description?.length || 0) < 75 ? `${sec.name} - ${sec.description}` : sec.name,
       description:
         `Type: ${sec.type}
         ${(sec.description?.length || 0) < 75
-          ? `\n\nKey: ${sec.name}`
+          ? ''
           : `\n\n${sec.description}`
         }`,
     }
@@ -72,56 +65,32 @@ export const getVJSFSchema = async (operationSchemaSrc: Operation, pathItemParam
 
   // Transform requestBody
   if (operationSchema.requestBody) {
-    let requestBody = operationSchema.requestBody as Record<string, any>
-    if (requestBody.$ref && getJSONRef) {
-      requestBody = getJSONRef('openapi', requestBody.$ref)[0]
-    }
+    const requestBody = operationSchema.requestBody as Record<string, any>
     schema.properties.body.description = requestBody.description || ''
     schema.properties.body.oneOfLayout = { label: 'Select a content type' }
     schema.properties.body.oneOf = []
 
     for (const contentType of Object.keys(requestBody.content)) {
-      if (contentType === 'multipart/form-data') {
-        const mediaTypeObject = requestBody.content[contentType]
-        if (mediaTypeObject.schema.$ref) mediaTypeObject.schema = getJSONRef('openapi', mediaTypeObject.schema.$ref)[0]
-        resolveExamples(mediaTypeObject)
-        schema.properties.body.oneOf.push({
-          title: contentType,
-          required: ['body'],
-          properties: {
-            key: {
-              const: contentType,
-            },
-            // body: mediaTypeObject.schema.properties
-            body: {
-              type: 'object',
-              title: contentType,
-              properties: {},
-              required: []
-            }
+      schema.properties.body.oneOf.push({
+        title: contentType,
+        required: ['body'],
+        properties: {
+          key: {
+            const: contentType,
+          },
+          value: {
+            title: contentType,
+            type: 'string',
+            layout: 'textarea',
           }
-        })
-      } else {
-        schema.properties.body.oneOf.push({
-          title: contentType,
-          required: ['body'],
-          properties: {
-            key: {
-              const: contentType,
-            },
-            body: {
-              title: contentType,
-              type: 'string',
-              layout: 'textarea',
-            }
-          }
-        })
-      }
+        }
+      })
     }
     if (schema.properties.body.oneOf.length === 1) {
       schema.properties.body.default = {
         key: Object.keys(requestBody.content)[0],
-        body: Object.keys(requestBody.content)[0] === 'multipart/form-data' ? {} : ''
+        // body: Object.keys(requestBody.content)[0] === 'multipart/form-data' ? {} : ''
+        body: ''
       }
     }
   }
@@ -133,7 +102,8 @@ export const getVJSFSchema = async (operationSchemaSrc: Operation, pathItemParam
 
   // Clean empty properties
   for (const [key, prop] of Object.entries(schema.properties)) {
-    if (!Object.keys(prop.properties).length && (!prop.oneOf || !prop.oneOf.length)) {
+    // @ts-ignore
+    if (!Object.keys(prop.properties || {}).length && !prop.oneOf?.length) {
       delete schema.properties[key as keyof typeof schema.properties]
     }
   }
@@ -191,7 +161,6 @@ const resolveParameters = (
 ) => {
   const resolveRefsParameters = (parameters: ParameterOrReference[] = []) => {
     return parameters.reduce((map, param) => {
-      if (param.$ref && getJSONRef) param = { ...getJSONRef('openapi', param.$ref as string)[0], ...param }
       if (param.name && param.in) {
         map.set(`${param.name}|${param.in}`, param as Parameter)
       }
@@ -217,8 +186,7 @@ const resolveExamples = (parameter: Parameter) => {
   if (parameter.example) examples.push(parameter.example)
   else if (parameter.examples) {
     for (const example of parameter.examples.values()) {
-      if (example.$ref && getJSONRef) examples.push(getJSONRef('openapi', example.$ref)[0])
-      else if (example.value) examples.push(example.value)
+      if (example.value) examples.push(example.value)
     }
   }
   if (parameter.schema?.examples) parameter.schema.examples.concat(examples)

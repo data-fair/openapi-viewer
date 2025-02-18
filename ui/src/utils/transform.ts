@@ -79,10 +79,10 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
             key: {
               const: contentType,
             }
-          }
+          } as Record<string, any>
         }
 
-        for (const [key, value] of Object.entries(requestBody.content[contentType].schema?.properties || {})) {
+        for (const [key, value] of Object.entries(requestBody.content[contentType].schema?.properties || {}) as [string, Record<string, any>][]) {
           if (value.type === 'object') {
             schemaFormData.properties[key] = {
               type: 'string',
@@ -98,7 +98,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
               layout: 'file-input'
             }
           } else {
-            schemaFormData.properties[key] = value
+            schemaFormData.properties[key] = value as Record<string, any>
           }
         }
 
@@ -108,7 +108,6 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
     if (schema.properties.body.oneOf.length === 1) {
       schema.properties.body.default = {
         key: Object.keys(requestBody.content)[0],
-        // body: Object.keys(requestBody.content)[0] === 'multipart/form-data' ? {} : ''
         body: ''
       }
     }
@@ -240,9 +239,9 @@ export const endpointQuerySchemaBase = {
       type: 'object',
       title: 'Request body',
       description: '',
-      oneOfLayout: {},
-      oneOf: [],
-      default: {}
+      oneOfLayout: {} as Record<string, any>,
+      oneOf: [] as Record<string, any>[],
+      default: {} as Record<string, any>
     }
   }
 } as {

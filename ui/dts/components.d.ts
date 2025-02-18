@@ -11,6 +11,7 @@ declare module 'vue' {
     NavigationDrawer: typeof import('./../src/components/layout/navigation-drawer.vue')['default']
     NavigationDrawerItems: typeof import('./../src/components/layout/navigation-drawer-items.vue')['default']
     Operation: typeof import('./../src/components/operation.vue')['default']
+    OperationPannelRight: typeof import('./../src/components/operation-pannel-right.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SchemaViewer: typeof import('./../src/components/schema-viewer.vue')['default']

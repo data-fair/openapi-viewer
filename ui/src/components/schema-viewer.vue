@@ -2,11 +2,11 @@
   <v-tabs
     v-model="tab"
   >
-    <v-tab value="Tree">
-      Tree
-    </v-tab>
     <v-tab value="Raw">
       Raw
+    </v-tab>
+    <v-tab value="Tree">
+      Tree
     </v-tab>
   </v-tabs>
   <v-tabs-window
@@ -27,7 +27,7 @@
 import prism from '~/components/prism.ts'
 
 const { jsonSchema } = defineProps<{ jsonSchema: any }>()
-const tab = ref('Tree')
+const tab = ref('Raw')
 </script>
 
 <style scoped>

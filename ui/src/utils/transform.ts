@@ -32,11 +32,11 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
     if (sec.in === 'cookie') continue
     schema.properties[sec.in].properties[key] = {
       type: 'string',
-      title: (sec.description?.length || 0) < 75 ? `${sec.name} - ${sec.description}` : sec.name,
+      title: (sec.description?.length || 0) < 75 ? sec.description : sec.name,
       description:
         `Type: ${sec.type}
         ${(sec.description?.length || 0) < 75
-          ? ''
+          ? `\n\nKey: ${sec.name}`
           : `\n\n${sec.description}`
         }`,
     }
@@ -71,20 +71,39 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
     schema.properties.body.oneOf = []
 
     for (const contentType of Object.keys(requestBody.content)) {
-      schema.properties.body.oneOf.push({
-        title: contentType,
-        required: ['body'],
-        properties: {
-          key: {
-            const: contentType,
-          },
-          value: {
-            title: contentType,
-            type: 'string',
-            layout: 'textarea',
+      if (contentType === 'multipart/form-data') {
+        const schemaFormData = {
+          title: contentType,
+          required: requestBody.content[contentType].schema?.required || [],
+          properties: {
+            key: {
+              const: contentType,
+            }
           }
         }
-      })
+
+        for (const [key, value] of Object.entries(requestBody.content[contentType].schema?.properties || {})) {
+          if (value.type === 'object') {
+            schemaFormData.properties[key] = {
+              type: 'string',
+              title: value.title || key,
+              layout: 'textarea',
+              description: value.description || ''
+            }
+          } else if (value.format === 'binary') {
+            schemaFormData.properties[key] = {
+              type: 'object',
+              title: value.title || key,
+              description: value.description || '',
+              layout: 'file-input'
+            }
+          } else {
+            schemaFormData.properties[key] = value
+          }
+        }
+
+        schema.properties.body.oneOf.push(schemaFormData)
+      }
     }
     if (schema.properties.body.oneOf.length === 1) {
       schema.properties.body.default = {

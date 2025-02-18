@@ -16,12 +16,16 @@
       // TODO later
     </v-tabs-window-item>
     <v-tabs-window-item value="Raw">
-      <pre class="text-body-2">{{ jsonSchema }}</pre>
+      <prism language="json">
+        {{ JSON.stringify(jsonSchema, null, 2) }}
+      </prism>
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
 
 <script setup lang="ts">
+import prism from '~/components/prism.ts'
+
 const { jsonSchema } = defineProps<{ jsonSchema: any }>()
 const tab = ref('Tree')
 </script>

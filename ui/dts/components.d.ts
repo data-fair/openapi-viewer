@@ -8,11 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Home: typeof import('./../src/components/home.vue')['default']
-    NavigationDrawer: typeof import('./../src/components/navigation-drawer.vue')['default']
+    NavigationDrawer: typeof import('./../src/components/layout/navigation-drawer.vue')['default']
+    NavigationDrawerItems: typeof import('./../src/components/layout/navigation-drawer-items.vue')['default']
     Operation: typeof import('./../src/components/operation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SchemaViewer: typeof import('./../src/components/schema-viewer.vue')['default']
-    TopBar: typeof import('./../src/components/top-bar.vue')['default']
+    TopBar: typeof import('./../src/components/layout/top-bar.vue')['default']
   }
 }

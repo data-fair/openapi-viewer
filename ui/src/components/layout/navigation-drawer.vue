@@ -13,37 +13,11 @@
         </v-list-item-title>
       </v-list-item>
 
-      <!-- Paths with no tags -->
-      <v-list-item
-        v-for="item in formattedOperations.default"
-        :key="item.path"
-        :active="$route.hash === `#${item.hash}`"
-        @click="$router.push({ hash: `#${item.hash}`, query: $route.query})"
-      >
-        <template #title>
-          <span
-            :class="{
-              'text-disabled': item.deprecated,
-              'font-italic': item.deprecated
-            }"
-          >
-            {{ item.path }}
-          </span>
-        </template>
-        <template #append>
-          <v-chip
-            density="compact"
-            :disabled="item.deprecated"
-            :color="colorMethods[item.method]"
-            :text="item.method.toUpperCase()"
-          />
-        </template>
-        <v-tooltip
-          v-if="item.summary"
-          activator="parent"
-          :text="item.summary"
-        />
-      </v-list-item>
+      <!-- Paths without tags -->
+      <navigation-drawer-items
+        tag="default"
+        :formatted-operations="formattedOperations"
+      />
 
       <!-- All tags -->
       <v-list-group
@@ -72,8 +46,8 @@
                     variant="tonal"
                     target="_blank"
                     rel="noopener noreferrer"
-                    :icon="mdiBookOpenVariant"
                     :href="tagsMap[tag].externalDocs?.url"
+                    :icon="mdiBookOpenVariant"
                   />
                 </template>
               </v-tooltip>
@@ -85,36 +59,10 @@
             />
           </v-list-item>
         </template>
-        <v-list-item
-          v-for="item in formattedOperations[tag]"
-          :key="item.path"
-          :active="$route.hash === `#${item.hash}`"
-          @click="$router.push({ hash: `#${item.hash}`, query: $route.query})"
-        >
-          <template #title>
-            <span
-              :class="{
-                'text-disabled': item.deprecated,
-                'font-italic': item.deprecated
-              }"
-            >
-              {{ item.path }}
-            </span>
-          </template>
-          <template #append>
-            <v-chip
-              density="compact"
-              :disabled="item.deprecated"
-              :color="colorMethods[item.method]"
-              :text="item.method.toUpperCase()"
-            />
-          </template>
-          <v-tooltip
-            v-if="item.summary"
-            activator="parent"
-            :text="item.summary"
-          />
-        </v-list-item>
+        <navigation-drawer-items
+          :formatted-operations="formattedOperations"
+          :tag="tag"
+        />
       </v-list-group>
     </v-list>
   </v-navigation-drawer>
@@ -127,17 +75,6 @@ const { paths, tags } = defineProps<{
   paths: OpenAPISpecs['paths'] | undefined,
   tags: OpenAPISpecs['tags'] | undefined
 }>()
-
-const colorMethods: Record<string, string> = {
-  delete: 'error',
-  get: 'primary',
-  patch: 'secondary',
-  post: 'success',
-  put: 'info',
-  options: 'default',
-  head: 'default',
-  trace: 'default'
-}
 
 const formattedOperations = computed(() => {
   if (!paths) return {}

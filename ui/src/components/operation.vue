@@ -228,7 +228,7 @@
                   >
                     <v-tabs-window-item value="schema">
                       <prism
-                        :key="response.content"
+                        :key="status + '-content'"
                         language="json"
                         style="max-height: 400px;"
                       >
@@ -277,12 +277,7 @@ import type { SchemaObject } from 'ajv'
 
 import { marked } from 'marked'
 import Vjsf from '@koumoul/vjsf'
-
-import 'prismjs'
-import 'prismjs/themes/prism-okaidia.min.css'
-import 'prismjs/components/prism-json.js'
-import 'prismjs/components/prism-bash.js'
-import Prism from 'vue-prism-component'
+import prism from '~/components/prism.ts'
 
 const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
 const responsesCodeTab = ref<string>('default')

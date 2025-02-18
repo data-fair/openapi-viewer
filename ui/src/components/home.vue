@@ -1,6 +1,7 @@
 <template>
   <v-row>
     <v-col cols="8">
+      <!-- Title & Version -->
       <h1>
         {{ info.title }}
         <v-chip
@@ -9,6 +10,8 @@
           :text="info.version"
         />
       </h1>
+
+      <!-- Summary -->
       <div
         v-if="info.summary"
         class="text-h6 font-italic"
@@ -16,11 +19,38 @@
         {{ info.summary }}
       </div>
 
+      <!-- Description -->
       <div
         v-if="info.description"
         v-html="marked(info.description)"
       />
 
+      <!-- Schemas -->
+      <template v-if="schemas">
+        <h2 class="mt-2">
+          Schemas
+        </h2>
+        <v-expansion-panels
+          v-model="schemaPannel"
+          density="compact"
+        >
+          <v-expansion-panel
+            v-for="(schema, index) in schemas"
+            :key="index"
+            :value="index"
+            static
+          >
+            <template #title>
+              {{ schema.title || index }}
+            </template>
+            <template #text>
+              <schema-viewer :json-schema="schema" />
+            </template>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </template>
+
+      <!-- Servers -->
       <h2 class="mt-2">
         Serveurs
       </h2>
@@ -34,55 +64,15 @@
           :key="server.url"
         >
           <template #title>
-            <span class="text-h6">
-              {{ server.url }}
-            </span>
+            <strong>{{ server.url }}</strong>
             <span v-if="server.description">
               - {{ server.description }}
             </span>
           </template>
         </v-list-item>
       </v-list>
-
-      <template v-if="schemas">
-        <h2 class="mt-2">
-          Schemas
-        </h2>
-        <v-list
-          class="pt-0"
-          density="compact"
-          style="background-color:transparent"
-        >
-          <v-list-item
-            v-for="(schema, index) in schemas"
-            :key="index"
-            @click="openSchemaDialog((schema.title || index) as string, schema)"
-          >
-            <template #title>
-              <span class="text-h6">{{ schema.title || index }}</span>
-            </template>
-          </v-list-item>
-        </v-list>
-
-        <!-- Dialog pour afficher le schéma -->
-        <v-dialog
-          v-model="dialog"
-          max-width="800"
-        >
-          <template #default>
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ selectedSchemaName }}</span>
-              </v-card-title>
-              <v-divider />
-              <v-card-text>
-                <schema-viewer :json-schema="selectedSchema" />
-              </v-card-text>
-            </v-card>
-          </template>
-        </v-dialog>
-      </template>
     </v-col>
+
     <v-col cols="4">
       <v-card
         variant="elevated"
@@ -106,6 +96,7 @@
             </template>
             {{ info.contact.name || info.contact.url }}
           </v-list-item>
+
           <v-list-item
             v-else-if="info.contact?.name"
             nav
@@ -118,6 +109,7 @@
             </template>
             {{ info.contact.name }}
           </v-list-item>
+
           <v-list-item
             v-if="info.contact?.email"
             :href="'mailto:' + info.contact.email"
@@ -200,7 +192,6 @@
 
 <script setup lang="ts">
 import type { OpenAPISpecs, Components } from '#api/types'
-
 import { marked } from 'marked'
 
 const { info, externalDocs, servers, schemas } = defineProps<{
@@ -210,15 +201,8 @@ const { info, externalDocs, servers, schemas } = defineProps<{
   schemas: Components['schemas'] | undefined
 }>()
 
-const dialog = ref(false)
-const selectedSchema = ref<any>(null)
-const selectedSchemaName = ref<string>('')
+const schemaPannel = ref<number | null>(null)
 
-function openSchemaDialog (name: string, schema: any) {
-  selectedSchema.value = schema
-  selectedSchemaName.value = name
-  dialog.value = true
-}
 </script>
 
 <style scoped>

@@ -35,8 +35,10 @@
     "vite-plugin-vuetify": "^2.0.4",
     "vue": "^3.5.12",
     "vue-i18n": "^10.0.4",
-    "vue-prism-component": "^2.0.0",
     "vue-router": "^4.4.5",
     "vue-tsc": "^2.1.10"
+  },
+  "devDependencies": {
+    "@types/prismjs": "^1.26.5"
   }
 }

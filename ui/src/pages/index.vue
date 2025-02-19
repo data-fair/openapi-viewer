@@ -18,6 +18,13 @@
       variant="outlined"
       :text="urlFetch.error.value"
     />
+    <v-alert
+      v-if="errorMessage"
+      type="error"
+      title="Error"
+      variant="outlined"
+      :text="errorMessage"
+    />
     <home
       v-if="derefDoc && validUrl && $route.hash === ''"
       :info="derefDoc.info"
@@ -47,20 +54,39 @@ import type { OpenAPISpecs, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
 import { dereference } from '@apidevtools/json-schema-ref-parser'
 import { computedAsync } from '@vueuse/core'
+import yaml from 'js-yaml'
+// import { validate } from '../../../api/types/OpenAPISpecs'
 
 const route = useRoute()
 const url = useStringSearchParam('url')
-const validUrl = computed(() => url.value.startsWith('http://') || url.value.startsWith('https://'))
+const validUrl = computed(() => url.value && /^https?:\/\//.test(url.value))
 const urlFetch = useFetch<OpenAPISpecs>(url, { notifError: false })
+const errorMessage = ref<string | null>(null)
 
 const evaluating = shallowRef(false)
 const derefDoc = computedAsync(
   async () => {
     if (urlFetch.data.value) {
+      // try {
+      //   assertValid(urlFetch.data.value)
+      // } catch (error) {
+      //   console.error('Error during validation:', error)
+      //   errorMessage.value = 'The OpenAPI specs are not valid'
+      // }
       try {
-        return await dereference(urlFetch.data.value, { mutateInputSchema: false, circular: 'ignore' }) as OpenAPISpecs
+        const deref = await dereference(
+          typeof urlFetch.data.value === 'string'
+            ? yaml.load(urlFetch.data.value)
+            : urlFetch.data.value,
+          {
+            mutateInputSchema: false,
+            circular: 'ignore'
+          }) as OpenAPISpecs
+
+        errorMessage.value = null
+        return deref
       } catch (error) {
-        console.error('Error during dereferencing:', error)
+        errorMessage.value = 'The OpenAPI specs are not valid'
       }
     }
   },
@@ -97,7 +123,6 @@ watch(
   }
 )
 
-// TODO validate urlFetch.data.value
 </script>
 
 <style scoped>

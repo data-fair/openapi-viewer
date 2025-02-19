@@ -24,6 +24,7 @@
     "@vueuse/core": "^11.2.0",
     "dayjs": "^1.11.13",
     "iframe-resizer": "^4.4.5",
+    "js-yaml": "^4.1.0",
     "marked": "^15.0.6",
     "prismjs": "^1.29.0",
     "sass-embedded": "^1.80.5",
@@ -39,6 +40,7 @@
     "vue-tsc": "^2.1.10"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/prismjs": "^1.26.5"
   }
 }

@@ -60,8 +60,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
       type: paramSchema.type || 'string',
       title: (param.description?.length || 0) < 75 ? param.description : param.name,
       description:
-        `${param.deprecated ? '/!\\ Deprecated\n\n' : ''}
-        ${(param.description?.length || 0) < 75
+        `${param.deprecated ? '/!\\ Deprecated\n\n' : ''}${(param.description?.length || 0) < 75
           ? `Key: ${param.name}`
           : param.description
         }`,

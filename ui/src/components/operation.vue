@@ -23,11 +23,11 @@
     <v-chip
       color="primary"
       density="compact"
-      target="_blank"
       rel="noopener noreferrer"
+      target="_blank"
+      :href="operation.externalDocs.url"
       :prepend-icon="mdiBookOpenVariant"
       :text="operation.externalDocs.description"
-      :href="operation.externalDocs.url"
     />
   </div>
 
@@ -112,6 +112,7 @@
           class="mt-4"
           color="primary"
           :prepend-icon="mdiPlay"
+          @click="executeRequest"
         >
           Execute
         </v-btn>
@@ -122,6 +123,7 @@
       <operation-pannel-right
         :operation="operation"
         :endpoint-query-values="endpointQueryValues"
+        :response-data="responseData"
         :server-url="serverUrl"
         :method="method"
         :path="path"
@@ -154,6 +156,77 @@ const endpointQueryValues = ref<GenericEndpointQuery>({
   body: {}
 })
 const endpointQuerySchema = ref<SchemaObject>({})
+const responseData = ref<Record<string, any> | null>(null)
+
+const executeRequest = async () => {
+  responseData.value = null
+
+  let processedPath = path
+  if (endpointQueryValues.value.path) {
+    for (const [key, value] of Object.entries(endpointQueryValues.value.path)) {
+      processedPath = processedPath.replace(`{${key}}`, encodeURIComponent(value))
+    }
+  }
+
+  let url = `${serverUrl || ''}${processedPath}`
+  if (endpointQueryValues.value.query && Object.keys(endpointQueryValues.value.query).length > 0) {
+    const queryParams = new URLSearchParams(endpointQueryValues.value.query).toString()
+    url += `?${queryParams}`
+  }
+
+  const headers: Record<string, string> = {}
+  if (endpointQueryValues.value.header) {
+    for (const [key, value] of Object.entries(endpointQueryValues.value.header)) {
+      headers[key] = value
+    }
+  }
+
+  let body: BodyInit | null = null
+  if (endpointQueryValues.value.body && Object.keys(endpointQueryValues.value.body).length > 0) {
+    const contentType = endpointQueryValues.value.body?.contentType || 'application/json'
+    headers['Content-Type'] = contentType
+
+    if (contentType === 'multipart/form-data') {
+      const formData = new FormData()
+      for (const [key, value] of Object.entries(endpointQueryValues.value.body)) {
+        if (key !== 'contentType') {
+          if (value instanceof File) {
+            formData.append(key, value, value.name)
+          } else {
+            formData.append(key, value as string | Blob)
+          }
+        }
+      }
+      body = formData
+    } else {
+      body = JSON.stringify(endpointQueryValues.value.body)
+    }
+  }
+
+  const response = await fetch(url, {
+    method: method.toUpperCase(),
+    headers,
+    body
+  })
+
+  const contentType = response.headers.get('content-type')
+  let responseBody: any
+  if (contentType?.includes('application/json')) {
+    responseBody = await response.json().catch(() => ({ error: 'Invalid JSON' }))
+  } else if (contentType?.includes('text')) {
+    responseBody = await response.text().catch(() => 'Error parsing text')
+  } else {
+    responseBody = 'Unsupported content type'
+  }
+  console.log(response.statusText)
+
+  responseData.value = {
+    status: response.status.toString(),
+    statusText: response.statusText,
+    body: responseBody,
+    headers: Object.fromEntries(response.headers.entries())
+  }
+}
 
 onMounted(() => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)

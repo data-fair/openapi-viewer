@@ -37,7 +37,43 @@
         <h3>Server Response</h3>
       </template>
       <template #text>
-        <!-- TODO -->TODO
+        <template v-if="responseData">
+          <h4>
+            <v-chip
+              :color="getCodeColors(responseData.status)"
+              :text="responseData.status"
+              density="compact"
+              label
+            />
+            {{ responseData.statusText }}
+          </h4>
+
+          <template v-if="responseData.body">
+            <h4>Response Body</h4>
+            <prism
+              language="json"
+              style="max-height: 400px;"
+            >
+              {{ JSON.stringify(responseData.body, null, 2) }}
+            </prism>
+          </template>
+
+          <template v-if="responseData.headers">
+            <h4>Response Headers</h4>
+            <prism
+              language="json"
+              style="max-height: 400px;"
+            >
+              {{ JSON.stringify(responseData.headers, null, 2) }}
+            </prism>
+          </template>
+        </template>
+
+        <template v-else>
+          <p class="text-muted">
+            Aucune réponse reçue pour le moment.
+          </p>
+        </template>
       </template>
     </v-expansion-panel>
 
@@ -175,6 +211,7 @@ type Response = {
 const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<{
   operation: Operation
   endpointQueryValues: GenericEndpointQuery
+  responseData: Record<string, any> | null
   serverUrl: string | null
   method: string
   path: string

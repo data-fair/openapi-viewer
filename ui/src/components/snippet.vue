@@ -25,16 +25,8 @@ const snippet = ref('')
 const generateSnippet = () => {
   const curlCommand = [`curl -X ${method.toUpperCase()}`]
 
-  // Remplacer les paramètres dynamiques du path
-  let processedPath = path
-  if (endpointQueryValues.path) {
-    for (const [key, value] of Object.entries(endpointQueryValues.path)) {
-      processedPath = processedPath.replace(`:${key}`, encodeURIComponent(value))
-    }
-  }
-
   // Construire l'URL complète
-  let url = `${serverUrl || ''}${processedPath}`
+  let url = `${serverUrl || ''}${path}`
   if (endpointQueryValues.query && Object.keys(endpointQueryValues.query).length > 0) {
     const queryParams = new URLSearchParams(endpointQueryValues.query).toString()
     url += `?${queryParams}`

@@ -38,6 +38,7 @@ RUN npm ci --omit=dev --omit=optional --omit=peer --no-audit --no-fund
 FROM installer AS types
 
 COPY api/config api/config
+COPY api/types api/types
 RUN npm run build-types
 
 # =============================
@@ -47,6 +48,7 @@ FROM installer AS ui
 
 RUN npm i --no-save @rollup/rollup-linux-x64-musl
 COPY --from=types /app/api/config api/config
+COPY --from=types /app/api/types api/types
 ADD /api/src/config.ts api/src/config.ts
 ADD /ui ui
 RUN npm -w ui run build
@@ -69,6 +71,7 @@ FROM base AS main
 COPY --from=api-installer /app/node_modules node_modules
 COPY api api
 COPY --from=types /app/api/config api/config
+COPY --from=types /app/api/types api/types
 COPY --from=api-installer /app/api/node_modules api/node_modules
 COPY --from=ui /app/ui/dist ui/dist
 COPY package.json README.md BUILD.json* ./

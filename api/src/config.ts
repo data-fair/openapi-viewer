@@ -11,5 +11,7 @@ config.util.makeImmutable(apiConfig)
 
 export default apiConfig as ApiConfig
 
-export const uiConfig = {}
+export const uiConfig = {
+  useSimpleDirectory: apiConfig.useSimpleDirectory
+}
 export type UiConfig = typeof uiConfig

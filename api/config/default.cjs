@@ -1,4 +1,5 @@
 module.exports = {
   port: 8080,
-  serveUi: true
+  serveUi: true,
+  useSimpleDirectory: false
 }

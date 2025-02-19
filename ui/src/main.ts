@@ -22,27 +22,35 @@ import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
   const router = createRouter({ history: createWebHistory($sitePath + '/openapi-viewer/'), routes })
   dFrameContent(router)
   const reactiveSearchParams = createReactiveSearchParams(router)
-  const session = await createSession({ directoryUrl: $sitePath + '/simple-directory', siteInfo: true })
-  const localeDayjs = createLocaleDayjs(session.state.lang)
   const uiNotif = createUiNotif()
   const vuetifyOptions = {
     defaults: {},
-    ...vuetifySessionOptions(session),
     icons: { defaultSet: 'mdi', aliases, sets: { mdi } }
   }
-  const vuetify = createVuetify(vuetifyOptions)
-  const i18n = createI18n({ locale: session.state.lang });
+
+  let session, localeDayjs, i18n
+  if ($uiConfig.useSimpleDirectory) {
+    session = await createSession({ directoryUrl: $sitePath + '/simple-directory', siteInfo: true })
+    localeDayjs = createLocaleDayjs(session.state.lang)
+    i18n = createI18n({ locale: session.state.lang })
+    Object.assign(vuetifyOptions, vuetifySessionOptions(session))
+  }
 
   // TODO: remove when d-frame is fully integrated
   (window as any).vIframeOptions = { router }
 
-  createApp(App)
+  const vuetify = createVuetify(vuetifyOptions)
+  const app = createApp(App)
     .use(router)
     .use(reactiveSearchParams)
-    .use(session)
-    .use(localeDayjs)
     .use(uiNotif)
     .use(vuetify)
-    .use(i18n)
-    .mount('#app')
+
+  if ($uiConfig.useSimpleDirectory) {
+    app.use(session!)
+      .use(localeDayjs!)
+      .use(i18n!)
+  }
+
+  app.mount('#app')
 })()

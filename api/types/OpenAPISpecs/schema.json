@@ -33,6 +33,12 @@
     "paths": {
       "$ref": "#/$defs/paths"
     },
+    "webhooks": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/path-item-or-reference"
+      }
+    },
     "components": {
       "$ref": "#/$defs/components"
     },
@@ -216,10 +222,58 @@
             "$dynamicRef": "#meta"
           }
         },
+        "responses": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/response-or-reference"
+          }
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/parameter-or-reference"
+          }
+        },
+        "examples": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/example-or-reference"
+          }
+        },
+        "requestBodies": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/request-body-or-reference"
+          }
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/header-or-reference"
+          }
+        },
         "securitySchemes": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/$defs/security-scheme-or-reference"
+          }
+        },
+        "links": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/link-or-reference"
+          }
+        },
+        "callbacks": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/callbacks-or-reference"
+          }
+        },
+        "pathItems": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/path-item-or-reference"
           }
         }
       },
@@ -672,6 +726,30 @@
         "format": "media-range"
       }
     },
+    "media-type": {
+      "$comment": "https://spec.openapis.org/oas/v3.1.0#media-type-object",
+      "type": "object",
+      "properties": {
+        "schema": {
+          "$dynamicRef": "#meta"
+        },
+        "encoding": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/encoding"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/specification-extensions"
+        },
+        {
+          "$ref": "#/$defs/examples"
+        }
+      ],
+      "unevaluatedProperties": false
+    },
     "encoding": {
       "$comment": "https://spec.openapis.org/oas/v3.1.0#encoding-object",
       "type": "object",
@@ -800,30 +878,6 @@
       "else": {
         "$ref": "#/$defs/response"
       }
-    },
-    "media-type": {
-      "$comment": "https://spec.openapis.org/oas/v3.1.0#media-type-object",
-      "type": "object",
-      "properties": {
-        "schema": {
-          "$dynamicRef": "#meta"
-        },
-        "encoding": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/$defs/encoding"
-          }
-        }
-      },
-      "allOf": [
-        {
-          "$ref": "#/$defs/specification-extensions"
-        },
-        {
-          "$ref": "#/$defs/examples"
-        }
-      ],
-      "unevaluatedProperties": false
     },
     "callbacks": {
       "$comment": "https://spec.openapis.org/oas/v3.1.0#callback-object",

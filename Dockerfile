@@ -33,7 +33,7 @@ COPY api/package.json api/package.json
 RUN npm ci --omit=dev --omit=optional --omit=peer --no-audit --no-fund
 
 # =============================
-# Build Types for API
+# Build Types
 # =============================
 FROM installer AS types
 

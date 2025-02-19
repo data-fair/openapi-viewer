@@ -1,6 +1,6 @@
 <template>
   <prism
-    :key="snippet"
+    :key="snippet || 'loading'"
     language="bash"
     style="max-height: 400px;"
   >

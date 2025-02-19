@@ -110,9 +110,11 @@
       <v-row justify="center">
         <v-btn
           class="mt-4"
-          variant="text"
           color="primary"
-        />
+          :prepend-icon="mdiPlay"
+        >
+          Execute
+        </v-btn>
       </v-row>
     </v-col>
 
@@ -126,7 +128,6 @@
       />
     </v-col>
   </v-row>
-  {{ endpointQuerySchema }}
 </template>
 
 <script setup lang="ts">

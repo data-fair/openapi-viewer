@@ -8,22 +8,23 @@
       static
     >
       <template #title>
-        <h2>Curl / Url</h2>
+        <h3>Curl / Url</h3>
       </template>
       <template #text>
-        <h3>Curl command</h3>
+        <h4>Curl command</h4>
+        <snippet
+          :endpoint-query-values="endpointQueryValues"
+          :server-url="serverUrl"
+          :method="method"
+          :path="fullPath"
+        />
+        <h4>Request URL</h4>
         <prism
+          :key="fullPath"
           language="bash"
           style="max-height: 400px;"
         >
-          curl -X GET "https://api.datafair.io/v1/datasets" -H "accept: application/json" -H "x-apiKey: YOUR_API
-        </prism>
-        <h3>Request URL</h3>
-        <prism
-          language="bash"
-          style="max-height: 400px;"
-        >
-          https://api.datafair.io/v1/datasets
+          {{ (serverUrl || '') + fullPath }}
         </prism>
       </template>
     </v-expansion-panel>
@@ -33,7 +34,7 @@
       static
     >
       <template #title>
-        <h2>Server Response</h2>
+        <h3>Server Response</h3>
       </template>
       <template #text>
         <!-- TODO -->TODO
@@ -46,7 +47,7 @@
       static
     >
       <template #title>
-        <h2>Responses</h2>
+        <h3>Responses</h3>
       </template>
       <template #text>
         <v-tabs
@@ -159,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Operation } from '#api/types'
+import type { GenericEndpointQuery, Operation } from '#api/types'
 import type { SchemaObject } from 'ajv'
 import { marked } from 'marked'
 import prism from '~/components/prism.ts'
@@ -171,27 +172,29 @@ type Response = {
   links?: Record<string, any>
 }
 
-const { operation } = defineProps<{
+const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<{
   operation: Operation
+  endpointQueryValues: GenericEndpointQuery
+  serverUrl: string | null
+  method: string
+  path: string
 }>()
 
 const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
 const responsesCodeTab = ref<string>('default')
 const responsesContentType = ref<Record<string, string>>({})
 const responsesExamplesSchemaTab = ref<Record<string, string>>({})
+const fullPath = ref<string>(path)
 
-onMounted(() => {
-  if (operation.responses) {
-    if (Object.keys(operation.responses).length) {
-      Object.keys(operation.responses).forEach(status => {
-        if (operation.responses![status].content) {
-          responsesContentType.value[status] = Object.keys(operation.responses![status].content)[0]
-        }
-      })
-      responsesCodeTab.value = Object.keys(operation.responses)[0]
+const getFullPath = () => {
+  let fullPath = path
+  if (endpointQueryValues.path) {
+    for (const [key, value] of Object.entries(endpointQueryValues.path)) {
+      fullPath = fullPath.replace(`{${key}}`, encodeURIComponent(value))
     }
   }
-})
+  return fullPath
+}
 
 watch(() => operation, () => {
   if (operation.responses && Object.keys(operation.responses).length) {
@@ -202,7 +205,11 @@ watch(() => operation, () => {
     })
     responsesCodeTab.value = Object.keys(operation.responses)[0]
   }
-})
+}, { immediate: true })
+
+watch(() => endpointQueryValues, () => {
+  fullPath.value = getFullPath()
+}, { immediate: true, deep: true })
 
 /*
  * Match the status code with a color

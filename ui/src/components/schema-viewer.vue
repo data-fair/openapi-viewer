@@ -16,7 +16,10 @@
       // TODO later
     </v-tabs-window-item>
     <v-tabs-window-item value="Raw">
-      <prism language="json">
+      <prism
+        language="json"
+        style="max-height: 800px;"
+      >
         {{ JSON.stringify(jsonSchema, null, 2) }}
       </prism>
     </v-tabs-window-item>

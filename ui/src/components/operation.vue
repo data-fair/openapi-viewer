@@ -106,35 +106,43 @@
         :app="true"
         extended
       /> -->
+
+      <v-row justify="center">
+        <v-btn
+          class="mt-4"
+          variant="text"
+          color="primary"
+        />
+      </v-row>
     </v-col>
 
     <v-col cols="6">
       <operation-pannel-right
         :operation="operation"
+        :endpoint-query-values="endpointQueryValues"
+        :server-url="serverUrl"
+        :method="method"
+        :path="path"
       />
     </v-col>
   </v-row>
+  {{ endpointQuerySchema }}
 </template>
 
 <script setup lang="ts">
-import type { Operation } from '#api/types'
+import type { GenericEndpointQuery, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
 import type { SchemaObject } from 'ajv'
 import { marked } from 'marked'
 import Vjsf from '@koumoul/vjsf'
 import prism from '~/components/prism.ts'
 
-// Type de sortie de VJSF
-type GenericEndpointQuery = {
-  header?: Record<string, string>,
-  path?: Record<string, string>,
-  query?: Record<string, string>,
-  body?: any
-}
-
-const { operation, pathItemParameters } = defineProps<{
+const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
   operation: Operation
   pathItemParameters: Parameter[]
+  serverUrl: string | null
+  method: string
+  path: string
 }>()
 
 const schemaExamplesTab = ref<string>('schema')

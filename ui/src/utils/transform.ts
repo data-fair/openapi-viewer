@@ -62,8 +62,8 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
       description:
         `${param.deprecated ? '/!\\ Deprecated\n\n' : ''}
         ${(param.description?.length || 0) < 75
-          ? `\n\nKey: ${param.name}`
-          : `\n\n${param.description}`
+          ? `Key: ${param.name}`
+          : param.description
         }`,
       disabled: param.deprecated,
     }
@@ -95,7 +95,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
           type: 'object',
           required: requestBody.content[contentType].schema?.required || [],
           properties: {
-            key: {
+            contentType: {
               const: contentType,
             }
           } as Record<string, any>,
@@ -128,7 +128,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
           title: contentType,
           required: ['body'],
           properties: {
-            key: {
+            contentType: {
               const: contentType,
             },
             value: {

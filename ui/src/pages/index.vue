@@ -29,6 +29,9 @@
       v-else-if="derefDoc && validUrl && operationData?.operation"
       :operation="operationData.operation"
       :path-item-parameters="operationData.pathItemParameters"
+      :server-url="operationData.serverUrl"
+      :method="operationData.method"
+      :path="operationData.path"
     />
     <v-alert
       v-else-if="derefDoc && validUrl && !operationData?.operation"
@@ -75,7 +78,8 @@ const operationData = computed(() => {
         // If the hash (the selected operation) matches an operationId or a path
         if (operation?.operationId === hash || `${path}|${method}` === hash) {
           const pathItemParameters = derefDoc.value.paths[path]?.parameters as Parameter[] || []
-          return { operation, pathItemParameters }
+          const serverUrl = derefDoc.value.servers?.[0]?.url || null
+          return { operation, pathItemParameters, path, method, serverUrl }
         }
       }
     }

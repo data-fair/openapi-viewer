@@ -9,7 +9,7 @@
       v-if="!validUrl"
       type="warning"
       variant="outlined"
-      :text="'URL must start with http:// or https://'"
+      text="No url provided or the url is not valid"
     />
     <v-alert
       v-if="urlFetch.error.value"
@@ -66,7 +66,7 @@ const errorMessage = ref<string | null>(null)
 const evaluating = shallowRef(false)
 const derefDoc = computedAsync(
   async () => {
-    if (urlFetch.data.value) {
+    if (urlFetch.data.value && validUrl.value) {
       // try {
       //   assertValid(urlFetch.data.value)
       // } catch (error) {

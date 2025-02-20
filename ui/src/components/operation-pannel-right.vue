@@ -154,6 +154,14 @@
                 v-model="responsesExamplesSchemaTab[status]"
               >
                 <v-tabs-window-item value="schema">
+                  <v-fab
+                    color="primary"
+                    text="Copy"
+                    location="top right"
+                    :prepend-icon="mdiPlay"
+                    absolute
+                    extended
+                  />
                   <prism
                     :key="status + '-content'"
                     language="json"

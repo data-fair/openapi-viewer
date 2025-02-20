@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import prism from '~/components/prism.ts'
 
 const { jsonSchema } = defineProps<{ jsonSchema: any }>()
 // const tab = ref('Raw')

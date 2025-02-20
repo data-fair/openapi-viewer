@@ -138,7 +138,6 @@ import type { Parameter } from '~/utils/transform'
 import type { SchemaObject } from 'ajv'
 import { marked } from 'marked'
 import Vjsf from '@koumoul/vjsf'
-import prism from '~/components/prism.ts'
 
 const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
   operation: Operation

@@ -9,9 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import type { GenericEndpointQuery } from '#api/types'
-import prism from '~/components/prism.ts'
 
 const { endpointQueryValues, serverUrl, method, path } = defineProps<{
   endpointQueryValues: GenericEndpointQuery

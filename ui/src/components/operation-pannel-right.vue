@@ -154,14 +154,6 @@
                 v-model="responsesExamplesSchemaTab[status]"
               >
                 <v-tabs-window-item value="schema">
-                  <v-fab
-                    color="primary"
-                    text="Copy"
-                    location="top right"
-                    :prepend-icon="mdiContentCopy"
-                    absolute
-                    extended
-                  />
                   <prism
                     :key="status + '-content'"
                     language="json"
@@ -207,7 +199,6 @@
 import type { GenericEndpointQuery, Operation } from '#api/types'
 import type { SchemaObject } from 'ajv'
 import { marked } from 'marked'
-import prism from '~/components/prism.ts'
 
 type Response = {
   description?: string

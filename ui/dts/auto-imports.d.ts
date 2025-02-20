@@ -35,6 +35,7 @@ declare global {
   const mdiAsterisk: typeof import('@mdi/js')['mdiAsterisk']
   const mdiBookOpenVariant: typeof import('@mdi/js')['mdiBookOpenVariant']
   const mdiCodeJson: typeof import('@mdi/js')['mdiCodeJson']
+  const mdiContentCopy: typeof import('@mdi/js')['mdiContentCopy']
   const mdiEmail: typeof import('@mdi/js')['mdiEmail']
   const mdiGavel: typeof import('@mdi/js')['mdiGavel']
   const mdiHome: typeof import('@mdi/js')['mdiHome']
@@ -145,6 +146,7 @@ declare module 'vue' {
     readonly mdiAsterisk: UnwrapRef<typeof import('@mdi/js')['mdiAsterisk']>
     readonly mdiBookOpenVariant: UnwrapRef<typeof import('@mdi/js')['mdiBookOpenVariant']>
     readonly mdiCodeJson: UnwrapRef<typeof import('@mdi/js')['mdiCodeJson']>
+    readonly mdiContentCopy: UnwrapRef<typeof import('@mdi/js')['mdiContentCopy']>
     readonly mdiEmail: UnwrapRef<typeof import('@mdi/js')['mdiEmail']>
     readonly mdiGavel: UnwrapRef<typeof import('@mdi/js')['mdiGavel']>
     readonly mdiHome: UnwrapRef<typeof import('@mdi/js')['mdiHome']>

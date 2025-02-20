@@ -158,7 +158,7 @@
                     color="primary"
                     text="Copy"
                     location="top right"
-                    :prepend-icon="mdiPlay"
+                    :prepend-icon="mdiContentCopy"
                     absolute
                     extended
                   />

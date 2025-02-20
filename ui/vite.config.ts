@@ -53,6 +53,7 @@ export default defineConfig({
             'mdiAsterisk',
             'mdiBookOpenVariant',
             'mdiCodeJson',
+            'mdiContentCopy',
             'mdiEmail',
             'mdiGavel',
             'mdiHome',

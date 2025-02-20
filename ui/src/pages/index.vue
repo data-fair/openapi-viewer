@@ -4,7 +4,7 @@
     :paths="derefDoc?.paths"
     :tags="derefDoc?.tags"
   />
-  <v-container>
+  <v-container data-iframe-height>
     <v-alert
       v-if="!validUrl"
       type="warning"

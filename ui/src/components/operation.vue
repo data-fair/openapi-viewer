@@ -77,7 +77,7 @@
                   <prism
                     :key="schema"
                     language="json"
-                    style="max-height: 400px;"
+                    max-height="400px"
                   >
                     {{ JSON.stringify(schema, null, 2) }}
                   </prism>
@@ -86,7 +86,7 @@
                   <prism
                     :key="examples"
                     language="json"
-                    style="max-height: 400px;"
+                    max-height="400px"
                   >
                     {{ JSON.stringify(examples, null, 2) }}
                   </prism>

@@ -2,7 +2,7 @@
   <prism
     :key="snippet || 'loading'"
     language="bash"
-    style="max-height: 400px;"
+    max-height="400px"
   >
     {{ snippet }}
   </prism>

@@ -22,7 +22,7 @@
         <prism
           :key="fullPath"
           language="bash"
-          style="max-height: 400px;"
+          max-height="400px"
         >
           {{ (serverUrl || '') + fullPath }}
         </prism>
@@ -52,7 +52,7 @@
             <h4>Response Body</h4>
             <prism
               language="json"
-              style="max-height: 400px;"
+              max-height="400px"
             >
               {{ JSON.stringify(responseData.body, null, 2) }}
             </prism>
@@ -62,7 +62,7 @@
             <h4>Response Headers</h4>
             <prism
               language="json"
-              style="max-height: 400px;"
+              max-height="400px"
             >
               {{ JSON.stringify(responseData.headers, null, 2) }}
             </prism>
@@ -157,7 +157,7 @@
                   <prism
                     :key="status + '-content'"
                     language="json"
-                    style="max-height: 400px;"
+                    max-height="400px"
                   >
                     {{ JSON.stringify(response.content[responsesContentType[status]]?.schema, null, 2) }}
                   </prism>
@@ -166,7 +166,7 @@
                 <v-tabs-window-item value="examples">
                   <prism
                     language="json"
-                    style="max-height: 400px;"
+                    max-height="400px"
                   >
                     Functionality not supported yet
                   </prism>

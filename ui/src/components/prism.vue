@@ -4,7 +4,7 @@
     class="position-relative"
   >
     <v-fab
-      class="mt-2 mr-2"
+      class="mt-2 mr-6"
       color="primary"
       size="small"
       text="Copy"
@@ -14,7 +14,11 @@
       :prepend-icon="mdiContentCopy"
       @click="copyToClipboard"
     />
-    <pre :class="className"><code
+    <pre
+      ref="preElement"
+      :class="className"
+      :style="style"
+    ><code
       :class="className"
       v-html="highlightedCode"
     /></pre>
@@ -37,12 +41,14 @@ const { sendUiNotif } = useUiNotif()
 const props = defineProps<{
   inline?: boolean
   language?: string
+  maxHeight?: string
 }>()
 
 const slots = defineSlots()
 const slotContent = computed(() => slots.default?.()?.[0]?.children ?? '')
 
 const className = computed(() => `language-${props.language ?? 'markup'}`)
+const style = computed(() => 'max-height: ' + (props.maxHeight ?? 'none'))
 
 const highlightedCode = computed(() => {
   const code = typeof slotContent.value === 'string' ? slotContent.value : ''

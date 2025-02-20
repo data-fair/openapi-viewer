@@ -31,7 +31,7 @@
             <v-list-item-title
               class="text-h6"
             >
-              {{ tag }}
+              <!-- External docs -->
               <v-tooltip
                 v-if="tagsMap[tag]?.externalDocs"
                 location="top"
@@ -51,11 +51,14 @@
                   />
                 </template>
               </v-tooltip>
+
+              <!-- Tag name -->
+              {{ tag }}
             </v-list-item-title>
             <v-tooltip
-              v-if="tags"
+              v-if="tagsMap[tag]?.description"
               activator="parent"
-              :text="tagsMap[tag]?.description"
+              :text="tagsMap[tag].description"
             />
           </v-list-item>
         </template>

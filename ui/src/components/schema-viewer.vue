@@ -18,7 +18,7 @@
     <v-tabs-window-item value="Raw"> -->
   <prism
     language="json"
-    style="max-height: 800px;"
+    max-height="800px"
   >
     {{ JSON.stringify(jsonSchema, null, 2) }}
   </prism>

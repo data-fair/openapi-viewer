@@ -4,6 +4,10 @@
     "file": "api-docs.json"
   },
   {
+    "title": "Yaml Data-fair doc",
+    "file": "api-docs.yaml"
+  },
+  {
     "title": "Petstore",
     "file": "petstore.json"
   }

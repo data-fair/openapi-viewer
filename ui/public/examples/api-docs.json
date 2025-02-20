@@ -3,7 +3,7 @@
   "info": {
     "title": "API principale",
     "description": "\nCette documentation interactive à destination des développeurs permet de gérer les ressources de ce service de publication de données.\n\nNotez que l'API réelle est plus riche, chaque jeu de données et chaque service distant disposant de sa propre API documentée séparément.\n\nPour utiliser cette API dans un programme vous aurez besoin d'une clé que vous pouvez créer dans vos paramètres personnels ou dans les paramètres d'une organisation dont vous êtes administrateur.\n\nPour des exemples simples de publication de données vous pouvez consulter la <a href=\"https://data-fair.github.io/4/interoperate/api\" target=\"blank\">documentation sur ce sujet</a>.\n",
-    "version": "4.33.0",
+    "version": "4.33.2",
     "x-api-id": "data-fair",
     "termsOfService": "https://koumoul.com/platform/term-of-service",
     "contact": {
@@ -7084,8 +7084,7 @@
       "apiKey": {
         "type": "apiKey",
         "in": "header",
-        "name": "x-apiKey",
-        "description": "Clé d'API DataFair"
+        "name": "x-apiKey"
       },
       "sdCookie": {
         "type": "apiKey",
@@ -7105,37 +7104,11 @@
   "paths": {
     "/ping": {
       "get": {
-        "deprecated": true,
         "summary": "Etat de santé du service simplifié.",
         "tags": [
-          "Test ordre tag",
-          "Administration",
-          "Applications"
+          "Administration"
         ],
         "operationId": "ping",
-        "x-operationType": "http://schema.org/CheckAction",
-        "responses": {
-          "200": {
-            "description": "Service ok"
-          },
-          "500": {
-            "description": "Service ko"
-          }
-        }
-      }
-    },
-    "/ping2": {
-      "get": {
-        "externalDocs": {
-          "description": "Documentation sur Github",
-          "url": "https://data-fair.github.io"
-        },
-        "deprecated": true,
-        "summary": "Etat de santé du service simplifié.",
-        "description": "Cette opération est obsolète, utilisez plutôt `/ping`. _Elle sera supprimée dans une prochaine version._ Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "tags": [
-        ],
-        "operationId": "ping2",
         "x-operationType": "http://schema.org/CheckAction",
         "responses": {
           "200": {
@@ -7673,7 +7646,6 @@
             "name": "owner",
             "description": "Restreindre sur le propriétaire (par exemple \"organization:myorg\" ou \"user:myuser\")",
             "required": false,
-            "example": "organization:myorg",
             "schema": {
               "type": "array",
               "items": {
@@ -7849,7 +7821,7 @@
           }
         }
       },
-      "put": {
+      "post": {
         "summary": "Configurer une application.",
         "operationId": "postApplication",
         "tags": [
@@ -7890,7 +7862,7 @@
           }
         }
       ],
-      "post": {
+      "get": {
         "summary": "Récupérer les informations d'une application.",
         "operationId": "getApplication",
         "tags": [
@@ -7909,7 +7881,7 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "summary": "Créer ou mettre à jour une application.",
         "operationId": "putApplication",
         "tags": [
@@ -7979,7 +7951,7 @@
           }
         }
       },
-      "options": {
+      "delete": {
         "summary": "Supprimer une application.",
         "operationId": "deleteApplication",
         "tags": [

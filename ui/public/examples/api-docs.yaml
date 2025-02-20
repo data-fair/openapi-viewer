@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: API
+  title: API principale
   description: >
 
     Cette documentation interactive à destination des développeurs permet de
@@ -19,7 +19,7 @@ info:
     Pour des exemples simples de publication de données vous pouvez consulter la
     <a href="https://data-fair.github.io/4/interoperate/api"
     target="blank">documentation sur ce sujet</a>.
-  version: 4.33.0
+  version: 4.33.2
   x-api-id: data-fair
   termsOfService: https://koumoul.com/platform/term-of-service
   contact:
@@ -5713,7 +5713,6 @@ components:
       type: apiKey
       in: header
       name: x-apiKey
-      description: Clé d'API DataFair
     sdCookie:
       type: apiKey
       in: cookie
@@ -5724,36 +5723,10 @@ security:
 paths:
   /ping:
     get:
-      deprecated: true
       summary: Etat de santé du service simplifié.
       tags:
-        - Test ordre tag
         - Administration
-        - Applications
       operationId: ping
-      x-operationType: http://schema.org/CheckAction
-      responses:
-        '200':
-          description: Service ok
-        '500':
-          description: Service ko
-  /ping2:
-    get:
-      externalDocs:
-        description: Documentation sur Github
-        url: https://data-fair.github.io
-      deprecated: true
-      summary: Etat de santé du service simplifié.
-      description: >-
-        Cette opération est obsolète, utilisez plutôt `/ping`. _Elle sera
-        supprimée dans une prochaine version._ Lorem ipsum dolor sit amet,
-        consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      tags: []
-      operationId: ping2
       x-operationType: http://schema.org/CheckAction
       responses:
         '200':
@@ -6141,7 +6114,6 @@ paths:
             Restreindre sur le propriétaire (par exemple "organization:myorg" ou
             "user:myuser")
           required: false
-          example: organization:myorg
           schema:
             type: array
             items:
@@ -6276,7 +6248,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/application'
-    put:
+    post:
       summary: Configurer une application.
       operationId: postApplication
       tags:
@@ -6302,7 +6274,7 @@ paths:
         required: true
         schema:
           type: string
-    post:
+    get:
       summary: Récupérer les informations d'une application.
       operationId: getApplication
       tags:
@@ -6314,7 +6286,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/application'
-    delete:
+    put:
       summary: Créer ou mettre à jour une application.
       operationId: putApplication
       tags:
@@ -6358,7 +6330,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/application'
-    options:
+    delete:
       summary: Supprimer une application.
       operationId: deleteApplication
       tags:

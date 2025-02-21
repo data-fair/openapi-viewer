@@ -217,7 +217,6 @@ const executeRequest = async () => {
   } else {
     responseBody = 'Unsupported content type'
   }
-  console.log(response.statusText)
 
   responseData.value = {
     status: response.status.toString(),
@@ -234,6 +233,7 @@ onMounted(() => {
 watch(() => operation, () => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
   endpointQueryValues.value = {}
+  responseData.value = null
 })
 
 const vjsfOptions = {

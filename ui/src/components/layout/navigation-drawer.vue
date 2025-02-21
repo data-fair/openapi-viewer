@@ -51,15 +51,15 @@
                   />
                 </template>
               </v-tooltip>
-
-              <!-- Tag name -->
               {{ tag }}
+              <v-tooltip
+                v-if="tagsMap[tag]?.description"
+                activator="parent"
+                close-delay="250"
+                open-delay="500"
+                :text="tagsMap[tag].description"
+              />
             </v-list-item-title>
-            <v-tooltip
-              v-if="tagsMap[tag]?.description"
-              activator="parent"
-              :text="tagsMap[tag].description"
-            />
           </v-list-item>
         </template>
         <navigation-drawer-items
@@ -98,7 +98,7 @@ const formattedOperations = computed(() => {
         const summary = operation.summary || ''
         operationTags.forEach(tag => {
           if (!categorized[tag]) categorized[tag] = []
-          const hash = operation.operationId || `${method}|${path}`
+          const hash = operation.operationId || `${path}|${method}`
           categorized[tag].push({ path, method, summary, hash, deprecated: operation.deprecated })
         })
       }

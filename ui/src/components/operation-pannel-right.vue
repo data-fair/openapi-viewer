@@ -71,7 +71,7 @@
 
         <template v-else>
           <p class="text-muted">
-            Aucune réponse reçue pour le moment.
+            No response received yet.
           </p>
         </template>
       </template>
@@ -91,7 +91,7 @@
           v-model="responsesCodeTab"
         >
           <v-tab
-            v-for="status in Object.keys(operation.responses)"
+            v-for="status in orderedCodes"
             :key="status"
             :base-color="getCodeColors(status)"
             :value="status"
@@ -221,6 +221,17 @@ const responsesCodeTab = ref<string>('default')
 const responsesContentType = ref<Record<string, string>>({})
 const responsesExamplesSchemaTab = ref<Record<string, string>>({})
 const fullPath = ref<string>(path)
+
+const orderedCodes = computed(() => {
+  return Object.keys(operation.responses || {}).sort((a, b) => {
+    const customOrder = (code: string) => {
+      if (code.endsWith('XX')) return parseInt(code[0]) * 100
+      return parseInt(code)
+    }
+
+    return customOrder(a) - customOrder(b)
+  })
+})
 
 const getFullPath = () => {
   let fullPath = path

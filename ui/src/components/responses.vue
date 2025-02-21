@@ -122,7 +122,17 @@
             <h4>
               Response Headers
             </h4>
-            <span class="font-italic">Functionality not supported yet</span><!-- TODO -->
+            <div
+              v-for="(header, name) in response.headers"
+              :key="name"
+            >
+              <v-chip
+                density="compact"
+                label
+                :text="name"
+              />
+              {{ header.description }}
+            </div>
           </template>
 
           <!-- Links -->
@@ -161,7 +171,7 @@ const selectedExample = ref<Record<string, Record<string, string>>>({}) // { 200
 const orderedCodes = computed(() => {
   return Object.keys(responses || {}).sort((a, b) => {
     const customOrder = (code: string) => {
-      if (code.endsWith('XX')) return parseInt(code[0]) * 100
+      if (code.endsWith('XX')) return parseInt(code[0]) * 100 - 1
       return parseInt(code)
     }
 
@@ -219,7 +229,7 @@ const getCodeColors = (status: string) => {
     case /3(X{2}|\d{2})/.test(status):
       return 'secondary'
     case /418/.test(status):
-      return '#E040FB'
+      return '#B388FF'
     case /4(X{2}|\d{2})/.test(status):
       return 'warning'
     case /5(X{2}|\d{2})/.test(status):

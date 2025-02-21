@@ -390,6 +390,25 @@
                   }
                 }
               }
+            },
+            "headers": {
+              "x-rate-limit": {
+                "description": "Nombre de requêtes autorisées par minute",
+                "schema": {
+                  "type": "integer"
+                },
+                "required": true,
+                "deprecated": true,
+                "example": 200
+              },
+              "x-expires-after": {
+                "description": "Date d'expiration de la réponse",
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "required": true
+              }
             }
           },
           "201": {

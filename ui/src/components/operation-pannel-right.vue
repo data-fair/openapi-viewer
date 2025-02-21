@@ -127,7 +127,7 @@ const getCodeColors = (status: string) => {
     case /3(X{2}|\d{2})/.test(status):
       return 'secondary'
     case /418/.test(status):
-      return '#E040FB'
+      return '#B388FF'
     case /4(X{2}|\d{2})/.test(status):
       return 'warning'
     case /5(X{2}|\d{2})/.test(status):

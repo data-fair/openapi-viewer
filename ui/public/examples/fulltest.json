@@ -369,12 +369,24 @@
                     "value": {
                       "message": "Réponse 200"
                     }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "example": "<message>Réponse 200</message>"
+                }
+              },
+              "text/plain": {
+                "examples": {
+                  "example1": {
+                    "summary": "Exemple de réponse 200",
+                    "value": "Réponse 200"
                   },
                   "example2": {
                     "summary": "Exemple de réponse 201",
-                    "value": {
-                      "message": "Réponse 201"
-                    }
+                    "value": "Réponse 201"
                   }
                 }
               }

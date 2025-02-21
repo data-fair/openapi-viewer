@@ -122,31 +122,31 @@
             <!-- Content -->
             <template v-if="response.content">
               <v-row>
-                <v-col cols="6">
+                <v-col cols="auto">
                   <v-tabs
                     v-model="responsesExamplesSchemaTab[status]"
                   >
                     <v-tab
+                      v-if="response.content[responsesContentType[status]]?.schema"
                       value="schema"
-                      :disabled="!response.content[responsesContentType[status]]?.schema"
                     >
                       Schema
                     </v-tab>
                     <v-tab
+                      v-if="response.content[responsesContentType[status]]?.examples || response.content[responsesContentType[status]]?.example"
                       value="examples"
                     >
                       Examples
                     </v-tab>
                   </v-tabs>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="auto">
                   <v-select
                     v-model="responsesContentType[status]"
                     density="compact"
                     hide-details="auto"
                     label="Content-Type"
                     :items="Object.keys(response.content)"
-                    @click.stop
                   />
                 </v-col>
               </v-row>
@@ -164,11 +164,29 @@
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="examples">
+                  <v-select
+                    v-if="response.content[responsesContentType[status]]?.examples"
+                    v-model="selectedExample[status]"
+                    density="compact"
+                    hide-details="auto"
+                    label="Select Example"
+                    :items="Object.entries(response.content[responsesContentType[status]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
+                    item-title="title"
+                    item-value="key"
+                  />
                   <prism
+                    v-if="response.content[responsesContentType[status]]?.examples && selectedExample[status]"
                     language="json"
                     max-height="400px"
                   >
-                    Functionality not supported yet
+                    {{ JSON.stringify(response.content[responsesContentType[status]].examples![selectedExample[status]].value, null, 2) }}
+                  </prism>
+                  <prism
+                    v-else-if="response.content[responsesContentType[status]]?.example"
+                    language="json"
+                    max-height="400px"
+                  >
+                    {{ JSON.stringify(response.content[responsesContentType[status]].example, null, 2) }}
                   </prism>
                 </v-tabs-window-item>
               </v-tabs-window>
@@ -196,13 +214,12 @@
 </template>
 
 <script setup lang="ts">
-import type { GenericEndpointQuery, Operation } from '#api/types'
-import type { SchemaObject } from 'ajv'
+import type { GenericEndpointQuery, Operation, MediaType } from '#api/types'
 import { marked } from 'marked'
 
 type Response = {
   description?: string
-  content?: Record<string, { schema?: SchemaObject }>
+  content?: Record<string, MediaType>
   headers?: Record<string, any>
   links?: Record<string, any>
 }
@@ -220,6 +237,7 @@ const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
 const responsesCodeTab = ref<string>('default')
 const responsesContentType = ref<Record<string, string>>({})
 const responsesExamplesSchemaTab = ref<Record<string, string>>({})
+const selectedExample = ref<Record<string, string>>({})
 const fullPath = ref<string>(path)
 
 const orderedCodes = computed(() => {
@@ -250,7 +268,7 @@ watch(() => operation, () => {
         responsesContentType.value[status] = Object.keys(operation.responses![status].content)[0]
       }
     })
-    responsesCodeTab.value = Object.keys(operation.responses)[0]
+    responsesCodeTab.value = orderedCodes.value[0]
   }
 }, { immediate: true })
 

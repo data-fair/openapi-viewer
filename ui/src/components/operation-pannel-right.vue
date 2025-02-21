@@ -77,152 +77,14 @@
       </template>
     </v-expansion-panel>
 
-    <v-expansion-panel
-      v-if="operation.responses"
-      value="responses"
-      static
-    >
-      <template #title>
-        <h3>Responses</h3>
-      </template>
-      <template #text>
-        <v-tabs
-          :key="Object.keys(operation.responses).join('-')"
-          v-model="responsesCodeTab"
-        >
-          <v-tab
-            v-for="status in orderedCodes"
-            :key="status"
-            :base-color="getCodeColors(status)"
-            :value="status"
-          >
-            <v-chip
-              :color="getCodeColors(status)"
-              :text="status"
-              density="compact"
-              label
-            />
-          </v-tab>
-        </v-tabs>
-
-        <v-tabs-window
-          v-model="responsesCodeTab"
-        >
-          <v-tabs-window-item
-            v-for="(response, status) in operation.responses as unknown as Record<string, Response>"
-            :key="status"
-            :value="status"
-          >
-            <div
-              v-if="response.description"
-              class="mb-4 mt-2"
-              v-html="marked(response.description)"
-            />
-
-            <!-- Content -->
-            <template v-if="response.content">
-              <v-row>
-                <v-col cols="auto">
-                  <v-tabs
-                    v-model="responsesExamplesSchemaTab[status]"
-                  >
-                    <v-tab
-                      v-if="response.content[responsesContentType[status]]?.schema"
-                      value="schema"
-                    >
-                      Schema
-                    </v-tab>
-                    <v-tab
-                      v-if="response.content[responsesContentType[status]]?.examples || response.content[responsesContentType[status]]?.example"
-                      value="examples"
-                    >
-                      Examples
-                    </v-tab>
-                  </v-tabs>
-                </v-col>
-                <v-col cols="auto">
-                  <v-select
-                    v-model="responsesContentType[status]"
-                    density="compact"
-                    hide-details="auto"
-                    label="Content-Type"
-                    :items="Object.keys(response.content)"
-                  />
-                </v-col>
-              </v-row>
-              <v-tabs-window
-                v-model="responsesExamplesSchemaTab[status]"
-              >
-                <v-tabs-window-item value="schema">
-                  <prism
-                    :key="status + '-content'"
-                    language="json"
-                    max-height="400px"
-                  >
-                    {{ JSON.stringify(response.content[responsesContentType[status]]?.schema, null, 2) }}
-                  </prism>
-                </v-tabs-window-item>
-
-                <v-tabs-window-item value="examples">
-                  <v-select
-                    v-if="response.content[responsesContentType[status]]?.examples"
-                    v-model="selectedExample[status]"
-                    density="compact"
-                    hide-details="auto"
-                    label="Select Example"
-                    :items="Object.entries(response.content[responsesContentType[status]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
-                    item-title="title"
-                    item-value="key"
-                  />
-                  <prism
-                    v-if="response.content[responsesContentType[status]]?.examples && selectedExample[status]"
-                    language="json"
-                    max-height="400px"
-                  >
-                    {{ JSON.stringify(response.content[responsesContentType[status]].examples![selectedExample[status]].value, null, 2) }}
-                  </prism>
-                  <prism
-                    v-else-if="response.content[responsesContentType[status]]?.example"
-                    language="json"
-                    max-height="400px"
-                  >
-                    {{ JSON.stringify(response.content[responsesContentType[status]].example, null, 2) }}
-                  </prism>
-                </v-tabs-window-item>
-              </v-tabs-window>
-            </template>
-
-            <!-- Header -->
-            <template v-if="response.headers">
-              <h4>
-                Response Headers
-              </h4>
-              <span class="font-italic">Functionality not supported yet</span><!-- TODO -->
-            </template>
-            <!-- Links -->
-            <template v-if="response.links">
-              <h4>
-                Links
-              </h4>
-              <span class="font-italic">Functionality not supported yet</span><!-- TODO -->
-            </template>
-          </v-tabs-window-item>
-        </v-tabs-window>
-      </template>
-    </v-expansion-panel>
+    <responses
+      :responses="operation.responses"
+    />
   </v-expansion-panels>
 </template>
 
 <script setup lang="ts">
-import type { GenericEndpointQuery, Operation, MediaType } from '#api/types'
-import { marked } from 'marked'
-
-type Response = {
-  description?: string
-  content?: Record<string, MediaType>
-  headers?: Record<string, any>
-  links?: Record<string, any>
-}
+import type { GenericEndpointQuery, Operation } from '#api/types'
 
 const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<{
   operation: Operation
@@ -234,22 +96,7 @@ const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<
 }>()
 
 const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
-const responsesCodeTab = ref<string>('default')
-const responsesContentType = ref<Record<string, string>>({})
-const responsesExamplesSchemaTab = ref<Record<string, string>>({})
-const selectedExample = ref<Record<string, string>>({})
 const fullPath = ref<string>(path)
-
-const orderedCodes = computed(() => {
-  return Object.keys(operation.responses || {}).sort((a, b) => {
-    const customOrder = (code: string) => {
-      if (code.endsWith('XX')) return parseInt(code[0]) * 100
-      return parseInt(code)
-    }
-
-    return customOrder(a) - customOrder(b)
-  })
-})
 
 const getFullPath = () => {
   let fullPath = path
@@ -260,17 +107,6 @@ const getFullPath = () => {
   }
   return fullPath
 }
-
-watch(() => operation, () => {
-  if (operation.responses && Object.keys(operation.responses).length) {
-    Object.keys(operation.responses).forEach(status => {
-      if (operation.responses![status].content) {
-        responsesContentType.value[status] = Object.keys(operation.responses![status].content)[0]
-      }
-    })
-    responsesCodeTab.value = orderedCodes.value[0]
-  }
-}, { immediate: true })
 
 watch(() => endpointQueryValues, () => {
   fullPath.value = getFullPath()

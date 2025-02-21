@@ -13,6 +13,7 @@ declare module 'vue' {
     Operation: typeof import('./../src/components/operation.vue')['default']
     OperationPannelRight: typeof import('./../src/components/operation-pannel-right.vue')['default']
     Prism: typeof import('./../src/components/prism.vue')['default']
+    Responses: typeof import('./../src/components/responses.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SchemaViewer: typeof import('./../src/components/schema-viewer.vue')['default']

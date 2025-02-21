@@ -140,7 +140,7 @@
             <h4>
               Links
             </h4>
-            <span class="font-italic">Functionality not supported yet</span><!-- TODO -->
+            <span class="font-italic">Functionality not supported yet</span>
           </template>
         </v-tabs-window-item>
       </v-tabs-window>

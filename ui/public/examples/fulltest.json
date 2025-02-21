@@ -409,6 +409,16 @@
                 },
                 "required": true
               }
+            },
+            "links": {
+              "related": {
+                "operationId": "getRouteA",
+                "description": "Lien vers la route A pour obtenir des informations supplémentaires"
+              },
+              "self": {
+                "operationId": "getReponses",
+                "description": "Lien vers cette route pour obtenir des réponses variées"
+              }
             }
           },
           "201": {

@@ -51,30 +51,33 @@
       </template>
 
       <!-- Servers -->
-      <h2 class="mt-2">
-        Serveurs
-      </h2>
-      <v-list
-        class="pt-0"
-        density="compact"
-        style="background-color:transparent"
-      >
-        <v-list-item
-          v-for="server in servers"
-          :key="server.url"
+      <template v-if="servers">
+        <h2 class="mt-2">
+          Serveurs
+        </h2>
+        <v-list
+          class="pt-0"
+          density="compact"
+          style="background-color:transparent"
         >
-          <template #title>
-            <strong>{{ server.url }}</strong>
-            <span v-if="server.description">
-              - {{ server.description }}
-            </span>
-          </template>
-        </v-list-item>
-      </v-list>
+          <v-list-item
+            v-for="server in servers"
+            :key="server.url"
+          >
+            <template #title>
+              <strong>{{ server.url }}</strong>
+              <span v-if="server.description">
+                - {{ server.description }}
+              </span>
+            </template>
+          </v-list-item>
+        </v-list>
+      </template>
     </v-col>
 
     <v-col cols="4">
       <v-card
+        v-if="info.contact || info.license || externalDocs || info.termsOfService"
         variant="elevated"
       >
         <v-list

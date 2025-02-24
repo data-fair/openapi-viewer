@@ -10,5 +10,9 @@
   {
     "title": "Petstore",
     "file": "petstore.json"
+  },
+  {
+    "title": "Recursive yaml",
+    "file": "recursive.yaml"
   }
 ]

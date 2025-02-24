@@ -80,7 +80,9 @@ const derefDoc = computedAsync(
             : urlFetch.data.value,
           {
             mutateInputSchema: false,
-            circular: 'ignore'
+            dereference: {
+              circular: false,
+            }
           }) as OpenAPISpecs
 
         errorMessage.value = null

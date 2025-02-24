@@ -230,6 +230,8 @@ const executeRequest = async () => {
 
 onMounted(() => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
+  endpointQueryValues.value = {}
+  responseData.value = null
 })
 
 watch(() => operation, () => {

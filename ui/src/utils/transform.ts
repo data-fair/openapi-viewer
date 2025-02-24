@@ -97,8 +97,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
             contentType: {
               const: contentType,
             }
-          } as Record<string, any>,
-          slotsLayout
+          } as Record<string, any>
         }
 
         for (const [key, value] of Object.entries(requestBody.content[contentType].schema?.properties || {}) as [string, Record<string, any>][]) {
@@ -118,6 +117,22 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
             }
           } else {
             schemaFormData.properties[key] = value as Record<string, any>
+          }
+        }
+
+        // Apply slotsLayout to the last property
+        const lastKey = Object.keys(schemaFormData.properties).pop()
+        if (lastKey) {
+          if (typeof schemaFormData.properties[lastKey].layout === 'string') {
+            schemaFormData.properties[lastKey].layout = {
+              comp: schemaFormData.properties[lastKey].layout,
+              ...slotsLayout
+            }
+          } else {
+            schemaFormData.properties[lastKey].layout = {
+              ...schemaFormData.properties[lastKey].layout,
+              ...slotsLayout
+            }
           }
         }
 

@@ -109,7 +109,7 @@
 
       <v-row justify="center">
         <v-btn
-          class="mt-4"
+          class="my-4"
           color="primary"
           :prepend-icon="mdiPlay"
           @click="executeRequest"
@@ -210,12 +210,14 @@ const executeRequest = async () => {
 
   const contentType = response.headers.get('content-type')
   let responseBody: any
-  if (contentType?.includes('application/json')) {
+  if (!contentType) {
+    responseBody = null
+  } else if (contentType.includes('application/json')) {
     responseBody = await response.json().catch(() => ({ error: 'Invalid JSON' }))
-  } else if (contentType?.includes('text')) {
+  } else if (contentType.includes('text')) {
     responseBody = await response.text().catch(() => 'Error parsing text')
   } else {
-    responseBody = 'Unsupported content type'
+    responseBody = 'The content type is not supported yet'
   }
 
   responseData.value = {

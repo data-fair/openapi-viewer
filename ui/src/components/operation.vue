@@ -130,6 +130,7 @@
       />
     </v-col>
   </v-row>
+  {{ endpointQueryValues }}
 </template>
 
 <script setup lang="ts">
@@ -230,8 +231,6 @@ const executeRequest = async () => {
 
 onMounted(() => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
-  endpointQueryValues.value = {}
-  responseData.value = null
 })
 
 watch(() => operation, () => {

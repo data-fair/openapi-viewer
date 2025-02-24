@@ -1,6 +1,9 @@
 <template>
   <v-navigation-drawer permanent>
-    <v-list mandatory>
+    <v-list
+      data-iframe-height
+      mandatory
+    >
       <!-- Main page -->
       <v-list-item
         :active="!$route.hash"

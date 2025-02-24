@@ -238,7 +238,7 @@ watch(() => operation, () => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
   endpointQueryValues.value = {}
   responseData.value = null
-})
+}, { deep: true })
 
 const vjsfOptions = {
   density: 'comfortable',

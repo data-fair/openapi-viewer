@@ -130,8 +130,6 @@
       />
     </v-col>
   </v-row>
-  {{ endpointQuerySchema }}
-  {{ endpointQueryValues }}
 </template>
 
 <script setup lang="ts">
@@ -162,6 +160,7 @@ const responseData = ref<Record<string, any> | null>(null)
 const executeRequest = async () => {
   responseData.value = null
 
+  // Replace path parameters
   let processedPath = path
   if (endpointQueryValues.value.path) {
     for (const [key, value] of Object.entries(endpointQueryValues.value.path)) {
@@ -169,12 +168,14 @@ const executeRequest = async () => {
     }
   }
 
+  // Build URL with query parameters
   let url = `${serverUrl || ''}${processedPath}`
   if (endpointQueryValues.value.query && Object.keys(endpointQueryValues.value.query).length > 0) {
     const queryParams = new URLSearchParams(endpointQueryValues.value.query).toString()
     url += `?${queryParams}`
   }
 
+  // Prepare headers
   const headers: Record<string, string> = {}
   if (endpointQueryValues.value.header) {
     for (const [key, value] of Object.entries(endpointQueryValues.value.header)) {
@@ -182,6 +183,7 @@ const executeRequest = async () => {
     }
   }
 
+  // Prepare body
   let body: BodyInit | null = null
   if (endpointQueryValues.value.body && Object.keys(endpointQueryValues.value.body).length > 0) {
     const contentType = endpointQueryValues.value.body?.contentType || 'application/json'
@@ -200,7 +202,7 @@ const executeRequest = async () => {
       }
       body = formData
     } else {
-      body = JSON.stringify(endpointQueryValues.value.body)
+      body = endpointQueryValues.value.body.value
     }
   }
 
@@ -238,7 +240,7 @@ watch(() => operation, () => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
   endpointQueryValues.value = {}
   responseData.value = null
-}, { deep: true })
+})
 
 const vjsfOptions = {
   density: 'comfortable',

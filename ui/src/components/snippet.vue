@@ -55,7 +55,7 @@ const generateSnippet = () => {
       }
       curlCommand.push(...params)
     } else {
-      curlCommand.push(`-d '${JSON.stringify(endpointQueryValues.body)}'`)
+      curlCommand.push(`-d '${endpointQueryValues.body.value}'`)
     }
   }
 

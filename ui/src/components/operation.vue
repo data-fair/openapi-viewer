@@ -130,6 +130,7 @@
       />
     </v-col>
   </v-row>
+  {{ endpointQuerySchema }}
   {{ endpointQueryValues }}
 </template>
 

@@ -187,7 +187,6 @@ const executeRequest = async () => {
   let body: BodyInit | null = null
   if (endpointQueryValues.value.body && Object.keys(endpointQueryValues.value.body).length > 0) {
     const contentType = endpointQueryValues.value.body?.contentType || 'application/json'
-    headers['Content-Type'] = contentType
 
     if (contentType === 'multipart/form-data') {
       const formData = new FormData()
@@ -195,6 +194,8 @@ const executeRequest = async () => {
         if (key !== 'contentType') {
           if (value instanceof File) {
             formData.append(key, value, value.name)
+          } else if (typeof value === 'object') {
+            formData.append(key, JSON.stringify(value))
           } else {
             formData.append(key, value as string | Blob)
           }
@@ -202,7 +203,8 @@ const executeRequest = async () => {
       }
       body = formData
     } else {
-      body = endpointQueryValues.value.body.value
+      headers['Content-Type'] = contentType
+      body = JSON.stringify(endpointQueryValues.value.body)
     }
   }
 

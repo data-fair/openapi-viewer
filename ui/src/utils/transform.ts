@@ -94,7 +94,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
           type: 'object',
           required: requestBody.content[contentType].schema?.required || [],
           properties: {
-            key: {
+            contentType: {
               const: contentType,
             }
           } as Record<string, any>
@@ -142,7 +142,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
           title: contentType,
           required: ['value'],
           properties: {
-            key: {
+            contentType: {
               const: contentType,
             },
             value: {
@@ -159,7 +159,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
     }
     if (schema.properties.body.oneOf.length === 1) {
       schema.properties.body.default = {
-        key: Object.keys(requestBody.content)[0],
+        contentType: Object.keys(requestBody.content)[0],
         value: ''
       }
     }

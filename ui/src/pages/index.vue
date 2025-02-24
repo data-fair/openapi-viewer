@@ -1,6 +1,7 @@
 <template>
   <top-bar v-if="$route.query['hide-toolbar'] === undefined || !$route.query['hide-toolbar']" />
   <navigation-drawer
+    data-iframe-height
     :paths="derefDoc?.paths"
     :tags="derefDoc?.tags"
   />

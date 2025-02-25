@@ -28,9 +28,9 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
     globalSchema?.security,
     operationSchema.security
   )
-  for (const [key, sec] of Object.entries(securities)) {
+  for (const [, sec] of Object.entries(securities)) {
     if (sec.in === 'cookie') continue
-    schema.properties[sec.in].properties[key] = {
+    schema.properties[sec.in].properties[sec.name] = {
       type: 'string',
       title: (sec.description?.length || 0) < 75 ? sec.description : sec.name,
       description:

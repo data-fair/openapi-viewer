@@ -16,8 +16,10 @@ declare module 'vue' {
     Responses: typeof import('./../src/components/responses.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SchemaIcons: typeof import('./../src/components/SchemaIcons.vue')['default']
     SchemaViewer: typeof import('./../src/components/schema-viewer.vue')['default']
     Snippet: typeof import('./../src/components/snippet.vue')['default']
     TopBar: typeof import('./../src/components/layout/top-bar.vue')['default']
+    Tree: typeof import('./../src/components/tree.vue')['default']
   }
 }

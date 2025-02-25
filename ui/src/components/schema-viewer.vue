@@ -13,7 +13,7 @@
     v-model="tab"
   >
     <v-tabs-window-item value="Tree">
-      // TODO later
+      <tree :json-schema="jsonSchema" />
     </v-tabs-window-item>
     <v-tabs-window-item value="Raw"> -->
   <prism
@@ -22,6 +22,7 @@
   >
     {{ JSON.stringify(jsonSchema, null, 2) }}
   </prism>
+
   <!-- </v-tabs-window-item>
   </v-tabs-window> -->
 </template>

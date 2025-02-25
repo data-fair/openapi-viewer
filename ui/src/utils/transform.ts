@@ -13,20 +13,17 @@ export type Parameter = ParameterSpec & {
 }
 
 export const initTransformer = (schema: OpenAPISpecs) => {
-  schema.$id = 'openapi'
   globalSchema = schema
 }
 
-export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersSrc: Parameter[]) => {
-  const schema = clone(endpointQuerySchemaBase)
-  const operationSchema = clone(operationSchemaSrc)
-  const pathItemParameters = clone(pathItemParametersSrc)
+export const getVJSFSchema = (operation: Operation, pathItemParameters: Parameter[]) => {
+  const schema = clone(vjsfSchemaBase)
 
   // Transform securities
   const securities = resolveSecurities(
     globalSchema?.components?.securitySchemes,
     globalSchema?.security,
-    operationSchema.security
+    operation.security
   )
   for (const [, sec] of Object.entries(securities)) {
     if (sec.in === 'cookie') continue
@@ -38,12 +35,12 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
         ${(sec.description?.length || 0) < 75
           ? `\n\nKey: ${sec.name}`
           : `\n\n${sec.description}`
-        }`,
+        }`
     }
   }
 
   // Transform parameters
-  const parameters = resolveParameters(pathItemParameters, operationSchema.parameters as Parameter[])
+  const parameters = resolveParameters(pathItemParameters, operation.parameters as Parameter[])
   for (const param of parameters) {
     if (param.in === 'cookie') continue
     const paramSchema = param.schema as Record<string, any>
@@ -69,8 +66,8 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
   }
 
   // Transform requestBody
-  if (operationSchema.requestBody) {
-    const requestBody = operationSchema.requestBody as Record<string, any>
+  if (operation.requestBody) {
+    const requestBody = operation.requestBody as Record<string, any>
     schema.properties.body.description = requestBody.description || ''
     schema.properties.body.oneOfLayout = { label: 'Select a content type' }
     schema.properties.body.oneOf = []
@@ -185,7 +182,7 @@ export const getVJSFSchema = (operationSchemaSrc: Operation, pathItemParametersS
  * Resolve the security schemes for a given operation :
  * -> Resolve the global security schemes
  * -> Resolve the operation security schemes
- * -> Merge the two
+ * -> Merge them
  */
 const resolveSecurities = (
   securitySchemes: Components['securitySchemes'],
@@ -220,7 +217,8 @@ const resolveSecurities = (
   }
 }
 
-/* Resolve parameters for a given operation :
+/*
+ * Resolve parameters for a given operation :
  * -> Resolve parameters from pathItem and operation
  * -> Merge unique keys based on "name" and "in" fields
  *    (Operation parameters override pathItem parameters)
@@ -262,8 +260,7 @@ export const resolveExamples = (object: { example?: string, examples?: Map<strin
   return examples
 }
 
-// Base VJSF schema
-export const endpointQuerySchemaBase = {
+const vjsfSchemaBase = {
   type: 'object',
   properties: {
     header: {

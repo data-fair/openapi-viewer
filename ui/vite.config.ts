@@ -58,15 +58,13 @@ export default defineConfig({
             'mdiGavel',
             'mdiHome',
             'mdiLabel',
-            'mdiMapMarker',
             'mdiPlay',
             'mdiSecurity'
           ]
         }
       ],
       dirs: [
-        'src/utils',
-        'src/composables'
+        'src/utils'
       ]
     }),
     Components({ dts: './dts/components.d.ts' }),

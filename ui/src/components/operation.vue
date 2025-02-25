@@ -1,4 +1,5 @@
 <template>
+  <!-- Title / Deprecated? of the operation -->
   <h1>
     {{ operation.summary }}
     <v-chip
@@ -15,6 +16,7 @@
     v-html="marked(operation.description)"
   />
 
+  <!-- External documentation -->
   <div
     v-if="operation.externalDocs"
     class="text-h6"
@@ -31,6 +33,7 @@
     />
   </div>
 
+  <!-- List of tags -->
   <div
     v-if="operation.tags && operation.tags.length > 1"
     class="text-h6"
@@ -64,7 +67,7 @@
             :options="vjsfOptions"
           >
             <template #schema-and-examples="{ schema, examples}">
-              <v-tabs v-model="schemaExamplesTab">
+              <v-tabs v-model="schemaOrExamplesTab">
                 <v-tab value="schema">
                   Schema
                 </v-tab>
@@ -72,7 +75,7 @@
                   Examples
                 </v-tab>
               </v-tabs>
-              <v-tabs-window v-model="schemaExamplesTab">
+              <v-tabs-window v-model="schemaOrExamplesTab">
                 <v-tabs-window-item value="schema">
                   <prism
                     :key="schema"
@@ -96,16 +99,6 @@
           </vjsf>
         </v-defaults-provider>
       </v-form>
-
-      <!-- <v-fab
-        text="Execute"
-        color="primary"
-        location="bottom center"
-        size="large"
-        :prepend-icon="mdiPlay"
-        :app="true"
-        extended
-      /> -->
 
       <v-row justify="center">
         <v-btn
@@ -147,13 +140,8 @@ const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
   path: string
 }>()
 
-const schemaExamplesTab = ref<string>('schema')
-const endpointQueryValues = ref<GenericEndpointQuery>({
-  header: {},
-  path: {},
-  query: {},
-  body: {}
-})
+const schemaOrExamplesTab = ref<string>('schema')
+const endpointQueryValues = ref<GenericEndpointQuery>({})
 const endpointQuerySchema = ref<SchemaObject>({})
 const responseData = ref<Record<string, any> | null>(null)
 

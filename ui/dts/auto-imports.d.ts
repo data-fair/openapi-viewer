@@ -130,7 +130,6 @@ declare module 'vue' {
     readonly dfTutorialAlert: UnwrapRef<typeof import('@data-fair/lib-vuetify/tutorial-alert.vue')['default']>
     readonly dfUserAvatar: UnwrapRef<typeof import('@data-fair/lib-vuetify/user-avatar.vue')['default']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
-    readonly endpointQuerySchemaBase: UnwrapRef<typeof import('../src/utils/transform')['endpointQuerySchemaBase']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getVJSFSchema: UnwrapRef<typeof import('../src/utils/transform')['getVJSFSchema']>
@@ -151,7 +150,6 @@ declare module 'vue' {
     readonly mdiGavel: UnwrapRef<typeof import('@mdi/js')['mdiGavel']>
     readonly mdiHome: UnwrapRef<typeof import('@mdi/js')['mdiHome']>
     readonly mdiLabel: UnwrapRef<typeof import('@mdi/js')['mdiLabel']>
-    readonly mdiMapMarker: UnwrapRef<typeof import('@mdi/js')['mdiMapMarker']>
     readonly mdiPlay: UnwrapRef<typeof import('@mdi/js')['mdiPlay']>
     readonly mdiSecurity: UnwrapRef<typeof import('@mdi/js')['mdiSecurity']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>

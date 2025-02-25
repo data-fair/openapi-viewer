@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import { mdiAsterisk } from '@mdi/js'
 import { VTreeview } from 'vuetify/labs/VTreeview'
 
 const { jsonSchema } = defineProps<{

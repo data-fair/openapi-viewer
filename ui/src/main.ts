@@ -29,7 +29,7 @@ import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
   }
 
   let session, localeDayjs, i18n
-  if ($uiConfig.useSimpleDirectory) {
+  if ($uiConfig.useSimpleDirectory) { // Don't integrate session in standalone mode
     session = await createSession({ directoryUrl: $sitePath + '/simple-directory', siteInfo: true })
     localeDayjs = createLocaleDayjs(session.state.lang)
     i18n = createI18n({ locale: session.state.lang })

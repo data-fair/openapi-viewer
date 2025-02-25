@@ -7,11 +7,11 @@
       class="mt-2 mr-6"
       color="primary"
       size="small"
-      text="Copy"
       location="top right"
       absolute
       extended
       :prepend-icon="mdiContentCopy"
+      :text="t('copy')"
       @click="copyToClipboard"
     />
     <pre
@@ -36,6 +36,7 @@ import 'prismjs/themes/prism-okaidia.min.css'
 import 'prismjs/components/prism-json.js'
 import 'prismjs/components/prism-bash.js'
 
+const { t } = useI18n()
 const { sendUiNotif } = useUiNotif()
 
 const props = defineProps<{
@@ -73,6 +74,13 @@ const copyToClipboard = async () => {
 }
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    copy: "Copy"
+  fr:
+    copy: "Copier"
+</i18n>
 
 <style scoped>
 </style>

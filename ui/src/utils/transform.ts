@@ -266,24 +266,40 @@ const vjsfSchemaBase = {
     header: {
       type: 'object',
       title: 'Headers',
+      'x-i18n-title': {
+        en: 'Headers',
+        fr: 'En-têtes'
+      },
       properties: {} as Record<string, any>,
       required: [] as string[]
     },
     path: {
       type: 'object',
       title: 'Path parameters',
+      'x-i18n-title': {
+        en: 'Path parameters',
+        fr: 'Paramètres de route'
+      },
       properties: {} as Record<string, any>,
       required: [] as string[]
     },
     query: {
       type: 'object',
       title: 'Query parameters',
+      'x-i18n-title': {
+        en: 'Query parameters',
+        fr: 'Paramètres de requête'
+      },
       properties: {} as Record<string, any>,
       required: [] as string[]
     },
     body: {
       type: 'object',
       title: 'Request body',
+      'x-i18n-title': {
+        en: 'Request body',
+        fr: 'Corps de la requête'
+      },
       description: '',
       oneOfLayout: {} as Record<string, any>,
       oneOf: [] as Record<string, any>[],

@@ -1,5 +1,5 @@
 <template>
-  <h4>Curl command</h4>
+  <h4>{{ t('curlCommand') }}</h4>
   <prism
     :key="snippet || 'loading'"
     language="bash"
@@ -7,7 +7,7 @@
   >
     {{ snippet }}
   </prism>
-  <h4>Request URL</h4>
+  <h4>{{ t('urlRequest') }}</h4>
   <pre style="white-space: pre-wrap; word-break: break-all;">{{ url }}</pre>
 </template>
 
@@ -20,6 +20,8 @@ const { endpointQueryValues, serverUrl, method, path } = defineProps<{
   method: string
   path: string
 }>()
+
+const { t } = useI18n()
 
 const snippet = ref('')
 const url = ref('')
@@ -68,6 +70,15 @@ const generateSnippet = () => {
 
 watch(() => endpointQueryValues, generateSnippet, { deep: true, immediate: true })
 </script>
+
+<i18n lang="yaml">
+  en:
+    curlCommand: 'Curl command'
+    urlRequest: 'URL request'
+  fr:
+    curlCommand: 'Commande curl'
+    urlRequest: 'Url de la requête'
+</i18n>
 
 <style scoped>
 </style>

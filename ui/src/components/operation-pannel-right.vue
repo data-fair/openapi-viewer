@@ -29,7 +29,7 @@
       static
     >
       <template #title>
-        <h3>Server Response</h3>
+        <h3>{{ t('serverResponse') }}</h3>
       </template>
       <template #text>
         <template v-if="responseData">
@@ -44,7 +44,7 @@
           </h4>
 
           <template v-if="responseData.body">
-            <h4>Response Body</h4>
+            <h4>{{ t('responseBody') }}</h4>
             <prism
               language="json"
               max-height="400px"
@@ -54,7 +54,7 @@
           </template>
 
           <template v-if="responseData.headers">
-            <h4>Response Headers</h4>
+            <h4>{{ t('responseHeaders') }}</h4>
             <prism
               language="json"
               max-height="400px"
@@ -66,7 +66,7 @@
 
         <template v-else>
           <p class="text-muted">
-            No response received yet.
+            {{ t('noResponses') }}
           </p>
         </template>
       </template>
@@ -85,6 +85,8 @@ const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<
   method: string
   path: string
 }>()
+
+const { t } = useI18n()
 
 const panelRight = ref<string[]>(['snippet', 'serverResponse'])
 const fullPath = ref<string>(path)
@@ -129,6 +131,19 @@ const getCodeColors = (status: string) => {
 }
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    noResponses: "No responses received yet."
+    responseBody: "Response Body"
+    responseHeaders: "Response Headers"
+    serverResponse: "Server Response"
+  fr:
+    noResponses: "Aucune réponse reçue pour le moment."
+    responseBody: "Corps de la réponse"
+    responseHeaders: "En-têtes de la réponse"
+    serverResponse: "Réponse du serveur"
+</i18n>
 
 <style scoped>
 </style>

@@ -11,22 +11,22 @@
     <v-alert
       v-if="!validUrl"
       type="warning"
-      title="No url provided or the url is not valid"
       variant="outlined"
+      :title="t('errorUrlNotValid')"
     />
     <v-alert
       v-if="urlFetch.error.value"
       type="error"
-      title="Cannot retrieve data for this URL"
       variant="outlined"
       :text="urlFetch.error.value"
+      :title="t('errorCannotRetrieveData')"
     />
     <v-alert
       v-if="derefError"
       type="error"
-      title="Error"
       variant="outlined"
       :text="derefError"
+      :title="t('error')"
     />
     <template v-if="derefDoc && validUrl">
       <home
@@ -47,7 +47,7 @@
       <v-alert
         v-else
         type="warning"
-        text="The hash does not match any operationId or path in the OpenAPI specs"
+        :text="t('errorHashNotMatch')"
         variant="outlined"
       />
     </template>
@@ -61,6 +61,7 @@ import { dereference } from '@apidevtools/json-schema-ref-parser'
 import { computedAsync } from '@vueuse/core'
 import yaml from 'js-yaml'
 
+const { t } = useI18n()
 const route = useRoute()
 const url = useStringSearchParam('url')
 const urlFetch = useFetch<OpenAPISpecs>(url, { notifError: false })
@@ -90,7 +91,7 @@ const derefDoc = computedAsync(
       derefError.value = null
       return deref
     } catch (error) {
-      derefError.value = 'The OpenAPI specs are not valid, there may be a circular reference'
+      derefError.value = t('errorOpenAPISpecsNotValid')
     }
   },
   undefined,
@@ -135,6 +136,21 @@ watch(
 )
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    error: "Error"
+    errorCannotRetrieveData: "Cannot retrieve data for this URL"
+    errorHashNotMatch: "The hash does not match any operationId or path in the OpenAPI specs"
+    errorOpenAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference"
+    errorUrlNotValid: "No url provided or the url is not valid"
+  fr:
+    error: "Erreur"
+    errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL"
+    errorHashNotMatch: "Le hash ne correspond à aucun operationId ou path dans les spécifications OpenAPI"
+    errorOpenAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire"
+    errorUrlNotValid: "Aucune url fournie ou l'url n'est pas correcte"
+</i18n>
 
 <style scoped>
 </style>

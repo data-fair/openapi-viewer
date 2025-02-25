@@ -28,7 +28,7 @@
       <!-- Schemas -->
       <template v-if="schemas">
         <h2 class="mt-2">
-          Schemas
+          {{ t('schemas') }}
         </h2>
         <v-expansion-panels
           v-model="schemaPannel"
@@ -53,7 +53,7 @@
       <!-- Servers -->
       <template v-if="servers">
         <h2 class="mt-2">
-          Serveurs
+          {{ t('servers') }}
         </h2>
         <v-list
           class="pt-0"
@@ -169,7 +169,7 @@
                 :icon="mdiBookOpenVariant"
               />
             </template>
-            {{ externalDocs?.description || 'Documentation externe' }}
+            {{ externalDocs?.description || t('externalDoc') }}
           </v-list-item>
 
           <!-- Terms of Service -->
@@ -185,7 +185,7 @@
                 :icon="mdiGavel"
               />
             </template>
-            Terms of Service
+            {{ t('termsOfService') }}
           </v-list-item>
         </v-list>
       </v-card>
@@ -204,9 +204,24 @@ const { info, externalDocs, servers, schemas } = defineProps<{
   schemas: Components['schemas'] | undefined
 }>()
 
+const { t } = useI18n()
+
 const schemaPannel = ref<number | null>(null)
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    externalDoc: "External Documentation"
+    schemas: "Schemas"
+    servers: "Servers"
+    termsOfService: "Terms of Service"
+  fr:
+    externalDoc: "Documentation Externe"
+    schemas: "Schémas"
+    servers: "Serveurs"
+    termsOfService: "Conditions d'utilisation"
+</i18n>
 
 <style scoped>
 </style>

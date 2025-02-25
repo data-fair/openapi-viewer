@@ -5,7 +5,7 @@
     static
   >
     <template #title>
-      <h3>Responses</h3>
+      <h3>{{ t('responses') }}</h3>
     </template>
     <template #text>
       <!-- Responses codes selector -->
@@ -55,13 +55,13 @@
                     v-if="response.content[selectedContentType[code]]?.schema"
                     value="schema"
                   >
-                    Schema
+                    {{ t('schema') }}
                   </v-tab>
                   <v-tab
                     v-if="response.content[selectedContentType[code]]?.examples || response.content[selectedContentType[code]]?.example"
                     value="examples"
                   >
-                    Examples
+                    {{ t('examples') }}
                   </v-tab>
                 </v-tabs>
               </v-col>
@@ -94,10 +94,10 @@
                   v-model="selectedExample[code][selectedContentType[code]]"
                   density="compact"
                   hide-details="auto"
-                  label="Select Example"
-                  :items="Object.entries(response.content[selectedContentType[code]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
                   item-title="title"
                   item-value="key"
+                  :items="Object.entries(response.content[selectedContentType[code]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
+                  :label="t('selectExample')"
                 />
                 <prism
                   v-if="response.content[selectedContentType[code]]?.examples && selectedExample[code][selectedContentType[code]]"
@@ -120,7 +120,7 @@
           <!-- Header -->
           <template v-if="response.headers">
             <h4>
-              Response Headers
+              {{ t('responseHeaders') }}
             </h4>
             <div
               v-for="(header, name) in response.headers"
@@ -137,10 +137,8 @@
 
           <!-- Links -->
           <template v-if="response.links">
-            <h4>
-              Links
-            </h4>
-            <span class="font-italic">Functionality not supported yet</span>
+            <h4>{{ t('links') }}</h4>
+            <span class="font-italic">{{ t('unsupportedFuncionality') }}</span>
           </template>
         </v-tabs-window-item>
       </v-tabs-window>
@@ -162,6 +160,8 @@ type Response = {
 const { responses } = defineProps<{
   responses: Operation['responses']
 }>()
+
+const { t } = useI18n()
 
 const selectedCode = ref<string>('default') // Ex: 200
 const selectedContentType = ref<Record<string, string>>({}) // Ex: { 200: 'application/json', 404: 'application/xml' }
@@ -240,6 +240,25 @@ const getCodeColors = (status: string) => {
 }
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    responses: Responses
+    schema: Schema
+    examples: Examples
+    responseHeaders: Response headers
+    links: Links
+    unsupportedFuncionality: Unsupported functionality
+    selectExample: Select an example
+  fr:
+    responses: Réponses documentées
+    schema: Schéma
+    examples: Exemples
+    responseHeaders: En-têtes de réponse
+    links: Liens
+    unsupportedFuncionality: Fonctionnalité non supportée
+    selectExample: Sélectionner un exemple
+</i18n>
 
 <style scoped>
 </style>

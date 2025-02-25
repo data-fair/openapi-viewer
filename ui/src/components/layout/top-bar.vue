@@ -7,9 +7,9 @@
       v-model="search"
       density="compact"
       hide-details="auto"
-      label="OpenAPI JSON Location"
       variant="solo-filled"
       clearable
+      :label="t('docUrl')"
       :prepend-inner-icon="mdiCodeJson"
     />
     <v-spacer />
@@ -19,10 +19,10 @@
       density="compact"
       hide-details="auto"
       item-value="file"
-      label="Examples"
       max-width="200"
       variant="solo-filled"
       clearable
+      :label="t('examples')"
       :items="examples"
     />
   </v-app-bar>
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import examples from '~/assets/examples.json'
 
+const { t } = useI18n()
 const search = useStringSearchParam('url')
 const selectedExample = ref<string | null>(null)
 
@@ -41,6 +42,15 @@ watch(selectedExample, (newValue) => {
 })
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    docUrl: "OpenAPI Doc Location"
+    examples: "Examples"
+  fr:
+    docUrl: "Localisation de la documentation OpenAPI"
+    examples: "Exemples"
+</i18n>
 
 <style scoped>
 </style>

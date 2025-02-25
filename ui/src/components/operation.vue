@@ -6,8 +6,8 @@
       v-if="operation.deprecated"
       density="compact"
       color="warning"
-      text="Deprecated"
       :prepend-icon="mdiAlertCircle"
+      :text="t('deprecated')"
     />
   </h1>
 
@@ -21,7 +21,7 @@
     v-if="operation.externalDocs"
     class="text-h6"
   >
-    Documentation :
+    {{ t('externalDoc') }} :
     <v-chip
       color="primary"
       density="compact"
@@ -38,7 +38,7 @@
     v-if="operation.tags && operation.tags.length > 1"
     class="text-h6"
   >
-    Tags :
+    {{ t('tags') }} :
     <v-chip
       v-for="tag in operation.tags"
       :key="tag"
@@ -69,10 +69,10 @@
             <template #schema-and-examples="{ schema, examples}">
               <v-tabs v-model="schemaOrExamplesTab">
                 <v-tab value="schema">
-                  Schema
+                  {{ t('schema') }}
                 </v-tab>
                 <v-tab value="examples">
-                  Examples
+                  {{ t('examples') }}
                 </v-tab>
               </v-tabs>
               <v-tabs-window v-model="schemaOrExamplesTab">
@@ -107,7 +107,7 @@
           :prepend-icon="mdiPlay"
           @click="executeRequest"
         >
-          Execute
+          {{ t('execute') }}
         </v-btn>
       </v-row>
     </v-col>
@@ -139,6 +139,8 @@ const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
   method: string
   path: string
 }>()
+
+const { t } = useI18n()
 
 const schemaOrExamplesTab = ref<string>('schema')
 const endpointQueryValues = ref<GenericEndpointQuery>({})
@@ -237,11 +239,28 @@ const vjsfOptions = {
   initialValidation: 'always',
   updateOn: 'blur',
   validateOn: 'blur',
-  locale: 'fr',
+  xI18n: true,
   titleDepth: 3
 }
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    deprecated: "Deprecated"
+    execute: "Execute"
+    externalDoc: "External documentation"
+    examples: "Examples"
+    schema: "Schema"
+    tags: "Tags"
+  fr:
+    deprecated: "Déprécié"
+    execute: "Exécuter"
+    externalDoc: "Documentation externe"
+    examples: "Exemples"
+    schema: "Schéma"
+    tags: "Tags"
+</i18n>
 
 <style scoped>
 </style>

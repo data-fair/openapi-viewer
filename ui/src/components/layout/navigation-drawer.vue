@@ -12,7 +12,7 @@
         <v-list-item-title
           class="text-h6"
         >
-          Overview
+          {{ t('overview') }}
         </v-list-item-title>
       </v-list-item>
 
@@ -82,6 +82,8 @@ const { paths, tags } = defineProps<{
   tags: OpenAPISpecs['tags'] | undefined
 }>()
 
+const { t } = useI18n()
+
 const formattedOperations = computed(() => {
   if (!paths) return {}
   const categorized: Record<string, {
@@ -145,6 +147,13 @@ const tagsMap = computed(() => {
 })
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    overview: "Overview"
+  fr:
+    overview: "Vue d'ensemble"
+</i18n>
 
 <style scoped>
 </style>

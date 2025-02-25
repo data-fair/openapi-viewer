@@ -1,4 +1,5 @@
 <template>
+  <h4>Curl command</h4>
   <prism
     :key="snippet || 'loading'"
     language="bash"
@@ -6,6 +7,8 @@
   >
     {{ snippet }}
   </prism>
+  <h4>Request URL</h4>
+  <pre style="white-space: pre-wrap; word-break: break-all;">{{ url }}</pre>
 </template>
 
 <script setup lang="ts">
@@ -19,17 +22,18 @@ const { endpointQueryValues, serverUrl, method, path } = defineProps<{
 }>()
 
 const snippet = ref('')
+const url = ref('')
 
 const generateSnippet = () => {
   const curlCommand = [`curl -X ${method.toUpperCase()}`]
 
   // Construire l'URL complète
-  let url = `${serverUrl || ''}${path}`
+  url.value = `${serverUrl || ''}${path}`
   if (endpointQueryValues.query && Object.keys(endpointQueryValues.query).length > 0) {
     const queryParams = new URLSearchParams(endpointQueryValues.query).toString()
-    url += `?${queryParams}`
+    url.value += `?${queryParams}`
   }
-  curlCommand.push(`"${url}"`)
+  curlCommand.push(`"${url.value}"`)
 
   // Ajouter les headers
   if (endpointQueryValues.header) {

@@ -11,23 +11,18 @@
         <h3>Curl / Url</h3>
       </template>
       <template #text>
-        <h4>Curl command</h4>
         <snippet
           :endpoint-query-values="endpointQueryValues"
           :server-url="serverUrl"
           :method="method"
           :path="fullPath"
         />
-        <h4>Request URL</h4>
-        <prism
-          :key="fullPath"
-          language="bash"
-          max-height="400px"
-        >
-          {{ (serverUrl || '') + fullPath }}
-        </prism>
       </template>
     </v-expansion-panel>
+
+    <responses
+      :responses="operation.responses"
+    />
 
     <v-expansion-panel
       value="serverResponse"
@@ -76,10 +71,6 @@
         </template>
       </template>
     </v-expansion-panel>
-
-    <responses
-      :responses="operation.responses"
-    />
   </v-expansion-panels>
 </template>
 
@@ -95,7 +86,7 @@ const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<
   path: string
 }>()
 
-const panelRight = ref<string[]>(['snippet', 'serverResponse', 'responses'])
+const panelRight = ref<string[]>(['snippet', 'serverResponse'])
 const fullPath = ref<string>(path)
 
 const getFullPath = () => {

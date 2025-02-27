@@ -62,6 +62,7 @@
           }"
         >
           <vjsf
+            :key="operation.operationId + '-VJSF'"
             v-model="endpointQueryValues"
             :schema="endpointQuerySchema"
             :options="vjsfOptions"

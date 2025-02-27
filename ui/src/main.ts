@@ -34,6 +34,8 @@ import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
     localeDayjs = createLocaleDayjs(session.state.lang)
     i18n = createI18n({ locale: session.state.lang })
     Object.assign(vuetifyOptions, vuetifySessionOptions(session))
+  } else {
+    i18n = createI18n({ locale: 'en' })
   }
 
   // TODO: remove when d-frame is fully integrated
@@ -45,11 +47,11 @@ import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
     .use(reactiveSearchParams)
     .use(uiNotif)
     .use(vuetify)
+    .use(i18n)
 
   if ($uiConfig.useSimpleDirectory) {
     app.use(session!)
       .use(localeDayjs!)
-      .use(i18n!)
   }
 
   app.mount('#app')

@@ -5,7 +5,7 @@
   >
     <template #title="{ item }">
       <p>
-        {{ item.title }}
+        <span :class="{'text-decoration-line-through font-italic text-gray': item.itemDeprecated}">{{ item.title }}</span>&nbsp;
         <span class="text-caption text-primary">{{ item.itemType }}</span>
         <v-icon
           v-if="item.itemRequired"
@@ -17,10 +17,18 @@
           v-if="item.itemFormat"
           class="ml-2 text-caption"
           density="compact"
+          size="small"
           label
-        >
-          {{ item.itemFormat }}
-        </v-chip>
+          :text="item.itemFormat"
+        />
+        <v-chip
+          v-if="item.itemDeprecated"
+          class="ml-2 text-caption text-warning"
+          density="compact"
+          size="small"
+          :text="t('deprecated')"
+          :prepend-icon="mdiAlertCircle"
+        />
       </p>
     </template>
   </v-treeview>
@@ -33,12 +41,15 @@ const { jsonSchema } = defineProps<{
   jsonSchema: any
 }>()
 
+const { t } = useI18n()
+
 function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   const node = {
     title: schema.title || key || '',
     itemType: schema.type ? schema.type : undefined,
     itemFormat: schema.format ? schema.format : undefined,
     itemRequired: Boolean(isRequired),
+    itemDeprecated: schema.deprecated,
     children: [] as any[] | undefined
   }
 
@@ -51,7 +62,7 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   if (schema.enum) {
     node.children!.push({
       title: 'Enum',
-      children: schema.enum.map((val: any) => ({ title: String(val) }))
+      children: schema.enum.map((val: any, i: number) => ({ title: `#${i}="${val}"` }))
     })
   }
 
@@ -92,6 +103,13 @@ const treeItems = computed(() => {
 })
 
 </script>
+
+<i18n lang="yaml">
+  en:
+    deprecated: "Deprecated"
+  fr:
+    deprecated: "Déprécié"
+</i18n>
 
 <style scoped>
 </style>

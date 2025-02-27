@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import type { GenericEndpointQuery, Operation } from '#api/types'
 
-const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<{
+const { operation, endpointQueryValues, responseData, serverUrl, method, path } = defineProps<{
   operation: Operation
   endpointQueryValues: GenericEndpointQuery
   responseData: Record<string, any> | null
@@ -122,6 +122,10 @@ const getFullPath = () => {
 watch(() => endpointQueryValues, () => {
   fullPath.value = getFullPath()
 }, { immediate: true, deep: true })
+
+watch(() => operation, () => {
+  if (panelRight.value === 'serverResponse') panelRight.value = 'snippet'
+})
 
 /*
  * Match the status code with a color

@@ -119,13 +119,13 @@ const getFullPath = () => {
   return fullPath
 }
 
+onMounted(() => {
+  if (panelRight.value === 'serverResponse') panelRight.value = 'snippet'
+})
+
 watch(() => endpointQueryValues, () => {
   fullPath.value = getFullPath()
 }, { immediate: true, deep: true })
-
-watch(() => operation, () => {
-  if (panelRight.value === 'serverResponse') panelRight.value = 'snippet'
-})
 
 /*
  * Match the status code with a color

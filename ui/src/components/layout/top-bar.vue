@@ -24,6 +24,7 @@
       clearable
       :label="t('examples')"
       :items="examples"
+      @update:model-value="changeUrl"
     />
   </v-app-bar>
 </template>
@@ -35,11 +36,11 @@ const { t } = useI18n()
 const search = useStringSearchParam('url')
 const selectedExample = ref<string | null>(null)
 
-watch(selectedExample, (newValue) => {
-  if (newValue) {
-    search.value = `${window.location.origin}${window.location.pathname}examples/${newValue}`
+const changeUrl = () => {
+  if (selectedExample.value) {
+    search.value = `${window.location.origin}${window.location.pathname}examples/${selectedExample.value}`
   }
-})
+}
 
 </script>
 

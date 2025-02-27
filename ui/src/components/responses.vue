@@ -175,7 +175,7 @@ const sortedResponses = computed(() => {
   }))
 })
 
-watch(() => responses, () => {
+onMounted(() => {
   if (responses && Object.keys(responses).length) {
     selectedCode.value = orderedCodes.value[0] // Select default code
     Object.keys(responses).forEach(code => {
@@ -201,7 +201,7 @@ watch(() => responses, () => {
       }
     })
   }
-}, { immediate: true })
+})
 
 /*
  * Match the status code with a color

@@ -6,8 +6,9 @@
     <v-fab
       class="mt-2 mr-6"
       color="primary"
-      size="small"
+      density="default"
       location="top right"
+      size="small"
       absolute
       extended
       :prepend-icon="mdiContentCopy"

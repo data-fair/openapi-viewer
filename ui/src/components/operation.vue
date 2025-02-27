@@ -62,7 +62,6 @@
           }"
         >
           <vjsf
-            :key="operation.operationId + '-VJSF'"
             v-model="endpointQueryValues"
             :schema="endpointQuerySchema"
             :options="vjsfOptions"
@@ -240,12 +239,9 @@ const executeRequest = async () => {
 
 onMounted(() => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
-})
-
-watch(() => operation, () => {
-  endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
   endpointQueryValues.value = {}
   responseData.value = null
+  console.log('mounted')
 })
 
 const vjsfOptions = {

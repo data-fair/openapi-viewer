@@ -38,6 +38,7 @@
       />
       <operation
         v-else-if="fullOperation?.operation"
+        :key="fullOperation.hash"
         :operation="fullOperation.operation"
         :path-item-parameters="fullOperation.pathItemParameters"
         :path="fullOperation.path"
@@ -94,6 +95,7 @@ const derefDoc = computedAsync(
       ) as OpenAPISpecs
 
       derefError.value = null
+      initTransformer(deref)
       return deref
     } catch (error) {
       if (controller.signal.aborted) return undefined
@@ -112,7 +114,8 @@ const fullOperation = computed<{
   pathItemParameters: Parameter[],
   path: string,
   method: string,
-  serverUrl: string
+  serverUrl: string,
+  hash: string
 } | null>(() => {
   const hash = route.hash.replace('#', '')
 
@@ -124,22 +127,13 @@ const fullOperation = computed<{
       if (operation?.operationId === hash || `${path}|${method}` === hash) {
         const pathItemParameters = derefDoc.value.paths[path]?.parameters as Parameter[] || []
         const serverUrl = derefDoc.value.servers?.[0]?.url || ''
-        return { operation, pathItemParameters, path, method, serverUrl }
+        return { operation, pathItemParameters, path, method, serverUrl, hash }
       }
     }
   }
 
   return null
 })
-
-watch(
-  () => derefDoc.value,
-  (newValue) => {
-    if (newValue) {
-      initTransformer(newValue)
-    }
-  }
-)
 
 </script>
 

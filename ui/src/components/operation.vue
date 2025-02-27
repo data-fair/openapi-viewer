@@ -241,7 +241,6 @@ onMounted(() => {
   endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
   endpointQueryValues.value = {}
   responseData.value = null
-  console.log('mounted')
 })
 
 const vjsfOptions = {

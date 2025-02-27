@@ -39,17 +39,17 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
     itemType: schema.type ? schema.type : undefined,
     itemFormat: schema.format ? schema.format : undefined,
     itemRequired: Boolean(isRequired),
-    children: [] as any[]
+    children: [] as any[] | undefined
   }
 
   // Add description as first child if exists
   if (schema.description) {
-    node.children.push({ title: schema.description })
+    node.children!.push({ title: schema.description })
   }
 
   // Append enum items if they exist
   if (schema.enum) {
-    node.children.push({
+    node.children!.push({
       title: 'Enum',
       children: schema.enum.map((val: any) => ({ title: String(val) }))
     })
@@ -57,7 +57,7 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
 
   // Append oneOf items if they exist
   if (schema.oneOf) {
-    node.children.push({
+    node.children!.push({
       title: 'One of',
       children: schema.oneOf.map((sub: any) => buildTreeItems(sub))
     })
@@ -65,7 +65,7 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
 
   // Append allOf items if they exist
   if (schema.allOf) {
-    node.children.push({
+    node.children!.push({
       title: 'All of',
       children: schema.allOf.map((sub: any) => buildTreeItems(sub))
     })
@@ -76,8 +76,12 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
     for (const prop in schema.properties) {
       const subSchema = schema.properties[prop]
       const required = Array.isArray(schema.required) && schema.required.includes(prop)
-      node.children.push(buildTreeItems(subSchema, prop, required))
+      node.children!.push(buildTreeItems(subSchema, prop, required))
     }
+  }
+
+  if (node.children!.length === 0) {
+    delete node.children
   }
 
   return node

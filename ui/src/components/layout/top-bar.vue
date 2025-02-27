@@ -36,7 +36,7 @@ const { t } = useI18n()
 const search = useStringSearchParam('url')
 const selectedExample = ref<string | null>(null)
 
-const changeUrl = () => {
+function changeUrl () {
   if (selectedExample.value) {
     search.value = `${window.location.origin}${window.location.pathname}examples/${selectedExample.value}`
   }

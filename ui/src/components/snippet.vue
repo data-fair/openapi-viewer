@@ -26,7 +26,7 @@ const { t } = useI18n()
 const snippet = ref('')
 const url = ref('')
 
-const generateSnippet = () => {
+function generateSnippet () {
   const curlCommand = [`curl -X ${method.toUpperCase()}`]
 
   // Construire l'URL complète

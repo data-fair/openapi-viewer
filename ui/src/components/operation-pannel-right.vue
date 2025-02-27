@@ -101,15 +101,9 @@ const { operation, endpointQueryValues, responseData, serverUrl, method, path } 
 const { t } = useI18n()
 
 const panelRight = ref<string>('snippet')
-
-const setActiveTab = (tab: string) => {
-  panelRight.value = tab
-}
-defineExpose({ setActiveTab })
-
 const fullPath = ref<string>(path)
 
-const getFullPath = () => {
+function getFullPath () {
   let fullPath = path
   if (endpointQueryValues.path) {
     for (const [key, value] of Object.entries(endpointQueryValues.path)) {
@@ -119,6 +113,11 @@ const getFullPath = () => {
   return fullPath
 }
 
+function setActiveTab (tab: string) {
+  panelRight.value = tab
+}
+
+defineExpose({ setActiveTab })
 onMounted(() => {
   if (panelRight.value === 'serverResponse') panelRight.value = 'snippet'
 })

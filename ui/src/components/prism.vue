@@ -66,7 +66,7 @@ const highlightedCode = computed(() => {
   return Prism.highlight(code, prismLanguage, props.language ?? 'markup')
 })
 
-const copyToClipboard = async () => {
+async function copyToClipboard () {
   await navigator.clipboard.writeText(slotContent.value as string).then(() => {
     sendUiNotif({ type: 'success', msg: 'Copied to clipboard !' })
   }).catch(error => {

@@ -1,153 +1,142 @@
 <template>
-  <v-expansion-panel
-    v-if="responses"
-    value="responses"
-    static
+  <!-- Responses codes selector -->
+  <v-tabs
+    :key="Object.keys(responses).join('-')"
+    v-model="selectedCode"
   >
-    <template #title>
-      <h3>{{ t('responses') }}</h3>
-    </template>
-    <template #text>
-      <!-- Responses codes selector -->
-      <v-tabs
-        :key="Object.keys(responses).join('-')"
-        v-model="selectedCode"
-      >
-        <v-tab
-          v-for="code in orderedCodes"
-          :key="code"
-          :base-color="getCodeColors(code)"
-          :value="code"
-        >
-          <v-chip
-            :color="getCodeColors(code)"
-            :text="code"
-            density="compact"
-            label
-          />
-        </v-tab>
-      </v-tabs>
+    <v-tab
+      v-for="code in orderedCodes"
+      :key="code"
+      :base-color="getCodeColors(code)"
+      :value="code"
+    >
+      <v-chip
+        :color="getCodeColors(code)"
+        :text="code"
+        density="compact"
+        label
+      />
+    </v-tab>
+  </v-tabs>
 
-      <v-tabs-window
-        v-model="selectedCode"
-      >
-        <!-- One response object -->
-        <v-tabs-window-item
-          v-for="({ response, code }) in sortedResponses"
-          :key="code"
-          :value="code"
-        >
-          <!-- Description -->
-          <div
-            v-if="response.description"
-            class="mb-4 mt-2"
-            v-html="marked(response.description)"
-          />
+  <v-tabs-window
+    v-model="selectedCode"
+  >
+    <!-- One response object -->
+    <v-tabs-window-item
+      v-for="({ response, code }) in sortedResponses"
+      :key="code"
+      :value="code"
+    >
+      <!-- Description -->
+      <div
+        v-if="response.description"
+        class="mb-4 mt-2"
+        v-html="marked(response.description)"
+      />
 
-          <!-- Content -->
-          <template v-if="response.content">
-            <v-row>
-              <v-col cols="auto">
-                <v-tabs
-                  v-model="examplesOrSchemaTab[code][selectedContentType[code]]"
-                >
-                  <v-tab
-                    v-if="response.content[selectedContentType[code]]?.schema"
-                    value="schema"
-                  >
-                    {{ t('schema') }}
-                  </v-tab>
-                  <v-tab
-                    v-if="response.content[selectedContentType[code]]?.examples || response.content[selectedContentType[code]]?.example"
-                    value="examples"
-                  >
-                    {{ t('examples') }}
-                  </v-tab>
-                </v-tabs>
-              </v-col>
-              <v-col cols="auto">
-                <v-select
-                  v-model="selectedContentType[code]"
-                  density="compact"
-                  hide-details="auto"
-                  label="Content-Type"
-                  :items="Object.keys(response.content)"
-                />
-              </v-col>
-            </v-row>
-            <v-tabs-window
+      <!-- Content -->
+      <template v-if="response.content">
+        <v-row>
+          <v-col cols="auto">
+            <v-tabs
               v-model="examplesOrSchemaTab[code][selectedContentType[code]]"
             >
-              <v-tabs-window-item value="schema">
-                <prism
-                  :key="code + selectedContentType[code] + '-schema'"
-                  language="json"
-                  max-height="400px"
-                >
-                  {{ JSON.stringify(response.content[selectedContentType[code]]?.schema, null, 2) }}
-                </prism>
-              </v-tabs-window-item>
-
-              <v-tabs-window-item value="examples">
-                <v-select
-                  v-if="response.content[selectedContentType[code]]?.examples"
-                  v-model="selectedExample[code][selectedContentType[code]]"
-                  density="compact"
-                  hide-details="auto"
-                  item-title="title"
-                  item-value="key"
-                  :items="Object.entries(response.content[selectedContentType[code]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
-                  :label="t('selectExample')"
-                />
-                <prism
-                  v-if="response.content[selectedContentType[code]]?.examples && selectedExample[code][selectedContentType[code]]"
-                  language="json"
-                  max-height="400px"
-                >
-                  {{ JSON.stringify(response.content[selectedContentType[code]].examples![selectedExample[code][selectedContentType[code]]].value, null, 2) }}
-                </prism>
-                <prism
-                  v-else-if="response.content[selectedContentType[code]]?.example"
-                  language="json"
-                  max-height="400px"
-                >
-                  {{ JSON.stringify(response.content[selectedContentType[code]].example, null, 2) }}
-                </prism>
-              </v-tabs-window-item>
-            </v-tabs-window>
-          </template>
-
-          <!-- Header -->
-          <template v-if="response.headers">
-            <h4>
-              {{ t('responseHeaders') }}
-            </h4>
-            <div
-              v-for="(header, name) in response.headers"
-              :key="name"
+              <v-tab
+                v-if="response.content[selectedContentType[code]]?.schema"
+                value="schema"
+              >
+                {{ t('schema') }}
+              </v-tab>
+              <v-tab
+                v-if="response.content[selectedContentType[code]]?.examples || response.content[selectedContentType[code]]?.example"
+                value="examples"
+              >
+                {{ t('examples') }}
+              </v-tab>
+            </v-tabs>
+          </v-col>
+          <v-col cols="auto">
+            <v-select
+              v-model="selectedContentType[code]"
+              density="compact"
+              hide-details="auto"
+              label="Content-Type"
+              :items="Object.keys(response.content)"
+            />
+          </v-col>
+        </v-row>
+        <v-tabs-window
+          v-model="examplesOrSchemaTab[code][selectedContentType[code]]"
+        >
+          <v-tabs-window-item value="schema">
+            <prism
+              :key="code + selectedContentType[code] + '-schema'"
+              language="json"
+              max-height="400px"
             >
-              <v-chip
-                density="compact"
-                label
-                :text="name"
-              />
-              {{ header.description }}
-            </div>
-          </template>
+              {{ JSON.stringify(response.content[selectedContentType[code]]?.schema, null, 2) }}
+            </prism>
+          </v-tabs-window-item>
 
-          <!-- Links -->
-          <template v-if="response.links">
-            <h4>{{ t('links') }}</h4>
-            <span class="font-italic">{{ t('unsupportedFuncionality') }}</span>
-          </template>
-        </v-tabs-window-item>
-      </v-tabs-window>
-    </template>
-  </v-expansion-panel>
+          <v-tabs-window-item value="examples">
+            <v-select
+              v-if="response.content[selectedContentType[code]]?.examples"
+              v-model="selectedExample[code][selectedContentType[code]]"
+              density="compact"
+              hide-details="auto"
+              item-title="title"
+              item-value="key"
+              :items="Object.entries(response.content[selectedContentType[code]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
+              :label="t('selectExample')"
+            />
+            <prism
+              v-if="response.content[selectedContentType[code]]?.examples && selectedExample[code][selectedContentType[code]]"
+              language="json"
+              max-height="400px"
+            >
+              {{ JSON.stringify(response.content[selectedContentType[code]].examples![selectedExample[code][selectedContentType[code]]].value, null, 2) }}
+            </prism>
+            <prism
+              v-else-if="response.content[selectedContentType[code]]?.example"
+              language="json"
+              max-height="400px"
+            >
+              {{ JSON.stringify(response.content[selectedContentType[code]].example, null, 2) }}
+            </prism>
+          </v-tabs-window-item>
+        </v-tabs-window>
+      </template>
+
+      <!-- Header -->
+      <template v-if="response.headers">
+        <h4>
+          {{ t('responseHeaders') }}
+        </h4>
+        <div
+          v-for="(header, name) in response.headers"
+          :key="name"
+        >
+          <v-chip
+            density="compact"
+            label
+            :text="name"
+          />
+          {{ header.description }}
+        </div>
+      </template>
+
+      <!-- Links -->
+      <template v-if="response.links">
+        <h4>{{ t('links') }}</h4>
+        <span class="font-italic">{{ t('unsupportedFuncionality') }}</span>
+      </template>
+    </v-tabs-window-item>
+  </v-tabs-window>
 </template>
 
 <script setup lang="ts">
-import type { Operation, MediaType } from '#api/types'
+import type { Responses, MediaType } from '#api/types'
 import { marked } from 'marked'
 
 type Response = {
@@ -158,7 +147,7 @@ type Response = {
 }
 
 const { responses } = defineProps<{
-  responses: Operation['responses']
+  responses: Responses
 }>()
 
 const { t } = useI18n()
@@ -243,7 +232,6 @@ const getCodeColors = (status: string) => {
 
 <i18n lang="yaml">
   en:
-    responses: Responses
     schema: Schema
     examples: Examples
     responseHeaders: Response headers
@@ -251,7 +239,6 @@ const getCodeColors = (status: string) => {
     unsupportedFuncionality: Unsupported functionality
     selectExample: Select an example
   fr:
-    responses: Réponses documentées
     schema: Schéma
     examples: Exemples
     responseHeaders: En-têtes de réponse

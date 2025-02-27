@@ -1,77 +1,76 @@
 <template>
-  <v-expansion-panels
+  <v-tabs
     v-model="panelRight"
-    multiple
+    grow
   >
-    <v-expansion-panel
+    <v-tab value="snippet">
+      Curl / Url
+    </v-tab>
+    <v-tab value="responses">
+      {{ t('responses') }}
+    </v-tab>
+    <v-tab value="serverResponse">
+      {{ t('serverResponse') }}
+    </v-tab>
+  </v-tabs>
+
+  <v-tabs-window v-model="panelRight">
+    <v-tabs-window-item
       value="snippet"
-      static
+      class="mt-2"
     >
-      <template #title>
-        <h3>Curl / Url</h3>
-      </template>
-      <template #text>
-        <snippet
-          :endpoint-query-values="endpointQueryValues"
-          :server-url="serverUrl"
-          :method="method"
-          :path="fullPath"
-        />
-      </template>
-    </v-expansion-panel>
+      <snippet
+        :endpoint-query-values="endpointQueryValues"
+        :server-url="serverUrl"
+        :method="method"
+        :path="fullPath"
+      />
+    </v-tabs-window-item>
 
-    <responses
-      :responses="operation.responses"
-    />
+    <v-tabs-window-item value="responses">
+      <responses
+        v-if="operation.responses"
+        :responses="operation.responses"
+      />
+    </v-tabs-window-item>
 
-    <v-expansion-panel
-      value="serverResponse"
-      static
-    >
-      <template #title>
-        <h3>{{ t('serverResponse') }}</h3>
-      </template>
-      <template #text>
-        <template v-if="responseData">
-          <h4>
-            <v-chip
-              :color="getCodeColors(responseData.status)"
-              :text="responseData.status"
-              density="compact"
-              label
-            />
-            {{ responseData.statusText }}
-          </h4>
-
-          <template v-if="responseData.body">
-            <h4>{{ t('responseBody') }}</h4>
-            <prism
-              language="json"
-              max-height="400px"
-            >
-              {{ JSON.stringify(responseData.body, null, 2) }}
-            </prism>
-          </template>
-
-          <template v-if="responseData.headers">
-            <h4>{{ t('responseHeaders') }}</h4>
-            <prism
-              language="json"
-              max-height="400px"
-            >
-              {{ JSON.stringify(responseData.headers, null, 2) }}
-            </prism>
-          </template>
+    <v-tabs-window-item value="serverResponse">
+      <template v-if="responseData">
+        <h4>
+          <v-chip
+            :color="getCodeColors(responseData.status)"
+            :text="responseData.status"
+            density="compact"
+            label
+          />
+          {{ responseData.statusText }}
+        </h4>
+        <template v-if="responseData.body">
+          <h4>{{ t('responseBody') }}</h4>
+          <prism
+            language="json"
+            max-height="500px"
+          >
+            {{ JSON.stringify(responseData.body, null, 2) }}
+          </prism>
         </template>
-
-        <template v-else>
-          <p class="text-muted">
-            {{ t('noResponses') }}
-          </p>
+        <template v-if="responseData.headers">
+          <h4>{{ t('responseHeaders') }}</h4>
+          <prism
+            language="json"
+            max-height="400px"
+          >
+            {{ JSON.stringify(responseData.headers, null, 2) }}
+          </prism>
         </template>
       </template>
-    </v-expansion-panel>
-  </v-expansion-panels>
+      <template v-else>
+        <p class="text-muted">
+          {{ t('noResponses') }}
+        </p>
+      </template>
+    </v-tabs-window-item>
+  </v-tabs-window>
 </template>
 
 <script setup lang="ts">
@@ -88,7 +87,13 @@ const { operation, endpointQueryValues, serverUrl, method, path } = defineProps<
 
 const { t } = useI18n()
 
-const panelRight = ref<string[]>(['snippet', 'serverResponse'])
+const panelRight = ref<string>('snippet')
+
+const setActiveTab = (tab: string) => {
+  panelRight.value = tab
+}
+defineExpose({ setActiveTab })
+
 const fullPath = ref<string>(path)
 
 const getFullPath = () => {
@@ -137,11 +142,13 @@ const getCodeColors = (status: string) => {
     noResponses: "No responses received yet."
     responseBody: "Response Body"
     responseHeaders: "Response Headers"
+    responses: Responses
     serverResponse: "Server Response"
   fr:
     noResponses: "Aucune réponse reçue pour le moment."
     responseBody: "Corps de la réponse"
     responseHeaders: "En-têtes de la réponse"
+    responses: Réponses
     serverResponse: "Réponse du serveur"
 </i18n>
 

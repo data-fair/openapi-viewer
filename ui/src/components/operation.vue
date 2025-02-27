@@ -114,6 +114,7 @@
 
     <v-col cols="6">
       <operation-pannel-right
+        ref="operationPannelRightRef"
         :operation="operation"
         :endpoint-query-values="endpointQueryValues"
         :response-data="responseData"
@@ -146,6 +147,7 @@ const schemaOrExamplesTab = ref<string>('schema')
 const endpointQueryValues = ref<GenericEndpointQuery>({})
 const endpointQuerySchema = ref<SchemaObject>({})
 const responseData = ref<Record<string, any> | null>(null)
+const operationPannelRightRef = ref<null | { setActiveTab: (tab: string) => void }>(null)
 
 const executeRequest = async () => {
   responseData.value = null
@@ -222,6 +224,8 @@ const executeRequest = async () => {
     body: responseBody,
     headers: Object.fromEntries(response.headers.entries())
   }
+
+  operationPannelRightRef.value?.setActiveTab('serverResponse')
 }
 
 onMounted(() => {

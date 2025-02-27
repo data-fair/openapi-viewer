@@ -33,14 +33,8 @@ const { jsonSchema } = defineProps<{
   jsonSchema: any
 }>()
 
-let idCounter = 0
-function getNextId () {
-  return ++idCounter
-}
-
 function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   const node = {
-    id: getNextId(),
     title: schema.title || key || '',
     itemType: schema.type ? schema.type : undefined,
     itemFormat: schema.format ? schema.format : undefined,
@@ -50,22 +44,20 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
 
   // Add description as first child if exists
   if (schema.description) {
-    node.children.push({ id: getNextId(), title: schema.description })
+    node.children.push({ title: schema.description })
   }
 
   // Append enum items if they exist
   if (schema.enum) {
     node.children.push({
-      id: getNextId(),
       title: 'Enum',
-      children: schema.enum.map((val: any) => ({ id: getNextId(), title: String(val) }))
+      children: schema.enum.map((val: any) => ({ title: String(val) }))
     })
   }
 
   // Append oneOf items if they exist
   if (schema.oneOf) {
     node.children.push({
-      id: getNextId(),
       title: 'One of',
       children: schema.oneOf.map((sub: any) => buildTreeItems(sub))
     })
@@ -74,7 +66,6 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   // Append allOf items if they exist
   if (schema.allOf) {
     node.children.push({
-      id: getNextId(),
       title: 'All of',
       children: schema.allOf.map((sub: any) => buildTreeItems(sub))
     })

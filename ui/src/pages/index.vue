@@ -74,8 +74,12 @@ const validUrl = computed(() => url.value && /^https?:\/\//.test(url.value))
  * Dereference the OpenAPI specs
  */
 const derefDoc = computedAsync(
-  async () => {
+  async (onCancel) => {
     if (!urlFetch.data.value || !validUrl.value) return undefined
+
+    const controller = new AbortController()
+    onCancel(() => controller.abort())
+
     try {
       const deref = await dereference(
         typeof urlFetch.data.value === 'string'
@@ -86,12 +90,14 @@ const derefDoc = computedAsync(
           dereference: {
             circular: false, // Throw an error if circular references are found
           }
-        }) as OpenAPISpecs
+        }
+      ) as OpenAPISpecs
 
       derefError.value = null
       return deref
     } catch (error) {
-      derefError.value = t('errorOpenAPISpecsNotValid')
+      if (controller.signal.aborted) return undefined
+      else derefError.value = t('errorOpenAPISpecsNotValid')
     }
   },
   undefined,

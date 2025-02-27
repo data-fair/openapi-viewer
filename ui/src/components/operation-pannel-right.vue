@@ -47,11 +47,24 @@
         </h4>
         <template v-if="responseData.body">
           <h4>{{ t('responseBody') }}</h4>
+          <span
+            v-if="!responseData.type"
+            class="font-italic"
+          >
+            {{ t('parsingFailed') }}
+          </span>
           <prism
+            v-else-if="responseData.type === 'json'"
             language="json"
             max-height="500px"
           >
             {{ JSON.stringify(responseData.body, null, 2) }}
+          </prism>
+          <prism
+            v-else
+            max-height="500px"
+          >
+            {{ responseData.body }}
           </prism>
         </template>
         <template v-if="responseData.headers">
@@ -140,12 +153,14 @@ const getCodeColors = (status: string) => {
 <i18n lang="yaml">
   en:
     noResponses: "No responses received yet."
+    parsingFailed: "Unable to parse response"
     responseBody: "Response Body"
     responseHeaders: "Response Headers"
     responses: Responses
     serverResponse: "Server Response"
   fr:
     noResponses: "Aucune réponse reçue pour le moment."
+    parsingFailed: "Impossible de parser la réponse"
     responseBody: "Corps de la réponse"
     responseHeaders: "En-têtes de la réponse"
     responses: Réponses

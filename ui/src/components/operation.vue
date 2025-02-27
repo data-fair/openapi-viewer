@@ -207,21 +207,30 @@ const executeRequest = async () => {
   })
 
   const contentType = response.headers.get('content-type')
+  let responseType
   let responseBody: any
   if (!contentType) {
     responseBody = null
-  } else if (contentType.includes('application/json')) {
-    responseBody = await response.json().catch(() => ({ error: 'Invalid JSON' }))
-  } else if (contentType.includes('text')) {
-    responseBody = await response.text().catch(() => 'Error parsing text')
+  } else if (contentType.includes('json')) {
+    responseBody = await response.json().catch(() => {
+      responseBody = 'Invalid JSON'
+    })
+    responseType = 'json'
   } else {
-    responseBody = 'The content type is not supported yet'
+    try {
+      responseBody = await response.text()
+      responseType = contentType
+    } catch (e) {
+      responseBody = undefined
+      responseType = undefined
+    }
   }
 
   responseData.value = {
     status: response.status.toString(),
     statusText: response.statusText,
     body: responseBody,
+    type: responseType,
     headers: Object.fromEntries(response.headers.entries())
   }
 

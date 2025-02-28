@@ -65,10 +65,12 @@
             :key="server.url"
           >
             <template #title>
-              <strong>{{ server.url }}</strong>
-              <span v-if="server.description">
-                - {{ server.description }}
-              </span>
+              <p class="text-wrap">
+                <strong>{{ server.url }}</strong>
+                <span v-if="server.description">
+                  - {{ server.description }}
+                </span>
+              </p>
             </template>
           </v-list-item>
         </v-list>

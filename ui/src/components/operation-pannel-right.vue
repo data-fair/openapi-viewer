@@ -6,7 +6,8 @@
     <v-tab value="snippet">
       Curl / Url
     </v-tab>
-    <v-tab value="responses">
+    <v-tab
+      value="responses">
       {{ t('responses') }}
     </v-tab>
     <v-tab value="serverResponse">
@@ -32,6 +33,11 @@
         v-if="operation.responses"
         :responses="operation.responses"
       />
+      <template v-else>
+        <p class="text-muted">
+          {{ t('noDocsResponses') }}
+        </p>
+      </template>
     </v-tabs-window-item>
 
     <v-tabs-window-item value="serverResponse">
@@ -161,15 +167,17 @@ const getCodeColors = (status: string) => {
 
 <i18n lang="yaml">
   en:
+    noDocsResponses: "No response documentation."
     noResponses: "No responses received yet."
-    parsingFailed: "Unable to parse response"
+    parsingFailed: "Unable to parse response."
     responseBody: "Response Body"
     responseHeaders: "Response Headers"
     responses: Responses
     serverResponse: "Server Response"
   fr:
+    noDocsResponses: "Aucune documentation de réponse."
     noResponses: "Aucune réponse reçue pour le moment."
-    parsingFailed: "Impossible de parser la réponse"
+    parsingFailed: "Impossible de parser la réponse."
     responseBody: "Corps de la réponse"
     responseHeaders: "En-têtes de la réponse"
     responses: Réponses

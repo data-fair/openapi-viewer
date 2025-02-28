@@ -213,6 +213,9 @@ const executeRequest = async () => {
       responseBody = 'Invalid JSON'
     })
     responseType = 'json'
+  } else if (contentType.startsWith('image/')) {
+    responseBody = URL.createObjectURL(await response.blob())
+    responseType = 'image'
   } else {
     try {
       responseBody = await response.text()

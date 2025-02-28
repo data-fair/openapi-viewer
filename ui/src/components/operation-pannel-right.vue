@@ -53,13 +53,16 @@
           >
             {{ t('parsingFailed') }}
           </span>
-          <prism
+          <schema-viewer
             v-else-if="responseData.type === 'json'"
-            language="json"
-            max-height="500px"
-          >
-            {{ JSON.stringify(responseData.body, null, 2) }}
-          </prism>
+            :json-schema="responseData.body"
+          />
+          <template v-else-if="responseData.type === 'image'">
+            <v-img
+              :src="responseData.body"
+              alt="Response Image"
+            />
+          </template>
           <prism
             v-else
             max-height="500px"

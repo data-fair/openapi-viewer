@@ -36,7 +36,7 @@
       />
 
       <!-- Content -->
-      <template v-if="response.content">
+      <template v-if="response.content && Object.keys(response.content).length">
         <v-row>
           <v-col cols="auto">
             <v-tabs

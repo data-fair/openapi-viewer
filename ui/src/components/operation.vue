@@ -102,6 +102,8 @@
           class="my-4"
           color="primary"
           :prepend-icon="mdiPlay"
+          :loading="loading"
+          :disabled="loading"
           @click="executeRequest"
         >
           {{ t('execute') }}
@@ -145,8 +147,10 @@ const endpointQueryValues = ref<GenericEndpointQuery>({})
 const endpointQuerySchema = ref<SchemaObject>({})
 const responseData = ref<Record<string, any> | null>(null)
 const operationPannelRightRef = ref<null | { setActiveTab: (tab: string) => void }>(null)
+const loading = ref(false)
 
 const executeRequest = async () => {
+  loading.value = true
   responseData.value = null
 
   // Replace path parameters
@@ -235,6 +239,7 @@ const executeRequest = async () => {
   }
 
   operationPannelRightRef.value?.setActiveTab('serverResponse')
+  loading.value = false
 }
 
 onMounted(() => {

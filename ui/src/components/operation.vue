@@ -77,13 +77,10 @@
               </v-tabs>
               <v-tabs-window v-model="schemaOrExamplesTab">
                 <v-tabs-window-item value="schema">
-                  <prism
+                  <schema-viewer
                     :key="schema"
-                    language="json"
-                    max-height="400px"
-                  >
-                    {{ JSON.stringify(schema, null, 2) }}
-                  </prism>
+                    :json-schema="schema"
+                  />
                 </v-tabs-window-item>
                 <v-tabs-window-item value="examples">
                   <prism

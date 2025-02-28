@@ -1,13 +1,19 @@
 <template>
   <v-tabs
     v-model="tab"
+    color="primary"
+    density="compact"
+    rounded="xl"
+    variant="outlined"
+    location="top right"
+    absolute
   >
-    <v-tab value="raw">
-      {{ t('raw') }}
-    </v-tab>
-    <v-tab value="tree">
-      {{ t('tree') }}
-    </v-tab>
+    <v-tab
+      :text="t('raw')"
+    />
+    <v-tab
+      :text="t('tree')"
+    />
   </v-tabs>
   <v-tabs-window
     v-model="tab"

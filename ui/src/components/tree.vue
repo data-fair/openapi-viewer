@@ -2,9 +2,10 @@
   <v-treeview
     density="compact"
     :items="treeItems"
+    style="background-color:transparent"
   >
     <template #title="{ item }">
-      <p>
+      <p class="text-wrap">
         <span :class="{'text-decoration-line-through font-italic text-gray': item.itemDeprecated}">{{ item.title }}</span>&nbsp;
         <span class="text-caption text-primary">{{ item.itemType }}</span>
         <v-icon

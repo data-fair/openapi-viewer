@@ -70,13 +70,10 @@
           v-model="examplesOrSchemaTab[code][selectedContentType[code]]"
         >
           <v-tabs-window-item value="schema">
-            <prism
+            <schema-viewer
               :key="code + selectedContentType[code] + '-schema'"
-              language="json"
-              max-height="400px"
-            >
-              {{ JSON.stringify(response.content[selectedContentType[code]]?.schema, null, 2) }}
-            </prism>
+              :json-schema="response.content[selectedContentType[code]]?.schema"
+            />
           </v-tabs-window-item>
 
           <v-tabs-window-item value="examples">

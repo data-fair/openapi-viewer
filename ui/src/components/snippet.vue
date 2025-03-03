@@ -8,7 +8,10 @@
     {{ snippet }}
   </prism>
   <h4>{{ t('urlRequest') }}</h4>
-  <pre style="white-space: pre-wrap; word-break: break-all;">{{ url }}</pre>
+  <pre
+    style="white-space: pre-wrap; word-break: break-all;"
+    class="text-body-2"
+  ><code>{{ url }}</code></pre>
 </template>
 
 <script setup lang="ts">

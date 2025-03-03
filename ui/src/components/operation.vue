@@ -253,7 +253,6 @@ const vjsfOptions = {
   initialValidation: 'always',
   updateOn: 'blur',
   validateOn: 'blur',
-  xI18n: true,
   titleDepth: 3
 }
 

@@ -3,7 +3,7 @@
   "info": {
     "title": "API principale",
     "description": "\nCette documentation interactive à destination des développeurs permet de gérer les ressources de ce service de publication de données.\n\nNotez que l'API réelle est plus riche, chaque jeu de données et chaque service distant disposant de sa propre API documentée séparément.\n\nPour utiliser cette API dans un programme vous aurez besoin d'une clé que vous pouvez créer dans vos paramètres personnels ou dans les paramètres d'une organisation dont vous êtes administrateur.\n\nPour des exemples simples de publication de données vous pouvez consulter la <a href=\"https://data-fair.github.io/4/interoperate/api\" target=\"blank\">documentation sur ce sujet</a>.\n",
-    "version": "4.33.2",
+    "version": "4.34.0",
     "x-api-id": "data-fair",
     "termsOfService": "https://koumoul.com/platform/term-of-service",
     "contact": {
@@ -7104,11 +7104,11 @@
   "paths": {
     "/ping": {
       "get": {
-        "summary": "Etat de santé du service simplifié.",
+        "summary": "Obtenir l'état de santé du service.",
+        "operationId": "ping",
         "tags": [
           "Administration"
         ],
-        "operationId": "ping",
         "x-operationType": "http://schema.org/CheckAction",
         "responses": {
           "200": {
@@ -7122,14 +7122,14 @@
     },
     "/api-docs.json": {
       "get": {
-        "summary": "Cette documentation d'API au format Open API v3",
+        "summary": "Accéder à cette documentation au format OpenAPI v3.",
+        "operationId": "getApiDoc",
         "tags": [
           "Administration"
         ],
-        "operationId": "getApiDoc",
         "responses": {
           "200": {
-            "description": "Etat de santé du service",
+            "description": "Etat de santé du service.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7143,14 +7143,13 @@
     },
     "/vocabulary": {
       "get": {
-        "summary": "La liste des concepts utilisables pour annoter la donnée sur ce service.",
+        "summary": "Lister les concepts utilisables pour annoter la donnée sur ce service.",
+        "operationId": "getVocabulary",
         "tags": [
           "Administration"
         ],
-        "operationId": "getVocabulary",
         "responses": {
           "200": {
-            "description": "Service ok",
             "content": {
               "application/json": {
                 "schema": {
@@ -7158,6 +7157,9 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "id": {
+                        "type": "string"
+                      },
                       "title": {
                         "type": "string"
                       },
@@ -7171,6 +7173,9 @@
                         }
                       },
                       "type": {
+                        "type": "string"
+                      },
+                      "tag": {
                         "type": "string"
                       }
                     }
@@ -7203,20 +7208,25 @@
             "in": "query",
             "name": "mine",
             "description": "Voir uniquement les ressources de mon compte actif",
-            "example": true,
+            "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": true
             }
           },
           {
             "in": "query",
             "name": "owner",
-            "description": "Restreindre sur le propriétaire (par exemple \"organization:myorg\" ou \"user:myuser\")",
+            "description": "Restreindre par propriétaire",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "examples": [
+                  "organization:myorg",
+                  "user:myuser"
+                ]
               }
             },
             "style": "form",
@@ -7408,11 +7418,12 @@
           {
             "in": "query",
             "name": "page",
-            "description": "Numéro de page (à partir de 1)",
+            "description": "Numéro de page",
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 1
+              "default": 1,
+              "min": 1
             }
           },
           {
@@ -7422,22 +7433,32 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 10
+              "default": 10,
+              "min": 1
             }
           },
           {
             "in": "query",
             "name": "visibility",
-            "description": "Filtrer sur la visibilité de la ressource. \"public\" = voir les ressources publiques, \"private\" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée), \"protected\" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).",
-            "require": "false",
+            "description": "Filtrer sur la visibilité de la ressource.\n\"public\" = voir les ressources publiques\n\"private\" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée)\n\"protected\" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).",
+            "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "public",
-                  "private",
-                  "protected"
+                "oneOf": [
+                  {
+                    "const": "public",
+                    "title": "Ressources publiques"
+                  },
+                  {
+                    "const": "private",
+                    "title": "Ressources privées"
+                  },
+                  {
+                    "const": "protected",
+                    "title": "Ressources protégées"
+                  }
                 ]
               }
             },
@@ -7447,7 +7468,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Liste des jeux de données que l'utilisateur est autorisé à voir",
+            "description": "Liste des jeux de données que l'utilisateur est autorisé à voir.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7477,7 +7498,7 @@
           "Jeux de données"
         ],
         "requestBody": {
-          "description": "Fichier à charger et autres informations",
+          "description": "Fichier à charger et autres informations.",
           "required": true,
           "content": {
             "multipart/form-data": {
@@ -7489,7 +7510,7 @@
         },
         "responses": {
           "200": {
-            "description": "Métadonnées sur le dataset créé",
+            "description": "Métadonnées sur le dataset créé.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7521,7 +7542,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Informations d'un jeu de données",
+            "description": "Informations d'un jeu de données.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7539,7 +7560,7 @@
           "Jeux de données"
         ],
         "requestBody": {
-          "description": "Fichier à charger et autres informations",
+          "description": "Fichier à charger et autres informations.",
           "required": true,
           "content": {
             "multipart/form-data": {
@@ -7551,7 +7572,7 @@
         },
         "responses": {
           "200": {
-            "description": "Jeu de données modifié",
+            "description": "Jeu de données modifié.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7561,7 +7582,7 @@
             }
           },
           "201": {
-            "description": "Jeu de données créé",
+            "description": "Jeu de données créé.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7579,7 +7600,7 @@
           "Jeux de données"
         ],
         "requestBody": {
-          "description": "Informations à modifier",
+          "description": "Informations à modifier.",
           "required": true,
           "content": {
             "application/json": {
@@ -7591,7 +7612,7 @@
         },
         "responses": {
           "200": {
-            "description": "Informations du jeu de données modifié",
+            "description": "Informations du jeu de données modifié.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7610,7 +7631,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Jeu de données supprimé"
+            "description": "Jeu de données supprimé."
           }
         }
       }
@@ -7636,20 +7657,25 @@
             "in": "query",
             "name": "mine",
             "description": "Voir uniquement les ressources de mon compte actif",
-            "example": true,
+            "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": true
             }
           },
           {
             "in": "query",
             "name": "owner",
-            "description": "Restreindre sur le propriétaire (par exemple \"organization:myorg\" ou \"user:myuser\")",
+            "description": "Restreindre par propriétaire",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "examples": [
+                  "organization:myorg",
+                  "user:myuser"
+                ]
               }
             },
             "style": "form",
@@ -7759,11 +7785,12 @@
           {
             "in": "query",
             "name": "page",
-            "description": "Numéro de page (à partir de 1)",
+            "description": "Numéro de page",
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 1
+              "default": 1,
+              "min": 1
             }
           },
           {
@@ -7773,22 +7800,32 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 10
+              "default": 10,
+              "min": 1
             }
           },
           {
             "in": "query",
             "name": "visibility",
-            "description": "Filtrer sur la visibilité de la ressource. \"public\" = voir les ressources publiques, \"private\" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée), \"protected\" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).",
-            "require": "false",
+            "description": "Filtrer sur la visibilité de la ressource.\n\"public\" = voir les ressources publiques\n\"private\" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée)\n\"protected\" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).",
+            "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "public",
-                  "private",
-                  "protected"
+                "oneOf": [
+                  {
+                    "const": "public",
+                    "title": "Ressources publiques"
+                  },
+                  {
+                    "const": "private",
+                    "title": "Ressources privées"
+                  },
+                  {
+                    "const": "protected",
+                    "title": "Ressources protégées"
+                  }
                 ]
               }
             },
@@ -7798,7 +7835,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Liste des applications que l'utilisateur est autorisé à voir",
+            "description": "Liste des applications que l'utilisateur est autorisé à voir.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7828,17 +7865,19 @@
           "Applications"
         ],
         "requestBody": {
-          "description": "Les informations de configuration de l'application",
+          "description": "Les informations de configuration de l'application.",
           "required": true,
           "content": {
-            "schema": {
-              "$ref": "#/components/schemas/application"
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/application"
+              }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Les informations de configuration de l'application",
+            "description": "Les informations de configuration de l'application.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7870,7 +7909,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Informations d'une application",
+            "description": "Informations d'une application.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7888,7 +7927,7 @@
           "Applications"
         ],
         "requestBody": {
-          "description": "Informations de l'application",
+          "description": "Informations de l'application.",
           "required": true,
           "content": {
             "application/json": {
@@ -7900,7 +7939,7 @@
         },
         "responses": {
           "200": {
-            "description": "Application modifiée",
+            "description": "Application modifiée.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7910,7 +7949,7 @@
             }
           },
           "201": {
-            "description": "Application créée",
+            "description": "Application créée.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7922,13 +7961,13 @@
         }
       },
       "patch": {
-        "summary": "Modifier seulement certaines informations.",
+        "summary": "Modifier certaines informations d'une application.",
         "operationId": "patchApplication",
         "tags": [
           "Applications"
         ],
         "requestBody": {
-          "description": "Informations à modifier",
+          "description": "Informations à modifier.",
           "required": true,
           "content": {
             "application/json": {
@@ -7940,7 +7979,7 @@
         },
         "responses": {
           "200": {
-            "description": "Informations de l'application modifiée",
+            "description": "Informations de l'application modifiée.",
             "content": {
               "application/json": {
                 "schema": {
@@ -7959,7 +7998,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Application supprimée"
+            "description": "Application supprimée."
           }
         }
       }
@@ -7967,12 +8006,6 @@
   },
   "externalDocs": {
     "description": "Documentation sur Github",
-    "url": "https://data-fair.github.io"
-  },
-  "definitions": {
-    "API": {
-      "type": "object",
-      "description": "Open API v3 compliant documentation"
-    }
+    "url": "https://data-fair.github.io/master/"
   }
 }

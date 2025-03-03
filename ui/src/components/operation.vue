@@ -67,7 +67,11 @@
             :options="vjsfOptions"
           >
             <template #schema-and-examples="{ schema, examples}">
-              <v-tabs v-model="schemaOrExamplesTab">
+              <!-- Show tabs selector only if there are examples, else just show the schema window -->
+              <v-tabs
+                v-if="(examples && Object.keys(examples).length > 0) || (Array.isArray(examples) && examples.length > 0)"
+                v-model="schemaOrExamplesTab"
+              >
                 <v-tab value="schema">
                   {{ t('schema') }}
                 </v-tab>

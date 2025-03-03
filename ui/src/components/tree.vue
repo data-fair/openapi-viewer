@@ -84,6 +84,14 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
     })
   }
 
+  // Append array items if they exist
+  if (schema.items) {
+    node.children!.push({
+      title: 'Items',
+      children: [buildTreeItems(schema.items)]
+    })
+  }
+
   // Recursively process properties
   if (schema.properties) {
     for (const prop in schema.properties) {

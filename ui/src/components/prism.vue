@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!inline"
-    class="position-relative"
+    class="position-relative text-body-2"
   >
     <v-fab
       class="mt-2 mr-6"
@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import Prism from 'prismjs'
-import 'prismjs/themes/prism-okaidia.min.css'
+import 'prismjs/themes/prism-tomorrow.min.css'
 import 'prismjs/components/prism-json.js'
 import 'prismjs/components/prism-bash.js'
 
@@ -49,7 +49,7 @@ const props = defineProps<{
 const slots = defineSlots()
 const slotContent = computed(() => slots.default?.()?.[0]?.children ?? '')
 
-const className = computed(() => `language-${props.language ?? 'markup'}`)
+const className = computed(() => `language-${props.language ?? 'markup'} rounded`)
 const style = computed(() => 'max-height: ' + (props.maxHeight ?? 'none'))
 
 const highlightedCode = computed(() => {

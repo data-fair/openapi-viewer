@@ -1,8 +1,9 @@
 <template>
   <v-treeview
     density="compact"
-    :items="treeItems"
     style="background-color:transparent"
+    :items="treeItems"
+    open-on-click
   >
     <template #title="{ item }">
       <p class="text-wrap">

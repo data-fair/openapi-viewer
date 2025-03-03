@@ -48,9 +48,11 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
 
     // Add specs examples to the schema
     const examples = resolveExamples(param)
-    if (paramSchema?.examples) paramSchema.examples.concat(examples)
-    else if (paramSchema?.items?.examples) paramSchema.items.examples.concat(examples)
-    else if (paramSchema?.items) paramSchema.items.examples = examples
+    if (examples.length > 0) {
+      if (paramSchema?.examples) paramSchema.examples.concat(examples)
+      else if (paramSchema?.items?.examples) paramSchema.items.examples.concat(examples)
+      else if (paramSchema?.items) paramSchema.items.examples = examples
+    }
 
     schema.properties[param.in].properties[param.name] = {
       ...paramSchema,

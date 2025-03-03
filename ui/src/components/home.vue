@@ -22,6 +22,7 @@
       <!-- Description -->
       <div
         v-if="info.description"
+        class="operation-description"
         v-html="marked(info.description)"
       />
 
@@ -198,6 +199,10 @@
 <script setup lang="ts">
 import type { OpenAPISpecs, Components } from '#api/types'
 import { marked } from 'marked'
+marked.setOptions({
+  breaks: true,
+  gfm: true
+})
 
 const { info, externalDocs, servers, schemas } = defineProps<{
   info: OpenAPISpecs['info'],
@@ -225,5 +230,12 @@ const schemaPannel = ref<number | null>(null)
     termsOfService: "Conditions d'utilisation"
 </i18n>
 
-<style scoped>
+<style>
+.operation-description li {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+.operation-description p {
+  margin-bottom: 5px;
+}
 </style>

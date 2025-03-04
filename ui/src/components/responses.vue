@@ -7,13 +7,15 @@
     <v-tab
       v-for="code in orderedCodes"
       :key="code"
-      :base-color="getCodeColors(code)"
+      :ripple="false"
       :value="code"
+      hide-slider
     >
       <v-chip
+        density="compact"
         :color="getCodeColors(code)"
         :text="code"
-        density="compact"
+        :variant="selectedCode === code ? 'elevated' : 'tonal'"
         label
       />
     </v-tab>
@@ -42,7 +44,9 @@
           density="compact"
           hide-details="auto"
           label="Content-Type"
+          variant="outlined"
           :items="Object.keys(response.content)"
+          :readonly="Object.keys(response.content).length === 1"
         />
 
         <div

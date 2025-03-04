@@ -37,6 +37,7 @@ declare global {
   const mdiCodeJson: typeof import('@mdi/js')['mdiCodeJson']
   const mdiContentCopy: typeof import('@mdi/js')['mdiContentCopy']
   const mdiEmail: typeof import('@mdi/js')['mdiEmail']
+  const mdiFileTree: typeof import('@mdi/js')['mdiFileTree']
   const mdiGavel: typeof import('@mdi/js')['mdiGavel']
   const mdiHome: typeof import('@mdi/js')['mdiHome']
   const mdiLabel: typeof import('@mdi/js')['mdiLabel']
@@ -147,6 +148,7 @@ declare module 'vue' {
     readonly mdiCodeJson: UnwrapRef<typeof import('@mdi/js')['mdiCodeJson']>
     readonly mdiContentCopy: UnwrapRef<typeof import('@mdi/js')['mdiContentCopy']>
     readonly mdiEmail: UnwrapRef<typeof import('@mdi/js')['mdiEmail']>
+    readonly mdiFileTree: UnwrapRef<typeof import('@mdi/js')['mdiFileTree']>
     readonly mdiGavel: UnwrapRef<typeof import('@mdi/js')['mdiGavel']>
     readonly mdiHome: UnwrapRef<typeof import('@mdi/js')['mdiHome']>
     readonly mdiLabel: UnwrapRef<typeof import('@mdi/js')['mdiLabel']>

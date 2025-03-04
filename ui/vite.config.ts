@@ -55,6 +55,7 @@ export default defineConfig({
             'mdiCodeJson',
             'mdiContentCopy',
             'mdiEmail',
+            'mdiFileTree',
             'mdiGavel',
             'mdiHome',
             'mdiLabel',

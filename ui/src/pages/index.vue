@@ -1,7 +1,6 @@
 <template>
   <top-bar
-    v-if="$route.query['hide-toolbar'] === undefined
-      || !$route.query['hide-toolbar']"
+    v-if="$route.query['hide-toolbar'] !== 'true'"
   />
   <navigation-drawer
     :paths="derefDoc?.paths"
@@ -25,7 +24,7 @@
       v-else-if="urlFetch.error.value"
       type="error"
       variant="outlined"
-      :text="urlFetch.error.value"
+      :text="urlFetch.error.value.message"
       :title="t('errorCannotRetrieveData')"
     />
     <v-alert
@@ -143,6 +142,8 @@ const fullOperation = computed<{
 })
 
 watch(url, (newUrl) => {
+  derefDoc.value = undefined
+
   // No url provided
   if (!newUrl || newUrl.length <= 0) return
 
@@ -151,7 +152,6 @@ watch(url, (newUrl) => {
 
   if (urlDomain && urlDomain !== window.location.hostname) {
     crossDomainError.value = true
-    derefDoc.value = undefined
   } else {
     crossDomainError.value = false
     urlFetch.refresh()

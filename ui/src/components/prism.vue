@@ -6,7 +6,7 @@
     <v-fab
       class="mt-2 mr-6"
       color="primary"
-      density="default"
+      density="comfortable"
       location="top right"
       size="small"
       absolute

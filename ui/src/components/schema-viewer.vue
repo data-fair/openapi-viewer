@@ -1,20 +1,23 @@
 <template>
-  <v-tabs
+  <v-btn-toggle
     v-model="tab"
     color="primary"
     density="compact"
-    rounded="xl"
     variant="outlined"
-    location="top right"
-    absolute
+    rounded="pill"
+    mandatory
   >
-    <v-tab
+    <v-btn
+      value="raw"
+      :prepend-icon="mdiCodeJson"
       :text="t('raw')"
     />
-    <v-tab
+    <v-btn
+      value="tree"
+      :prepend-icon="mdiFileTree"
       :text="t('tree')"
     />
-  </v-tabs>
+  </v-btn-toggle>
   <v-tabs-window
     v-model="tab"
   >
@@ -33,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-
 const { jsonSchema } = defineProps<{ jsonSchema: any }>()
 const { t } = useI18n()
 const tab = ref('raw')

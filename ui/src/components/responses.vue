@@ -37,72 +37,60 @@
 
       <!-- Content -->
       <template v-if="response.content && Object.keys(response.content).length">
-        <v-row>
-          <v-col cols="auto">
-            <v-tabs
-              v-model="examplesOrSchemaTab[code][selectedContentType[code]]"
-            >
-              <v-tab
-                v-if="response.content[selectedContentType[code]]?.schema"
-                value="schema"
-              >
-                {{ t('schema') }}
-              </v-tab>
-              <v-tab
-                v-if="response.content[selectedContentType[code]]?.examples || response.content[selectedContentType[code]]?.example"
-                value="examples"
-              >
-                {{ t('examples') }}
-              </v-tab>
-            </v-tabs>
-          </v-col>
-          <v-col cols="auto">
-            <v-select
-              v-model="selectedContentType[code]"
-              density="compact"
-              hide-details="auto"
-              label="Content-Type"
-              :items="Object.keys(response.content)"
-            />
-          </v-col>
-        </v-row>
-        <v-tabs-window
-          v-model="examplesOrSchemaTab[code][selectedContentType[code]]"
-        >
-          <v-tabs-window-item value="schema">
-            <schema-viewer
-              :key="code + selectedContentType[code] + '-schema'"
-              :json-schema="response.content[selectedContentType[code]]?.schema"
-            />
-          </v-tabs-window-item>
+        <v-select
+          v-model="selectedContentType[code]"
+          density="compact"
+          hide-details="auto"
+          label="Content-Type"
+          :items="Object.keys(response.content)"
+        />
 
-          <v-tabs-window-item value="examples">
-            <v-select
-              v-if="response.content[selectedContentType[code]]?.examples"
-              v-model="selectedExample[code][selectedContentType[code]]"
-              density="compact"
-              hide-details="auto"
-              item-title="title"
-              item-value="key"
-              :items="Object.entries(response.content[selectedContentType[code]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
-              :label="t('selectExample')"
-            />
-            <prism
-              v-if="response.content[selectedContentType[code]]?.examples && selectedExample[code][selectedContentType[code]]"
-              language="json"
-              max-height="400px"
-            >
-              {{ JSON.stringify(response.content[selectedContentType[code]].examples![selectedExample[code][selectedContentType[code]]].value, null, 2) }}
-            </prism>
-            <prism
-              v-else-if="response.content[selectedContentType[code]]?.example"
-              language="json"
-              max-height="400px"
-            >
-              {{ JSON.stringify(response.content[selectedContentType[code]].example, null, 2) }}
-            </prism>
-          </v-tabs-window-item>
-        </v-tabs-window>
+        <div
+          v-if="response.content[selectedContentType[code]]?.schema"
+          class="mt-2"
+        >
+          <h3
+            v-if="response.content[selectedContentType[code]]?.examples || response.content[selectedContentType[code]]?.example"
+          >
+            {{ t('schema') }}
+          </h3>
+          <schema-viewer
+            :key="code + selectedContentType[code] + '-schema'"
+            :json-schema="response.content[selectedContentType[code]].schema"
+          />
+        </div>
+
+        <template v-if="response.content[selectedContentType[code]]?.examples || response.content[selectedContentType[code]]?.example">
+          <h3
+            v-if="response.content[selectedContentType[code]]?.schema"
+          >
+            {{ t('examples') }}
+          </h3>
+          <v-select
+            v-if="response.content[selectedContentType[code]]?.examples"
+            v-model="selectedExample[code][selectedContentType[code]]"
+            density="compact"
+            hide-details="auto"
+            item-title="title"
+            item-value="key"
+            :items="Object.entries(response.content[selectedContentType[code]].examples!).map(([key, example]) => ({ key, title: example.summary || key }))"
+            :label="t('selectExample')"
+          />
+          <prism
+            v-if="response.content[selectedContentType[code]]?.examples && selectedExample[code][selectedContentType[code]]"
+            language="json"
+            max-height="400px"
+          >
+            {{ JSON.stringify(response.content[selectedContentType[code]].examples![selectedExample[code][selectedContentType[code]]].value, null, 2) }}
+          </prism>
+          <prism
+            v-else-if="response.content[selectedContentType[code]]?.example"
+            language="json"
+            max-height="400px"
+          >
+            {{ JSON.stringify(response.content[selectedContentType[code]].example, null, 2) }}
+          </prism>
+        </template>
       </template>
 
       <!-- Header -->

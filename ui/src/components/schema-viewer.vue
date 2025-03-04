@@ -6,14 +6,17 @@
     variant="outlined"
     rounded="pill"
     mandatory
+    style="height: 25px"
   >
     <v-btn
       value="raw"
+      size="small"
       :prepend-icon="mdiCodeJson"
       :text="t('raw')"
     />
     <v-btn
       value="tree"
+      size="small"
       :prepend-icon="mdiFileTree"
       :text="t('tree')"
     />

@@ -9,26 +9,33 @@
   />
   <v-container data-iframe-height>
     <v-alert
-      v-if="!validUrl"
+      v-if="url.length <= 0"
       type="warning"
       variant="outlined"
-      :title="t('errorUrlNotValid')"
+      :title="t('errorNoUrl')"
     />
     <v-alert
-      v-if="urlFetch.error.value"
+      v-else-if="crossDomainError"
+      type="error"
+      variant="outlined"
+      :text="t('errorCrossDomain')"
+      :title="t('error')"
+    />
+    <v-alert
+      v-else-if="urlFetch.error.value"
       type="error"
       variant="outlined"
       :text="urlFetch.error.value"
       :title="t('errorCannotRetrieveData')"
     />
     <v-alert
-      v-if="derefError"
+      v-else-if="derefError"
       type="error"
       variant="outlined"
       :text="derefError"
       :title="t('error')"
     />
-    <template v-if="derefDoc && validUrl">
+    <template v-if="derefDoc && url.length > 0">
       <home
         v-if="$route.hash === ''"
         :info="derefDoc.info"
@@ -65,18 +72,18 @@ import yaml from 'js-yaml'
 const { t } = useI18n()
 const route = useRoute()
 const url = useStringSearchParam('url')
-const urlFetch = useFetch<OpenAPISpecs>(url, { notifError: false })
+const urlFetch = useFetch<OpenAPISpecs>(url, { watch: false, notifError: false })
 
 const derefError = ref<string | null>(null)
+const crossDomainError = ref<boolean>(true)
 const dereferencing = shallowRef(false) // True if the dereferencing is in progress
-const validUrl = computed(() => url.value && /^https?:\/\//.test(url.value))
 
 /*
  * Dereference the OpenAPI specs
  */
 const derefDoc = computedAsync(
   async (onCancel) => {
-    if (!urlFetch.data.value || !validUrl.value) return undefined
+    if (!urlFetch.data.value) return undefined
 
     const controller = new AbortController()
     onCancel(() => controller.abort())
@@ -135,21 +142,39 @@ const fullOperation = computed<{
   return null
 })
 
+watch(url, (newUrl) => {
+  // No url provided
+  if (!newUrl || newUrl.length <= 0) return
+
+  const parsedUrl = new URL(newUrl, window.location.origin)
+  const urlDomain = parsedUrl.hostname
+
+  if (urlDomain && urlDomain !== window.location.hostname) {
+    crossDomainError.value = true
+    derefDoc.value = undefined
+  } else {
+    crossDomainError.value = false
+    urlFetch.refresh()
+  }
+}, { immediate: true })
+
 </script>
 
 <i18n lang="yaml">
   en:
     error: "Error"
-    errorCannotRetrieveData: "Cannot retrieve data for this URL"
-    errorHashNotMatch: "The hash does not match any operationId or path in the OpenAPI specs"
-    errorOpenAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference"
-    errorUrlNotValid: "No url provided or the url is not valid"
+    errorCannotRetrieveData: "Cannot retrieve data for this URL."
+    errorCrossDomain: "Cross-domain URLs are not allowed."
+    errorHashNotMatch: "The hash does not match any operationId or path in the OpenAPI specs."
+    errorNoUrl: "No url provided !"
+    errorOpenAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference."
   fr:
     error: "Erreur"
-    errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL"
-    errorHashNotMatch: "Le hash ne correspond à aucun operationId ou path dans les spécifications OpenAPI"
-    errorOpenAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire"
-    errorUrlNotValid: "Aucune url fournie ou l'url n'est pas correcte"
+    errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL."
+    errorCrossDomain: "Les URLs cross-domain ne sont pas autorisées."
+    errorHashNotMatch: "Le hash ne correspond à aucun operationId ou path dans les spécifications OpenAPI."
+    errorNoUrl: "Aucune url fournie !"
+    errorOpenAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire."
 </i18n>
 
 <style scoped>

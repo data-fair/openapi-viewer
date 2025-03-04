@@ -38,7 +38,7 @@ const selectedExample = ref<string | null>(null)
 
 function changeUrl () {
   if (selectedExample.value) {
-    search.value = `${window.location.origin}${window.location.pathname}examples/${selectedExample.value}`
+    search.value = `${window.location.pathname}examples/${selectedExample.value}`
   }
 }
 

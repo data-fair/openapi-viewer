@@ -11,12 +11,7 @@ import { createSession } from '@data-fair/lib-vue/session.js'
 import { createUiNotif } from '@data-fair/lib-vue/ui-notif.js'
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
-// TODO: remove v-iframe and iframe-resizer when d-frame is fully integrated
-import '@koumoul/v-iframe/content-window'
-import 'iframe-resizer/js/iframeResizer.contentWindow.js'
 import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
-
-(window as any).iFrameResizer = { heightCalculationMethod: 'taggedElement' };
 
 (async function () {
   const router = createRouter({ history: createWebHistory($sitePath + '/openapi-viewer/'), routes })
@@ -37,9 +32,6 @@ import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
   } else {
     i18n = createI18n({ locale: 'en' })
   }
-
-  // TODO: remove when d-frame is fully integrated
-  (window as any).vIframeOptions = { router }
 
   const vuetify = createVuetify(vuetifyOptions)
   const app = createApp(App)

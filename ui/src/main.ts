@@ -12,6 +12,7 @@ import { createUiNotif } from '@data-fair/lib-vue/ui-notif.js'
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
+import DOMPurify from 'dompurify'
 
 (async function () {
   const router = createRouter({ history: createWebHistory($sitePath + '/openapi-viewer/'), routes })
@@ -40,6 +41,17 @@ import dFrameContent from '@data-fair/frame/lib/vue-router/d-frame-content.js'
     .use(uiNotif)
     .use(vuetify)
     .use(i18n)
+
+  const vSafeHtml = {
+    beforeMount (el: HTMLElement, binding: any) {
+      el.innerHTML = DOMPurify.sanitize(binding.value)
+    },
+    updated (el: HTMLElement, binding: any) {
+      el.innerHTML = DOMPurify.sanitize(binding.value)
+    }
+  }
+
+  app.directive('safe-html', vSafeHtml)
 
   if ($uiConfig.useSimpleDirectory) {
     app.use(session!)

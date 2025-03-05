@@ -28,6 +28,7 @@
       <prism
         language="json"
         max-height="800px"
+        copy
       >
         {{ JSON.stringify(jsonSchema, null, 2) }}
       </prism>

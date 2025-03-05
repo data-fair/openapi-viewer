@@ -33,8 +33,8 @@
       <!-- Description -->
       <div
         v-if="response.description"
+        v-safe-html="marked(response.description)"
         class="mb-4 mt-2"
-        v-html="marked(response.description)"
       />
 
       <!-- Content -->
@@ -84,6 +84,7 @@
             v-if="response.content[selectedContentType[code]]?.examples && selectedExample[code][selectedContentType[code]]"
             language="json"
             max-height="400px"
+            copy
           >
             {{ JSON.stringify(response.content[selectedContentType[code]].examples![selectedExample[code][selectedContentType[code]]].value, null, 2) }}
           </prism>
@@ -91,6 +92,7 @@
             v-else-if="response.content[selectedContentType[code]]?.example"
             language="json"
             max-height="400px"
+            copy
           >
             {{ JSON.stringify(response.content[selectedContentType[code]].example, null, 2) }}
           </prism>

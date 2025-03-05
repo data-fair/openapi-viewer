@@ -38,7 +38,7 @@
     "@types/config": "^3.3.5",
     "eslint": "^9.17.0",
     "eslint-plugin-vue": "^9.32.0",
-    "eslint-plugin-vuetify": "^2.5.1",
+    "eslint-plugin-vuetify": "github:albanm/eslint-plugin-vuetify",
     "husky": "^9.1.7",
     "neostandard": "^0.12.0",
     "typescript": "^5.7.3"

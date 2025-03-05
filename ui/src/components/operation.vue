@@ -13,7 +13,7 @@
 
   <div
     v-if="operation.description"
-    v-html="marked(operation.description)"
+    v-safe-html="marked(operation.description)"
   />
 
   <!-- External documentation -->
@@ -91,6 +91,7 @@
                     :key="examples"
                     language="json"
                     max-height="400px"
+                    copy
                   >
                     {{ JSON.stringify(examples, null, 2) }}
                   </prism>

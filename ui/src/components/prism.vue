@@ -4,6 +4,7 @@
     class="position-relative text-body-2"
   >
     <v-fab
+      v-if="props.copy"
       class="mt-2 mr-6"
       color="primary"
       density="comfortable"
@@ -20,14 +21,14 @@
       :class="className"
       :style="style"
     ><code
+      v-safe-html="highlightedCode"
       :class="className"
-      v-html="highlightedCode"
     /></pre>
   </div>
   <code
     v-else
+    v-safe-html="highlightedCode"
     :class="className"
-    v-html="highlightedCode"
   />
 </template>
 
@@ -36,6 +37,7 @@ import Prism from 'prismjs'
 import 'prismjs/themes/prism-tomorrow.min.css'
 import 'prismjs/components/prism-json.js'
 import 'prismjs/components/prism-bash.js'
+import 'prismjs/components/prism-yaml.js'
 
 const { t } = useI18n()
 const { sendUiNotif } = useUiNotif()
@@ -44,6 +46,7 @@ const props = defineProps<{
   inline?: boolean
   language?: string
   maxHeight?: string
+  copy?: boolean
 }>()
 
 const slots = defineSlots()

@@ -22,8 +22,8 @@
       <!-- Description -->
       <div
         v-if="info.description"
+        v-safe-html="marked(info.description)"
         class="operation-description"
-        v-html="marked(info.description)"
       />
 
       <!-- Schemas -->

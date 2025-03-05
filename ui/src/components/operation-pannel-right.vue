@@ -63,6 +63,7 @@
             v-else-if="responseData.type === 'json'"
             language="json"
             max-height="500px"
+            copy
           >
             {{ JSON.stringify(responseData.body, null, 2) }}
           </prism>
@@ -75,6 +76,7 @@
           <prism
             v-else
             max-height="500px"
+            copy
           >
             {{ responseData.body }}
           </prism>
@@ -82,10 +84,10 @@
         <template v-if="responseData.headers">
           <h4>{{ t('responseHeaders') }}</h4>
           <prism
-            language="json"
-            max-height="400px"
+            language="yaml"
+            max-height="500px"
           >
-            {{ JSON.stringify(responseData.headers, null, 2) }}
+            {{ YAML.stringify(responseData.headers) }}
           </prism>
         </template>
       </template>
@@ -100,6 +102,7 @@
 
 <script setup lang="ts">
 import type { GenericEndpointQuery, Operation } from '#api/types'
+import YAML from 'yaml'
 
 const { operation, endpointQueryValues, responseData, serverUrl, method, path } = defineProps<{
   operation: Operation

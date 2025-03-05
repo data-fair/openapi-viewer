@@ -36,7 +36,7 @@
     />
     <template v-if="derefDoc && url.length > 0">
       <home
-        v-if="$route.hash === ''"
+        v-if="$route.query.operation === ''"
         :info="derefDoc.info"
         :external-docs="derefDoc.externalDocs"
         :schemas="derefDoc.components?.schemas"
@@ -123,7 +123,7 @@ const fullOperation = computed<{
   serverUrl: string,
   hash: string
 } | null>(() => {
-  const hash = route.hash.replace('#', '')
+  const hash = route.query.operation
 
   for (const path in derefDoc.value?.paths) { // For each route
     for (const method in derefDoc.value.paths[path]) { // For each method

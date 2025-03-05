@@ -6,8 +6,8 @@
     >
       <!-- Main page -->
       <v-list-item
-        :active="!$route.hash"
-        @click="$router.push({ hash: '', query: $route.query})"
+        :active="!$route.query.operation"
+        @click="$router.push({ query: { ...$route.query, operation: undefined }})"
       >
         <v-list-item-title
           class="text-h6"

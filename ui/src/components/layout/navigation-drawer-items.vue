@@ -2,8 +2,8 @@
   <v-list-item
     v-for="item in formattedOperations[tag]"
     :key="item.path"
-    :active="$route.hash === `#${item.hash}`"
-    @click="$router.push({ hash: `#${item.hash}`, query: $route.query})"
+    :active="$route.query.operation === `${item.hash}`"
+    @click="$router.push({ query: { ...$route.query, operation: item.hash} })"
   >
     <template #title>
       <span

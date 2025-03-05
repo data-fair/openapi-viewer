@@ -22,7 +22,7 @@ You can use the followings query parameters to prefill the viewer :
 
 ### Directly Linking to an API Operation
 
-You can append a **hash (`#`)** with an `operationId` to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
+You can append a query parameter **operation** with an `operationId` as its value to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
 
 ## Integration with SimpleDirectory
 

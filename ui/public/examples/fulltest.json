@@ -493,6 +493,79 @@
           }
         }
       }
+    },
+    "/Request": {
+      "get": {
+        "summary": "Obtenir des informations sur les requêtes",
+        "description": "Cette route permet de tester différents paramètres de requête.",
+        "operationId": "getRequest",
+        "tags": [
+          "A Tag"
+        ],
+        "parameters": [
+          {
+            "name": "testString",
+            "in": "query",
+            "description": "Un paramètre de chaîne de caractères pour tester",
+            "schema": {
+              "title": "Une string",
+              "type": "string"
+            }
+          },
+          {
+            "name": "requiredString",
+            "in": "query",
+            "description": "Un paramètre de chaîne de caractères requis",
+            "required": true,
+            "schema": {
+              "title": "Une string requise",
+              "type": "string"
+            }
+          },
+          {
+            "name": "deprecatedString",
+            "in": "query",
+            "description": "Un paramètre de chaîne de caractères déprécié",
+            "deprecated": true,
+            "schema": {
+              "title": "Une string dépréciée",
+              "type": "string"
+            }
+          },
+          {
+            "name": "testBoolean",
+            "in": "query",
+            "description": "Un paramètre booléen pour tester",
+            "schema": {
+              "title": "Un booléen",
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "testInteger",
+            "in": "query",
+            "description": "Un paramètre entier pour tester, compris entre **1** et **10**",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "2XX": {
+            "description": "Toues les réponses commençant par 2 sont des réussites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

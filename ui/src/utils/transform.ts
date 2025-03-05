@@ -29,13 +29,9 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
     if (sec.in === 'cookie') continue
     schema.properties[sec.in].properties[sec.name] = {
       type: 'string',
-      title: (sec.description?.length || 0) < 75 ? sec.description : sec.name,
+      title: sec.name,
       description:
-        `Type: ${sec.type}
-        ${(sec.description?.length || 0) < 75
-          ? `\n\nKey: ${sec.name}`
-          : `\n\n${sec.description}`
-        }`
+        `Type: ${sec.type}\n\n${sec.description ? sec.description + '\n\n' : ''}Key: <strong><code>${sec.name}</code></strong>`,
     }
   }
 
@@ -57,13 +53,16 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
     schema.properties[param.in].properties[param.name] = {
       ...paramSchema,
       type: paramSchema.type || 'string',
-      title: (param.description?.length || 0) < 75 ? param.description : param.name,
+      title: paramSchema.title ?? param.name,
       description:
-        `${param.deprecated ? '/!\\ Deprecated\n\n' : ''}${(param.description?.length || 0) < 75
-          ? `Key: ${param.name}`
-          : param.description
-        }`,
-      disabled: param.deprecated,
+        `${param.deprecated ? '***This parameter is deprecated !***\n\n' : ''}${param.description}\n\nKey: <strong><code>${param.name}</code></strong>`,
+      readOnly: param.deprecated,
+    }
+    if (paramSchema.default) {
+      delete schema.properties[param.in].properties[param.name].default
+      schema.properties[param.in].properties[param.name].layout = {
+        hint: `Default: ${paramSchema.default}`
+      }
     }
   }
 

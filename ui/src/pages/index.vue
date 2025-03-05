@@ -36,7 +36,7 @@
     />
     <template v-if="derefDoc && url.length > 0">
       <home
-        v-if="$route.query.operation === ''"
+        v-if="!$route.query.operation"
         :info="derefDoc.info"
         :external-docs="derefDoc.externalDocs"
         :schemas="derefDoc.components?.schemas"

@@ -31,6 +31,7 @@
     "unplugin-auto-import": "^0.18.3",
     "unplugin-vue-components": "^0.27.4",
     "unplugin-vue-router": "^0.10.8",
+    "url-template": "^3.1.1",
     "vite": "^6.2.0",
     "vite-plugin-node-polyfills": "^0.23.0",
     "vite-plugin-vuetify": "^2.1.0",

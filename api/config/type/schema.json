@@ -11,11 +11,21 @@
   "title": "Api config",
   "additionalProperties": false,
   "required": [
+    "allowedUrls",
     "port",
     "serveUi",
     "useSimpleDirectory"
   ],
   "properties": {
+    "allowedUrls": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+$": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "port": {
       "type": "number"
     },

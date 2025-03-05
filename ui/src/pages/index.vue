@@ -8,16 +8,10 @@
   />
   <v-container data-iframe-height>
     <v-alert
-      v-if="url.length <= 0"
-      type="warning"
-      variant="outlined"
-      :title="t('errorNoUrl')"
-    />
-    <v-alert
-      v-else-if="crossDomainError"
+      v-if="errorMessage"
       type="error"
       variant="outlined"
-      :text="t('errorCrossDomain')"
+      :text="errorMessage"
       :title="t('error')"
     />
     <v-alert
@@ -26,13 +20,6 @@
       variant="outlined"
       :text="urlFetch.error.value.message"
       :title="t('errorCannotRetrieveData')"
-    />
-    <v-alert
-      v-else-if="derefError"
-      type="error"
-      variant="outlined"
-      :text="derefError"
-      :title="t('error')"
     />
     <template v-if="derefDoc && url.length > 0">
       <home
@@ -66,15 +53,14 @@ import type { OpenAPISpecs, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
 import { dereference } from '@apidevtools/json-schema-ref-parser'
 import { computedAsync } from '@vueuse/core'
+import * as urlTemplate from 'url-template'
 import YAML from 'yaml'
 
 const { t } = useI18n()
 const route = useRoute()
-const url = useStringSearchParam('url')
+const url = ref<string>('')
 const urlFetch = useFetch<OpenAPISpecs>(url, { watch: false, notifError: false })
-
-const derefError = ref<string | null>(null)
-const crossDomainError = ref<boolean>(true)
+const errorMessage = ref<string | null>(null)
 const dereferencing = shallowRef(false) // True if the dereferencing is in progress
 
 /*
@@ -100,12 +86,12 @@ const derefDoc = computedAsync(
         }
       ) as OpenAPISpecs
 
-      derefError.value = null
+      errorMessage.value = null
       initTransformer(deref)
       return deref
     } catch (error) {
       if (controller.signal.aborted) return undefined
-      else derefError.value = t('errorOpenAPISpecsNotValid')
+      else errorMessage.value = t('errorOpenAPISpecsNotValid')
     }
   },
   undefined,
@@ -141,21 +127,31 @@ const fullOperation = computed<{
   return null
 })
 
-watch(url, (newUrl) => {
+watch(route.query, () => {
   derefDoc.value = undefined
+  errorMessage.value = null
 
-  // No url provided
-  if (!newUrl || newUrl.length <= 0) return
-
-  const parsedUrl = new URL(newUrl, window.location.origin)
-  const urlDomain = parsedUrl.hostname
-
-  if (urlDomain && urlDomain !== window.location.hostname) {
-    crossDomainError.value = true
-  } else {
-    crossDomainError.value = false
-    urlFetch.refresh()
+  // Check url type
+  if (!Object.keys($uiConfig.allowedUrls).includes(route.query.urlType as string)) {
+    errorMessage.value = t('invalidUrlType')
+    return
   }
+
+  const template = $uiConfig.allowedUrls[route.query.urlType as string]
+
+  // Check if all params are present
+  const queryParams = route.query
+  const requiredParams = (template.match(/{[^}]+}/g) || []).map((param) => param.slice(1, -1))
+  const missingParams = requiredParams.filter((param) => !queryParams[param])
+  if (missingParams.length > 0) {
+    errorMessage.value = t('missingParams', { params: missingParams.join(', ') })
+    return
+  }
+
+  // Rempalce the template params with the query params
+  const resolvedUrl = urlTemplate.parseTemplate(template).expand(queryParams)
+  url.value = resolvedUrl
+  urlFetch.refresh()
 }, { immediate: true })
 
 </script>
@@ -164,17 +160,17 @@ watch(url, (newUrl) => {
   en:
     error: "Error"
     errorCannotRetrieveData: "Cannot retrieve data for this URL."
-    errorCrossDomain: "Cross-domain URLs are not allowed."
     errorHashNotMatch: "The hash does not match any operationId or path in the OpenAPI specs."
-    errorNoUrl: "No url provided !"
     errorOpenAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference."
+    invalidUrlType: "Invalid URL type."
+    missingParams: "Missing parameters: {params}"
   fr:
     error: "Erreur"
     errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL."
-    errorCrossDomain: "Les URLs cross-domain ne sont pas autorisées."
     errorHashNotMatch: "Le hash ne correspond à aucun operationId ou path dans les spécifications OpenAPI."
-    errorNoUrl: "Aucune url fournie !"
     errorOpenAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire."
+    invalidUrlType: "Type d'URL invalide."
+    missingParams: "Paramètres manquants : {params}"
 </i18n>
 
 <style scoped>

@@ -12,6 +12,7 @@ config.util.makeImmutable(apiConfig)
 export default apiConfig as ApiConfig
 
 export const uiConfig = {
+  allowedUrls: apiConfig.allowedUrls,
   useSimpleDirectory: apiConfig.useSimpleDirectory
 }
 export type UiConfig = typeof uiConfig

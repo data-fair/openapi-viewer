@@ -5,6 +5,7 @@
       <h1>
         {{ info.title }}
         <v-chip
+          v-if="info.version"
           density="compact"
           :prepend-icon="mdiLabel"
           :text="info.version"
@@ -27,7 +28,7 @@
       />
 
       <!-- Schemas -->
-      <template v-if="schemas">
+      <template v-if="schemas && Object.keys(schemas).length > 0">
         <h2 class="mt-2">
           {{ t('schemas') }}
         </h2>

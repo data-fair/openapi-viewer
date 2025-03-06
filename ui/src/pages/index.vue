@@ -135,7 +135,7 @@ watch(route.query, () => {
   errorMessage.value = null
 
   // --- Deprecated to the next major version ---
-  if (route.query.url?.length > 0) {
+  if (route.query.url && route.query.url.length > 0 && typeof route.query.url === 'string') {
     console.error('The "url" query parameter is deprecated, please use the "urlType" query parameter and setup the environment variable ALLOWED_URLS.')
     const parsedUrl = new URL(route.query.url, window.location.origin)
     const urlDomain = parsedUrl.hostname

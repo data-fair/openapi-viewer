@@ -47,6 +47,7 @@
             :color="getCodeColors(responseData.status)"
             :text="responseData.status"
             density="compact"
+            variant="elevated"
             label
           />
           {{ responseData.statusText }}

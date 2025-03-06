@@ -15,6 +15,7 @@ You can use the followings query parameters to prefill the viewer :
 
 ### Available Parameters
 
+- **drawerLocation** : The location of the navigation-drawer. Can be `left` or `right`. Defaults to `left`.
 - **urlType** : The type of the URL defined in the environment variable `ALLOWED_URLS`.
 
 > *Examples of ALLOWED_URLS :*

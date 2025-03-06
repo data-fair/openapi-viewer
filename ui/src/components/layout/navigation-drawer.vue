@@ -1,5 +1,8 @@
 <template>
-  <v-navigation-drawer permanent>
+  <v-navigation-drawer
+    permanent
+    :location="$route.query.drawerLocation === 'right' ? 'right' : 'left'"
+  >
     <v-list
       data-iframe-height
       mandatory

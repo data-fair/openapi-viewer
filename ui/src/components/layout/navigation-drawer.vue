@@ -4,12 +4,14 @@
     :location="$route.query.drawerLocation === 'right' ? 'right' : 'left'"
   >
     <v-list
+      class="pa-1"
       data-iframe-height
       mandatory
     >
       <!-- Main page -->
       <v-list-item
         :active="!$route.query.operation"
+        rounded
         @click="$router.push({ query: { ...$route.query, operation: undefined }})"
       >
         <v-list-item-title
@@ -33,6 +35,7 @@
         <template #activator="{ props: innerProps }">
           <v-list-item
             v-bind="innerProps"
+            rounded
           >
             <v-list-item-title
               class="text-h6"

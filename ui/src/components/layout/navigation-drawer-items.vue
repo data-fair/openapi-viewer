@@ -3,6 +3,7 @@
     v-for="item in formattedOperations[tag]"
     :key="item.path"
     :active="$route.query.operation === `${item.hash}`"
+    rounded
     @click="$router.push({ query: { ...$route.query, operation: item.hash} })"
   >
     <template #title>

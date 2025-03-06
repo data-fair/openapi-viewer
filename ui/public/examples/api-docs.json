@@ -140,14 +140,6 @@
                     "key"
                   ],
                   "properties": {
-                    "ignoreDetection": {
-                      "type": "boolean",
-                      "default": false
-                    },
-                    "ignoreIntegerDetection": {
-                      "type": "boolean",
-                      "default": false
-                    },
                     "separator": {
                       "type": [
                         "string",
@@ -850,7 +842,29 @@
                 },
                 "x-cardinality": {
                   "type": "integer",
-                  "description": "The number of distinct values for this field"
+                  "description": "The number of distinct values for this field",
+                  "readOnly": true
+                },
+                "x-transform": {
+                  "type": "object",
+                  "description": "Transformation to apply to the field",
+                  "properties": {
+                    "expr": {
+                      "type": "string"
+                    },
+                    "examples": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "format": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -2012,7 +2026,29 @@
                     },
                     "x-cardinality": {
                       "type": "integer",
-                      "description": "The number of distinct values for this field"
+                      "description": "The number of distinct values for this field",
+                      "readOnly": true
+                    },
+                    "x-transform": {
+                      "type": "object",
+                      "description": "Transformation to apply to the field",
+                      "properties": {
+                        "expr": {
+                          "type": "string"
+                        },
+                        "examples": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "format": {
+                          "type": "string"
+                        }
+                      }
                     }
                   }
                 }
@@ -3092,7 +3128,29 @@
                 },
                 "x-cardinality": {
                   "type": "integer",
-                  "description": "The number of distinct values for this field"
+                  "description": "The number of distinct values for this field",
+                  "readOnly": true
+                },
+                "x-transform": {
+                  "type": "object",
+                  "description": "Transformation to apply to the field",
+                  "properties": {
+                    "expr": {
+                      "type": "string"
+                    },
+                    "examples": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "format": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -4408,7 +4466,29 @@
                     },
                     "x-cardinality": {
                       "type": "integer",
-                      "description": "The number of distinct values for this field"
+                      "description": "The number of distinct values for this field",
+                      "readOnly": true
+                    },
+                    "x-transform": {
+                      "type": "object",
+                      "description": "Transformation to apply to the field",
+                      "properties": {
+                        "expr": {
+                          "type": "string"
+                        },
+                        "examples": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "format": {
+                          "type": "string"
+                        }
+                      }
                     }
                   }
                 }
@@ -7201,6 +7281,7 @@
             "description": "Recherche textuelle",
             "required": false,
             "schema": {
+              "title": "Recherche textuelle",
               "type": "string"
             }
           },
@@ -7220,6 +7301,7 @@
             "description": "Restreindre par propriétaire",
             "required": false,
             "schema": {
+              "title": "Restreindre par propriétaire",
               "type": "array",
               "items": {
                 "type": "string",
@@ -7238,6 +7320,7 @@
             "description": "Ne pas inclure les champs calculés",
             "required": false,
             "schema": {
+              "title": "Ne pas inclure les champs calculés",
               "type": "boolean"
             }
           },
@@ -7247,9 +7330,7 @@
             "description": "La liste des colonnes à retourner",
             "required": false,
             "schema": {
-              "default": [
-                "title"
-              ],
+              "title": "La liste des colonnes à retourner",
               "type": "array",
               "items": {
                 "type": "string",
@@ -7324,6 +7405,7 @@
             "description": "Restreindre sur les identifiants",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les identifiants",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7338,6 +7420,7 @@
             "description": "Restreindre sur les noms de fichier",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les noms de fichier",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7352,6 +7435,7 @@
             "description": "Restreindre sur les concepts annotés",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les concepts annotés",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7366,6 +7450,7 @@
             "description": "Restreindre sur les types de colonnes",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les types de colonnes",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7380,6 +7465,7 @@
             "description": "Restreindre sur les formats des colonnes textes",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les formats des colonnes textes",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7394,6 +7480,7 @@
             "description": "Restreindre aux jeux avec fichiers attachés",
             "required": false,
             "schema": {
+              "title": "Restreindre aux jeux avec fichiers attachés",
               "type": "boolean"
             }
           },
@@ -7403,6 +7490,7 @@
             "description": "Restreindre aux jeux géographiques",
             "required": false,
             "schema": {
+              "title": "Restreindre aux jeux géographiques",
               "type": "boolean"
             }
           },
@@ -7412,6 +7500,7 @@
             "description": "Restreindre aux jeux requêtables et utilisables dans des applications",
             "required": false,
             "schema": {
+              "title": "Restreindre aux jeux requêtables et utilisables dans des applications",
               "type": "boolean"
             }
           },
@@ -7421,6 +7510,7 @@
             "description": "Numéro de page",
             "required": false,
             "schema": {
+              "title": "Numéro de page",
               "type": "integer",
               "default": 1,
               "min": 1
@@ -7432,6 +7522,7 @@
             "description": "Taille de la page",
             "required": false,
             "schema": {
+              "title": "Taille de la page",
               "type": "integer",
               "default": 10,
               "min": 1
@@ -7443,6 +7534,7 @@
             "description": "Filtrer sur la visibilité de la ressource.\n\"public\" = voir les ressources publiques\n\"private\" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée)\n\"protected\" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).",
             "required": false,
             "schema": {
+              "title": "Filtrer sur la visibilité de la ressource.",
               "type": "array",
               "items": {
                 "type": "string",
@@ -7527,9 +7619,10 @@
         {
           "in": "path",
           "name": "id",
-          "description": "identifiant",
+          "description": "Identifiant",
           "required": true,
           "schema": {
+            "title": "Identifiant",
             "type": "string"
           }
         }
@@ -7650,6 +7743,7 @@
             "description": "Recherche textuelle",
             "required": false,
             "schema": {
+              "title": "Recherche textuelle",
               "type": "string"
             }
           },
@@ -7669,6 +7763,7 @@
             "description": "Restreindre par propriétaire",
             "required": false,
             "schema": {
+              "title": "Restreindre par propriétaire",
               "type": "array",
               "items": {
                 "type": "string",
@@ -7687,6 +7782,7 @@
             "description": "Ne pas inclure les champs calculés",
             "required": false,
             "schema": {
+              "title": "Ne pas inclure les champs calculés",
               "type": "boolean"
             }
           },
@@ -7696,9 +7792,7 @@
             "description": "La liste des colonnes à retourner",
             "required": false,
             "schema": {
-              "default": [
-                "title"
-              ],
+              "title": "La liste des colonnes à retourner",
               "type": "array",
               "items": {
                 "type": "string",
@@ -7746,6 +7840,7 @@
             "description": "Restreindre sur les identifiants",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les identifiants",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7760,6 +7855,7 @@
             "description": "Restreindre sur les jeux de données utilisés",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les jeux de données utilisés",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7774,6 +7870,7 @@
             "description": "Restreindre sur les services distants utilisés",
             "required": false,
             "schema": {
+              "title": "Restreindre sur les services distants utilisés",
               "type": "array",
               "items": {
                 "type": "string"
@@ -7788,6 +7885,7 @@
             "description": "Numéro de page",
             "required": false,
             "schema": {
+              "title": "Numéro de page",
               "type": "integer",
               "default": 1,
               "min": 1
@@ -7799,6 +7897,7 @@
             "description": "Taille de la page",
             "required": false,
             "schema": {
+              "title": "Taille de la page",
               "type": "integer",
               "default": 10,
               "min": 1
@@ -7810,6 +7909,7 @@
             "description": "Filtrer sur la visibilité de la ressource.\n\"public\" = voir les ressources publiques\n\"private\" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée)\n\"protected\" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).",
             "required": false,
             "schema": {
+              "title": "Filtrer sur la visibilité de la ressource.",
               "type": "array",
               "items": {
                 "type": "string",
@@ -7894,9 +7994,10 @@
         {
           "in": "path",
           "name": "id",
-          "description": "identifiant",
+          "description": "Identifiant",
           "required": true,
           "schema": {
+            "title": "Identifiant",
             "type": "string"
           }
         }

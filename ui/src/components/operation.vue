@@ -258,7 +258,11 @@ const vjsfOptions = {
   initialValidation: 'always',
   updateOn: 'blur',
   validateOn: 'blur',
-  titleDepth: 3
+  titleDepth: 3,
+  useDefault: 'placeholder' as const,
+  useTitle: false,
+  useExample: 'help',
+  useDeprecated: true
 }
 
 </script>

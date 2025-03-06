@@ -28,7 +28,8 @@ import DOMPurify from 'dompurify'
   if ($uiConfig.useSimpleDirectory) { // Don't integrate session in standalone mode
     session = await createSession({ directoryUrl: $sitePath + '/simple-directory', siteInfo: true })
     localeDayjs = createLocaleDayjs(session.state.lang)
-    i18n = createI18n({ locale: session.state.lang })
+    // i18n = createI18n({ locale: session.state.lang })
+    i18n = createI18n({ locale: 'en' }) // TODO: Fix VJSF i18n
     Object.assign(vuetifyOptions, vuetifySessionOptions(session))
   } else {
     i18n = createI18n({ locale: 'en' })

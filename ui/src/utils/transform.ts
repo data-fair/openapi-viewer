@@ -53,15 +53,16 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
     schema.properties[param.in].properties[param.name] = {
       ...paramSchema,
       type: paramSchema.type || 'string',
-      title: paramSchema.title ?? param.name,
-      description:
-        `${param.deprecated ? '***This parameter is deprecated !***\n\n' : ''}${param.description}\n\nKey: <strong><code>${param.name}</code></strong>`,
-      readOnly: param.deprecated,
+      description: param.description,
+      deprecated: paramSchema.deprecated || param.deprecated || false,
     }
-    if (paramSchema.default) {
-      delete schema.properties[param.in].properties[param.name].default
+    if (paramSchema.title) {
+      delete schema.properties[param.in].properties[param.name].title
       schema.properties[param.in].properties[param.name].layout = {
-        hint: `Default: ${paramSchema.default}`
+        ...schema.properties[param.in].properties[param.name].layout,
+        slots: {
+          before: paramSchema.title
+        }
       }
     }
   }

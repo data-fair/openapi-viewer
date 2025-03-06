@@ -1,7 +1,10 @@
 <template>
+  <!--
+  Deprecated for security reasons, do not allow users to enter a URL directly.
   <top-bar
     v-if="$route.query['hide-toolbar'] !== 'true'"
   />
+  -->
   <navigation-drawer
     :paths="derefDoc?.paths"
     :tags="derefDoc?.tags"
@@ -58,7 +61,7 @@ import YAML from 'yaml'
 
 const { t } = useI18n()
 const route = useRoute()
-const url = ref<string>('')
+const url = ref<string>('') // const url = useStringSearchParam('url')
 const urlFetch = useFetch<OpenAPISpecs>(url, { watch: false, notifError: false })
 const errorMessage = ref<string | null>(null)
 const dereferencing = shallowRef(false) // True if the dereferencing is in progress
@@ -131,26 +134,40 @@ watch(route.query, () => {
   derefDoc.value = undefined
   errorMessage.value = null
 
-  // Check url type
-  if (!Object.keys($uiConfig.allowedUrls).includes(route.query.urlType as string)) {
-    errorMessage.value = t('invalidUrlType')
-    return
+  // --- Deprecated to the next major version ---
+  if (route.query.url?.length > 0) {
+    console.error('The "url" query parameter is deprecated, please use the "urlType" query parameter and setup the environment variable ALLOWED_URLS.')
+    const parsedUrl = new URL(route.query.url, window.location.origin)
+    const urlDomain = parsedUrl.hostname
+
+    if (urlDomain && urlDomain !== window.location.hostname) {
+      errorMessage.value = t('errorCrossDomain')
+      return
+    }
+
+  // --- New way to handle the URL ---
+  } else {
+    // Check url type
+    if (!Object.keys($uiConfig.allowedUrls).includes(route.query.urlType as string)) {
+      errorMessage.value = t('invalidUrlType')
+      return
+    }
+
+    const template = $uiConfig.allowedUrls[route.query.urlType as string]
+
+    // Check if all params are present
+    const queryParams = route.query
+    const requiredParams = (template.match(/{[^}]+}/g) || []).map((param) => param.slice(1, -1))
+    const missingParams = requiredParams.filter((param) => !queryParams[param])
+    if (missingParams.length > 0) {
+      errorMessage.value = t('missingParams', { params: missingParams.join(', ') })
+      return
+    }
+
+    // Rempalce the template params with the query params
+    url.value = urlTemplate.parseTemplate(template).expand(queryParams)
   }
 
-  const template = $uiConfig.allowedUrls[route.query.urlType as string]
-
-  // Check if all params are present
-  const queryParams = route.query
-  const requiredParams = (template.match(/{[^}]+}/g) || []).map((param) => param.slice(1, -1))
-  const missingParams = requiredParams.filter((param) => !queryParams[param])
-  if (missingParams.length > 0) {
-    errorMessage.value = t('missingParams', { params: missingParams.join(', ') })
-    return
-  }
-
-  // Rempalce the template params with the query params
-  const resolvedUrl = urlTemplate.parseTemplate(template).expand(queryParams)
-  url.value = resolvedUrl
   urlFetch.refresh()
 }, { immediate: true })
 
@@ -160,14 +177,16 @@ watch(route.query, () => {
   en:
     error: "Error"
     errorCannotRetrieveData: "Cannot retrieve data for this URL."
-    errorHashNotMatch: "The hash does not match any operationId or path in the OpenAPI specs."
+    errorCrossDomain: "Cross-domain URLs are not allowed."
+    errorHashNotMatch: "The selected operation does not match any operationId or path in the OpenAPI specs."
     errorOpenAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference."
     invalidUrlType: "Invalid URL type."
     missingParams: "Missing parameters: {params}"
   fr:
     error: "Erreur"
     errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL."
-    errorHashNotMatch: "Le hash ne correspond à aucun operationId ou path dans les spécifications OpenAPI."
+    errorCrossDomain: "Les URLs cross-domain ne sont pas autorisées."
+    errorHashNotMatch: "L'opération sélectionnée ne correspond à aucun operationId ou path dans les spécifications OpenAPI."
     errorOpenAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire."
     invalidUrlType: "Type d'URL invalide."
     missingParams: "Paramètres manquants : {params}"

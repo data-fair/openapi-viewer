@@ -17,12 +17,27 @@ You can use the followings query parameters to prefill the viewer :
 
 ### Available Parameters
 
-- **url** : The location of the API documentation file to load, in OpenAPI v3 JSON format.
-- **hide-toolbar** : `true` or `false` to hide the toolbar (useful for iframe integration). Defaults to `false`.
+- **urlType** : The type of the URL defined in the environment variable `ALLOWED_URLS`.
+
+> *Examples of ALLOWED_URLS :*
+>
+> ```json
+> {
+>   "exampleYaml": "https://example1.com/openapi.yaml",
+>   "exampleWithUrlTemplate": "https://example2.com/{id}/openapi.json"
+> }
+> ```
+
+> ⚠️ **Deprecated**: `url` and `hide-toolbar` are deprecated. Use `openapi` and `toolbar` instead.
+>
+> - ~~**url** : The location of the API documentation file to load, in OpenAPI v3 JSON format.~~
+> - ~~**hide-toolbar** : `true` or `false` to hide the toolbar (useful for iframe integration). Defaults to `false`.~~
 
 ### Directly Linking to an API Operation
 
 You can append a query parameter **operation** with an `operationId` as its value to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
+
+> ⚠️ The hash part of the URL has been replaced by the query parameter `operation`.
 
 ## Integration with SimpleDirectory
 

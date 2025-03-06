@@ -566,6 +566,28 @@
           }
         }
       }
+    },
+    "/xss": {
+      "get": {
+        "summary": "Test de sécurité XSS",
+        "description": "<script>alert('XSS Test!')</script>Cette route permet de tester la sécurité contre les attaques XSS.",
+        "operationId": "getXSS",
+        "tags": [
+          "A Tag"
+        ],
+        "responses": {
+          "200": {
+            "description": "[Click me to see an alert](javascript:alert('Hacked!'))",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseA"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

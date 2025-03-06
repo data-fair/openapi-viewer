@@ -7,7 +7,8 @@
       Curl / Url
     </v-tab>
     <v-tab
-      value="responses">
+      value="responses"
+    >
       {{ t('responses') }}
     </v-tab>
     <v-tab value="serverResponse">

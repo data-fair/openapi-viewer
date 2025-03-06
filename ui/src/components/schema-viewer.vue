@@ -12,14 +12,16 @@
       value="raw"
       size="small"
       :prepend-icon="mdiCodeJson"
-      :text="t('raw')"
-    />
+    >
+      {{ t('raw') }}
+    </v-btn>
     <v-btn
       value="tree"
       size="small"
       :prepend-icon="mdiFileTree"
-      :text="t('tree')"
-    />
+    >
+      {{ t('tree') }}
+    </v-btn>
   </v-btn-toggle>
   <v-tabs-window
     v-model="tab"

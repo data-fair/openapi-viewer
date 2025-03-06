@@ -2,8 +2,6 @@
 
 This service is designed to easily browse and test a REST API described with the [OpenAPI 3.0 Specification](https://github.com/OAI/OpenAPI-Specification).
 
-See it in action [here](https://koumoul.com/openapi-viewer/)
-
 ## Sponsors
 
 | | Click [here to support the development of this project](https://github.com/sponsors/koumoul-dev). |
@@ -28,14 +26,14 @@ You can use the followings query parameters to prefill the viewer :
 > }
 > ```
 
-> ⚠️ **Deprecated**: `url` and `hide-toolbar` are deprecated. Use `openapi` and `toolbar` instead.
+> ⚠️ **Deprecated**: `url` and `hide-toolbar` are deprecated.
 >
 > - ~~**url** : The location of the API documentation file to load, in OpenAPI v3 JSON format.~~
 > - ~~**hide-toolbar** : `true` or `false` to hide the toolbar (useful for iframe integration). Defaults to `false`.~~
 
 ### Directly Linking to an API Operation
 
-You can append a query parameter **operation** with an `operationId` as its value to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
+You can append a query parameter `operation` with an `operationId` as its value to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
 
 > ⚠️ The hash part of the URL has been replaced by the query parameter `operation`.
 

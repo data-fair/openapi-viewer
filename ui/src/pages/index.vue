@@ -144,6 +144,7 @@ watch(route.query, () => {
       errorMessage.value = t('errorCrossDomain')
       return
     }
+    url.value = route.query.url
 
   // --- New way to handle the URL ---
   } else {

@@ -1,47 +1,32 @@
 <template>
   <v-tabs
     v-model="panelRight"
-    grow
   >
-    <v-tab value="snippet">
-      Curl / Url
+    <v-tab value="serverResponse">
+      {{ t('serverResponse') }}
     </v-tab>
     <v-tab
       value="responses"
     >
       {{ t('responses') }}
     </v-tab>
-    <v-tab value="serverResponse">
-      {{ t('serverResponse') }}
-    </v-tab>
   </v-tabs>
 
   <v-tabs-window v-model="panelRight">
-    <v-tabs-window-item
-      value="snippet"
-      class="mt-2"
-    >
-      <snippet
-        :endpoint-query-values="endpointQueryValues"
-        :server-url="serverUrl"
-        :method="method"
-        :path="fullPath"
-      />
-    </v-tabs-window-item>
-
-    <v-tabs-window-item value="responses">
-      <responses
-        v-if="operation.responses"
-        :responses="operation.responses"
-      />
-      <template v-else>
-        <p class="text-muted">
-          {{ t('noDocsResponses') }}
-        </p>
-      </template>
-    </v-tabs-window-item>
-
     <v-tabs-window-item value="serverResponse">
+      <v-row justify="center">
+        <v-btn
+          class="my-4"
+          color="primary"
+          :prepend-icon="mdiPlay"
+          :loading="loading"
+          :disabled="loading"
+          @click="emit('executeRequest')"
+        >
+          {{ t('execute') }}
+        </v-btn>
+      </v-row>
+
       <template v-if="responseData">
         <h4>
           <v-chip
@@ -99,49 +84,36 @@
         </p>
       </template>
     </v-tabs-window-item>
+
+    <v-tabs-window-item value="responses">
+      <responses
+        v-if="operation.responses"
+        :responses="operation.responses"
+      />
+      <template v-else>
+        <p class="text-muted">
+          {{ t('noDocsResponses') }}
+        </p>
+      </template>
+    </v-tabs-window-item>
   </v-tabs-window>
 </template>
 
 <script setup lang="ts">
-import type { GenericEndpointQuery, Operation } from '#api/types'
+import type { Operation } from '#api/types'
 import YAML from 'yaml'
 
-const { operation, endpointQueryValues, responseData, serverUrl, method, path } = defineProps<{
+const { operation, responseData } = defineProps<{
   operation: Operation
-  endpointQueryValues: GenericEndpointQuery
   responseData: Record<string, any> | null
-  serverUrl: string | null
-  method: string
-  path: string
+  loading: boolean
 }>()
+
+const emit = defineEmits(['executeRequest'])
 
 const { t } = useI18n()
 
-const panelRight = ref<string>('snippet')
-const fullPath = ref<string>(path)
-
-function getFullPath () {
-  let fullPath = path
-  if (endpointQueryValues.path) {
-    for (const [key, value] of Object.entries(endpointQueryValues.path)) {
-      fullPath = fullPath.replace(`{${key}}`, encodeURIComponent(value))
-    }
-  }
-  return fullPath
-}
-
-function setActiveTab (tab: string) {
-  panelRight.value = tab
-}
-
-defineExpose({ setActiveTab })
-onMounted(() => {
-  if (panelRight.value === 'serverResponse') panelRight.value = 'snippet'
-})
-
-watch(() => endpointQueryValues, () => {
-  fullPath.value = getFullPath()
-}, { immediate: true, deep: true })
+const panelRight = ref<string>('serverResponse')
 
 /*
  * Match the status code with a color
@@ -172,21 +144,23 @@ const getCodeColors = (status: string) => {
 
 <i18n lang="yaml">
   en:
+    execute: "Execute"
     noDocsResponses: "No response documentation."
     noResponses: "No responses received yet."
     parsingFailed: "Unable to parse response."
     responseBody: "Response Body"
     responseHeaders: "Response Headers"
     responses: Responses
-    serverResponse: "Server Response"
+    serverResponse: "Try it out"
   fr:
+    execute: "Exécuter"
     noDocsResponses: "Aucune documentation de réponse."
     noResponses: "Aucune réponse reçue pour le moment."
     parsingFailed: "Impossible de parser la réponse."
     responseBody: "Corps de la réponse"
     responseHeaders: "En-têtes de la réponse"
     responses: Réponses
-    serverResponse: "Réponse du serveur"
+    serverResponse: "Essayer"
 </i18n>
 
 <style scoped>

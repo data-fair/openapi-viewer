@@ -50,81 +50,92 @@
 
   <v-row>
     <v-col cols="6">
-      <v-form>
-        <v-defaults-provider
-          :defaults="{
-            global: {
-              hideDetails: 'auto',
-            },
-            VCheckbox: {
-              density: 'compact'
-            },
-          }"
+      <v-tabs
+        v-model="panelLeft"
+      >
+        <v-tab value="parameters">
+          {{ t('parameters') }}
+        </v-tab>
+        <v-tab
+          value="snippet"
         >
-          <vjsf
-            v-model="endpointQueryValues"
-            :schema="endpointQuerySchema"
-            :options="vjsfOptions"
-          >
-            <template #schema-and-examples="{ schema, examples}">
-              <!-- Show tabs selector only if there are examples, else just show the schema window -->
-              <v-tabs
-                v-if="(examples && Object.keys(examples).length > 0) || (Array.isArray(examples) && examples.length > 0)"
-                v-model="schemaOrExamplesTab"
-              >
-                <v-tab value="schema">
-                  {{ t('schema') }}
-                </v-tab>
-                <v-tab value="examples">
-                  {{ t('examples') }}
-                </v-tab>
-              </v-tabs>
-              <v-tabs-window v-model="schemaOrExamplesTab">
-                <v-tabs-window-item value="schema">
-                  <schema-viewer
-                    :key="schema"
-                    :json-schema="schema"
-                  />
-                </v-tabs-window-item>
-                <v-tabs-window-item value="examples">
-                  <prism
-                    :key="examples"
-                    language="json"
-                    max-height="400px"
-                    copy
-                  >
-                    {{ JSON.stringify(examples, null, 2) }}
-                  </prism>
-                </v-tabs-window-item>
-              </v-tabs-window>
-            </template>
-          </vjsf>
-        </v-defaults-provider>
-      </v-form>
+          Curl / Url
+        </v-tab>
+      </v-tabs>
 
-      <v-row justify="center">
-        <v-btn
-          class="my-4"
-          color="primary"
-          :prepend-icon="mdiPlay"
-          :loading="loading"
-          :disabled="loading"
-          @click="executeRequest"
-        >
-          {{ t('execute') }}
-        </v-btn>
-      </v-row>
+      <v-tabs-window v-model="panelLeft">
+        <v-tabs-window-item value="parameters">
+          <v-form>
+            <v-defaults-provider
+              :defaults="{
+                global: {
+                  hideDetails: 'auto',
+                },
+                VCheckbox: {
+                  density: 'compact'
+                },
+              }"
+            >
+              <vjsf
+                v-model="endpointQueryValues"
+                :schema="endpointQuerySchema"
+                :options="vjsfOptions"
+              >
+                <template #schema-and-examples="{ schema, examples}">
+                  <!-- Show tabs selector only if there are examples, else just show the schema window -->
+                  <v-tabs
+                    v-if="(examples && Object.keys(examples).length > 0) || (Array.isArray(examples) && examples.length > 0)"
+                    v-model="schemaOrExamplesTab"
+                  >
+                    <v-tab value="schema">
+                      {{ t('schema') }}
+                    </v-tab>
+                    <v-tab value="examples">
+                      {{ t('examples') }}
+                    </v-tab>
+                  </v-tabs>
+                  <v-tabs-window v-model="schemaOrExamplesTab">
+                    <v-tabs-window-item value="schema">
+                      <schema-viewer
+                        :key="schema"
+                        :json-schema="schema"
+                      />
+                    </v-tabs-window-item>
+                    <v-tabs-window-item value="examples">
+                      <prism
+                        :key="examples"
+                        language="json"
+                        max-height="400px"
+                        copy
+                      >
+                        {{ JSON.stringify(examples, null, 2) }}
+                      </prism>
+                    </v-tabs-window-item>
+                  </v-tabs-window>
+                </template>
+              </vjsf>
+            </v-defaults-provider>
+          </v-form>
+        </v-tabs-window-item>
+
+        <v-tabs-window-item value="snippet">
+          <snippet
+            :endpoint-query-values="endpointQueryValues"
+            :server-url="serverUrl"
+            :method="method"
+            :path="path"
+          />
+        </v-tabs-window-item>
+      </v-tabs-window>
     </v-col>
 
     <v-col cols="6">
-      <operation-pannel-right
-        ref="operationPannelRightRef"
+      <operation-panel-right
+        ref="operationPanelRightRef"
         :operation="operation"
-        :endpoint-query-values="endpointQueryValues"
         :response-data="responseData"
-        :server-url="serverUrl"
-        :method="method"
-        :path="path"
+        :loading="loading"
+        @execute-request="executeRequest"
       />
     </v-col>
   </v-row>
@@ -147,12 +158,28 @@ const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
 
 const { t } = useI18n()
 
+const panelLeft = ref<string>('parameters')
 const schemaOrExamplesTab = ref<string>('schema')
 const endpointQueryValues = ref<GenericEndpointQuery>({})
 const endpointQuerySchema = ref<SchemaObject>({})
 const responseData = ref<Record<string, any> | null>(null)
-const operationPannelRightRef = ref<null | { setActiveTab: (tab: string) => void }>(null)
 const loading = ref(false)
+
+const fullPath = ref<string>(path)
+
+function getFullPath () {
+  let fullPath = path
+  if (endpointQueryValues.value.path) {
+    for (const [key, value] of Object.entries(endpointQueryValues.value.path)) {
+      fullPath = fullPath.replace(`{${key}}`, encodeURIComponent(value))
+    }
+  }
+  return fullPath
+}
+
+watch(() => endpointQueryValues, () => {
+  fullPath.value = getFullPath()
+}, { immediate: true, deep: true })
 
 const executeRequest = async () => {
   loading.value = true
@@ -243,7 +270,7 @@ const executeRequest = async () => {
     headers: Object.fromEntries(response.headers.entries())
   }
 
-  operationPannelRightRef.value?.setActiveTab('serverResponse')
+  // operationPanelRightRef.value?.setActiveTab('serverResponse')
   loading.value = false
 }
 
@@ -270,16 +297,16 @@ const vjsfOptions = {
 <i18n lang="yaml">
   en:
     deprecated: "Deprecated"
-    execute: "Execute"
     externalDoc: "External documentation"
     examples: "Examples"
+    parameters: "Parameters"
     schema: "Schema"
     tags: "Tags"
   fr:
     deprecated: "Déprécié"
-    execute: "Exécuter"
     externalDoc: "Documentation externe"
     examples: "Exemples"
+    parameters: "Paramètres"
     schema: "Schéma"
     tags: "Tags"
 </i18n>

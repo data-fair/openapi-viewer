@@ -33,7 +33,7 @@
           {{ t('schemas') }}
         </h2>
         <v-expansion-panels
-          v-model="schemaPannel"
+          v-model="schemaPanel"
           density="compact"
         >
           <v-expansion-panel
@@ -214,7 +214,7 @@ const { info, externalDocs, servers, schemas } = defineProps<{
 
 const { t } = useI18n()
 
-const schemaPannel = ref<number | null>(null)
+const schemaPanel = ref<number | null>(null)
 
 </script>
 

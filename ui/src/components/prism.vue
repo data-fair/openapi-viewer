@@ -3,19 +3,26 @@
     v-if="!inline"
     class="position-relative text-body-2"
   >
-    <v-fab
-      v-if="props.copy"
-      class="mt-2 mr-6"
-      color="primary"
-      density="comfortable"
-      location="top right"
-      size="small"
-      absolute
-      extended
-      :prepend-icon="mdiContentCopy"
+    <v-tooltip
+      v-if="copy"
       :text="t('copy')"
-      @click="copyToClipboard"
-    />
+      location="top right"
+      open-delay="500"
+    >
+      <template #activator="{ props }">
+        <v-fab
+          v-bind="props"
+          class="mt-2 mr-6"
+          color="primary"
+          density="default"
+          location="top right"
+          size="x-small"
+          absolute
+          :icon="mdiContentCopy"
+          @click="copyToClipboard"
+        />
+      </template>
+    </v-tooltip>
     <pre
       ref="preElement"
       :class="className"
@@ -42,7 +49,7 @@ import 'prismjs/components/prism-yaml.js'
 const { t } = useI18n()
 const { sendUiNotif } = useUiNotif()
 
-const props = defineProps<{
+const { inline, language, maxHeight, copy } = defineProps<{
   inline?: boolean
   language?: string
   maxHeight?: string
@@ -52,21 +59,21 @@ const props = defineProps<{
 const slots = defineSlots()
 const slotContent = computed(() => slots.default?.()?.[0]?.children ?? '')
 
-const className = computed(() => `language-${props.language ?? 'markup'} rounded`)
-const style = computed(() => 'max-height: ' + (props.maxHeight ?? 'none'))
+const className = computed(() => `language-${language ?? 'markup'} rounded`)
+const style = computed(() => 'max-height: ' + (maxHeight ?? 'none'))
 
 const highlightedCode = computed(() => {
   const code = typeof slotContent.value === 'string' ? slotContent.value : ''
-  const prismLanguage = Prism.languages[props.language ?? 'markup']
+  const prismLanguage = Prism.languages[language ?? 'markup']
 
   if (import.meta.env.MODE === 'development' && !prismLanguage) {
     console.warn(
-      `Prism component for language "${props.language}" was not found. Did you forget to register it?`
+      `Prism component for language "${language}" was not found. Did you forget to register it?`
     )
     return code
   }
 
-  return Prism.highlight(code, prismLanguage, props.language ?? 'markup')
+  return Prism.highlight(code, prismLanguage, language ?? 'markup')
 })
 
 async function copyToClipboard () {

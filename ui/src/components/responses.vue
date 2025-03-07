@@ -29,6 +29,7 @@
       v-for="({ response, code }) in sortedResponses"
       :key="code"
       :value="code"
+      class="mt-2"
     >
       <!-- Description -->
       <div

@@ -54,6 +54,7 @@
 <script setup lang="ts">
 import type { OpenAPISpecs, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
+
 import { dereference } from '@apidevtools/json-schema-ref-parser'
 import { computedAsync } from '@vueuse/core'
 import * as urlTemplate from 'url-template'
@@ -62,17 +63,21 @@ import YAML from 'yaml'
 const { t } = useI18n()
 const route = useRoute()
 const url = ref<string>('') // const url = useStringSearchParam('url')
-const urlFetch = useFetch<OpenAPISpecs>(url, { watch: false, notifError: false })
 const errorMessage = ref<string | null>(null)
 const dereferencing = shallowRef(false) // True if the dereferencing is in progress
 
+const urlFetch = useFetch<OpenAPISpecs>(url, { watch: false, notifError: false })
+
 /*
  * Dereference the OpenAPI specs
+ * -> Convert yaml to json if needed
+ * -> Throw an error for circular references
  */
 const derefDoc = computedAsync(
   async (onCancel) => {
     if (!urlFetch.data.value) return undefined
 
+    // Abort the dereferencing if the URL changes
     const controller = new AbortController()
     onCancel(() => controller.abort())
 
@@ -102,7 +107,7 @@ const derefDoc = computedAsync(
 )
 
 /*
- *  Find the operation selected (with the hash)
+ *  Find the operation selected with the hash (query parameter 'operation')
  */
 const fullOperation = computed<{
   operation: Operation,
@@ -118,7 +123,7 @@ const fullOperation = computed<{
     for (const method in derefDoc.value.paths[path]) { // For each method
       const operation = derefDoc.value.paths[path][method] as Operation
 
-      // If the hash (the selected operation) matches an operationId or a path
+      // If the hash (the selected operation) matches the operationId or the path
       if (operation?.operationId === hash || `${path}|${method}` === hash) {
         const pathItemParameters = derefDoc.value.paths[path]?.parameters as Parameter[] || []
         const serverUrl = derefDoc.value.servers?.[0]?.url || ''

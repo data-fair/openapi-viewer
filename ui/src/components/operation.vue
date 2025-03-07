@@ -131,7 +131,6 @@
 
     <v-col cols="6">
       <operation-panel-right
-        ref="operationPanelRightRef"
         :operation="operation"
         :response-data="responseData"
         :loading="loading"
@@ -145,8 +144,9 @@
 import type { GenericEndpointQuery, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
 import type { SchemaObject } from 'ajv'
-import { marked } from 'marked'
+
 import Vjsf from '@koumoul/vjsf'
+import { marked } from 'marked'
 
 const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
   operation: Operation

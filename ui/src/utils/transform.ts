@@ -56,15 +56,6 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
       description: param.description,
       deprecated: paramSchema.deprecated || param.deprecated || false,
     }
-    if (paramSchema.title) {
-      delete schema.properties[param.in].properties[param.name].title
-      schema.properties[param.in].properties[param.name].layout = {
-        ...schema.properties[param.in].properties[param.name].layout,
-        slots: {
-          before: paramSchema.title
-        }
-      }
-    }
   }
 
   // Transform requestBody

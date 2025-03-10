@@ -14,18 +14,16 @@
 
   <v-tabs-window v-model="panelRight">
     <v-tabs-window-item value="serverResponse">
-      <v-row justify="center">
-        <v-btn
-          class="my-4"
-          color="primary"
-          :prepend-icon="mdiPlay"
-          :loading="loading"
-          :disabled="loading"
-          @click="emit('executeRequest')"
-        >
-          {{ t('execute') }}
-        </v-btn>
-      </v-row>
+      <v-btn
+        class="my-4"
+        color="primary"
+        :prepend-icon="mdiPlay"
+        :loading="loading"
+        :disabled="loading"
+        @click="emit('executeRequest')"
+      >
+        {{ t('execute') }}
+      </v-btn>
 
       <template v-if="responseData">
         <h4>
@@ -77,11 +75,6 @@
             {{ YAML.stringify(responseData.headers) }}
           </prism>
         </template>
-      </template>
-      <template v-else>
-        <p class="text-muted">
-          {{ t('noResponses') }}
-        </p>
       </template>
     </v-tabs-window-item>
 
@@ -146,7 +139,6 @@ const getCodeColors = (status: string) => {
   en:
     execute: "Execute"
     noDocsResponses: "No response documentation."
-    noResponses: "No responses received yet."
     parsingFailed: "Unable to parse response."
     responseBody: "Response Body"
     responseHeaders: "Response Headers"
@@ -155,7 +147,6 @@ const getCodeColors = (status: string) => {
   fr:
     execute: "Exécuter"
     noDocsResponses: "Aucune documentation de réponse."
-    noResponses: "Aucune réponse reçue pour le moment."
     parsingFailed: "Impossible de parser la réponse."
     responseBody: "Corps de la réponse"
     responseHeaders: "En-têtes de la réponse"

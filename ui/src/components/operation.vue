@@ -65,11 +65,11 @@
 
       <v-tabs-window v-model="panelLeft">
         <v-tabs-window-item value="parameters">
-          <v-form>
+          <v-form class="mr-2">
             <v-defaults-provider
               :defaults="{
                 global: {
-                  hideDetails: 'auto',
+                  persistentPlaceholder: true,
                 },
                 VCheckbox: {
                   density: 'compact'
@@ -283,13 +283,20 @@ onMounted(() => {
 const vjsfOptions = {
   density: 'comfortable',
   initialValidation: 'always',
-  updateOn: 'blur',
-  validateOn: 'blur',
+  lang: 'en',
   titleDepth: 3,
+  updateOn: 'blur',
   useDefault: 'placeholder' as const,
-  useTitle: false,
+  useDeprecated: true,
   useExample: 'help',
-  useDeprecated: true
+  useTitle: 'hint' as const,
+  validateOn: 'blur',
+  xI18n: true
+}
+
+if ($uiConfig.useSimpleDirectory) {
+  const session = useSession()
+  vjsfOptions.lang = session.state.lang
 }
 
 </script>

@@ -161,11 +161,11 @@ const { t } = useI18n()
 const panelLeft = ref<string>('parameters')
 const schemaOrExamplesTab = ref<string>('schema')
 const endpointQueryValues = ref<GenericEndpointQuery>({})
-const endpointQuerySchema = ref<SchemaObject>({})
+const endpointQuerySchema = ref<SchemaObject>(getVJSFSchema(operation, pathItemParameters))
 const responseData = ref<Record<string, any> | null>(null)
 const loading = ref(false)
 
-const fullPath = ref<string>(path)
+const fullPath = ref<string>(getFullPath())
 
 function getFullPath () {
   let fullPath = path
@@ -179,7 +179,7 @@ function getFullPath () {
 
 watch(() => endpointQueryValues, () => {
   fullPath.value = getFullPath()
-}, { immediate: true, deep: true })
+}, { deep: true })
 
 const executeRequest = async () => {
   loading.value = true
@@ -274,17 +274,11 @@ const executeRequest = async () => {
   loading.value = false
 }
 
-onMounted(() => {
-  endpointQuerySchema.value = getVJSFSchema(operation, pathItemParameters)
-  endpointQueryValues.value = {}
-  responseData.value = null
-})
-
 const vjsfOptions = {
   density: 'comfortable',
   initialValidation: 'always',
   lang: 'en',
-  titleDepth: 3,
+  titleDepth: 4,
   updateOn: 'blur',
   useDefault: 'placeholder' as const,
   useDeprecated: true,

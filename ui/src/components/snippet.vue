@@ -1,5 +1,5 @@
 <template>
-  <h4>{{ t('curlCommand') }}</h4>
+  <span class="text-h6">{{ t('curlCommand') }}</span>
   <prism
     :key="snippet || 'loading'"
     language="bash"
@@ -7,7 +7,7 @@
   >
     {{ snippet }}
   </prism>
-  <h4>{{ t('urlRequest') }}</h4>
+  <span class="text-h6">{{ t('urlRequest') }}</span>
   <pre
     style="white-space: pre-wrap; word-break: break-all;"
     class="text-body-2"

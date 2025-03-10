@@ -29,9 +29,8 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
     if (sec.in === 'cookie') continue
     schema.properties[sec.in].properties[sec.name] = {
       type: 'string',
-      title: sec.name,
       description:
-        `Type: ${sec.type}\n\n${sec.description ? sec.description + '\n\n' : ''}Key: <strong><code>${sec.name}</code></strong>`,
+        `Type: ${sec.type}${sec.description ? '\n\n' + sec.description : ''}`,
     }
   }
 

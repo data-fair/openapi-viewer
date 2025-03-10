@@ -58,7 +58,7 @@ import type { Parameter } from '~/utils/transform'
 import { dereference } from '@apidevtools/json-schema-ref-parser'
 import { computedAsync } from '@vueuse/core'
 import * as urlTemplate from 'url-template'
-import YAML from 'yaml'
+import YAML from 'js-yaml'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -84,7 +84,7 @@ const derefDoc = computedAsync(
     try {
       const deref = await dereference(
         typeof urlFetch.data.value === 'string'
-          ? YAML.parse(urlFetch.data.value) // If the OpenAPI specs are in YAML
+          ? YAML.load(urlFetch.data.value) // If the OpenAPI specs are in YAML
           : urlFetch.data.value,
         {
           mutateInputSchema: false,

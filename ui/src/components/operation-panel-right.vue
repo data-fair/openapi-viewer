@@ -72,7 +72,7 @@
             language="yaml"
             max-height="500px"
           >
-            {{ YAML.stringify(responseData.headers) }}
+            {{ YAML.dump(responseData.headers) }}
           </prism>
         </template>
       </template>
@@ -94,7 +94,7 @@
 
 <script setup lang="ts">
 import type { Operation } from '#api/types'
-import YAML from 'yaml'
+import YAML from 'js-yaml'
 
 const { operation, responseData } = defineProps<{
   operation: Operation

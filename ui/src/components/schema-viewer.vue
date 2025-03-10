@@ -41,14 +41,14 @@
         max-height="800px"
         copy
       >
-        {{ YAML.stringify(jsonSchema) }}
+        {{ YAML.dump(jsonSchema) }}
       </prism>
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
 
 <script setup lang="ts">
-import YAML from 'yaml'
+import YAML from 'js-yaml'
 
 const { jsonSchema } = defineProps<{ jsonSchema: any }>()
 const tab = ref('json')

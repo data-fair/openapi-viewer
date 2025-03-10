@@ -42,9 +42,9 @@
 <script setup lang="ts">
 import Prism from 'prismjs'
 import 'prismjs/themes/prism-tomorrow.min.css'
-import 'prismjs/components/prism-json.js'
-import 'prismjs/components/prism-bash.js'
-import 'prismjs/components/prism-yaml.js'
+import 'prismjs/components/prism-json.min.js'
+import 'prismjs/components/prism-bash.min.js'
+import 'prismjs/components/prism-yaml.min.js'
 
 const { t } = useI18n()
 const { sendUiNotif } = useUiNotif()
@@ -66,7 +66,7 @@ const highlightedCode = computed(() => {
   const code = typeof slotContent.value === 'string' ? slotContent.value : ''
   const prismLanguage = Prism.languages[language ?? 'markup']
 
-  if (import.meta.env.MODE === 'development' && !prismLanguage) {
+  if (!prismLanguage) {
     console.warn(
       `Prism component for language "${language}" was not found. Did you forget to register it?`
     )

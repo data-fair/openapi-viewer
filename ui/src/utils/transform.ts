@@ -61,7 +61,6 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
   if (operation.requestBody) {
     const requestBody = operation.requestBody as Record<string, any>
     schema.properties.body.description = requestBody.description || ''
-    schema.properties.body.oneOfLayout = { label: 'Select a content type' }
     schema.properties.body.oneOf = []
 
     for (const contentType of Object.keys(requestBody.content)) {
@@ -147,10 +146,7 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
       }
     }
     if (schema.properties.body.oneOf.length === 1) {
-      schema.properties.body.default = {
-        contentType: Object.keys(requestBody.content)[0],
-        value: ''
-      }
+      schema.properties.body.layout.defaultData.contentType = Object.keys(requestBody.content)[0]
     }
   }
 
@@ -293,9 +289,14 @@ const vjsfSchemaBase = {
         fr: 'Corps de la requête'
       },
       description: '',
-      oneOfLayout: {} as Record<string, any>,
+      oneOfLayout: { label: 'Select a content type' },
       oneOf: [] as Record<string, any>[],
-      default: {} as Record<string, any>
+      layout: {
+        defaultData: {
+          contentType: '',
+          value: ''
+        }
+      }
     }
   }
 } as {
@@ -311,6 +312,6 @@ const vjsfSchemaBase = {
     description: string
     oneOfLayout: Record<string, any>
     oneOf: Record<string, any>[]
-    default: Record<string, any>
+    layout: Record<string, any>
   }>
 }

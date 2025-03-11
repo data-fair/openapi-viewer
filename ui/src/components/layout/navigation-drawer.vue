@@ -139,7 +139,7 @@ const orderedTags = computed(() => {
   const providedTags = tags?.map(tag => tag.name) || []
   const extraTags = Object.keys(formattedOperations.value)
     .filter(tag => tag !== 'default' && !providedTags.includes(tag))
-    .sort()
+    // .sort()
 
   return [...providedTags, ...extraTags]
 })

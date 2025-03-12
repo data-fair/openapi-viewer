@@ -229,7 +229,7 @@ const executeRequest = async () => {
       body = formData
     } else {
       headers['Content-Type'] = contentType
-      body = JSON.stringify(endpointQueryValues.value.body)
+      body = endpointQueryValues.value.body.value
     }
   }
 

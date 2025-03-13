@@ -9,7 +9,7 @@
     "#config": "./src/config.ts"
   },
   "dependencies": {
-    "@data-fair/lib-express": "^1.13.1",
+    "@data-fair/lib-express": "^1.15.0",
     "@data-fair/lib-node": "^2.5.0",
     "config": "^3.3.12",
     "express": "^5.0.1",

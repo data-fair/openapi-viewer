@@ -65,7 +65,10 @@
 
       <v-tabs-window v-model="panelLeft">
         <v-tabs-window-item value="parameters">
-          <v-form class="mr-2">
+          <v-form
+            v-model="isValid"
+            class="mr-2"
+          >
             <v-defaults-provider
               :defaults="{
                 global: {
@@ -121,9 +124,8 @@
         <v-tabs-window-item value="snippet">
           <snippet
             :endpoint-query-values="endpointQueryValues"
-            :server-url="serverUrl"
             :method="method"
-            :path="path"
+            :full-path="fullPath"
           />
         </v-tabs-window-item>
       </v-tabs-window>
@@ -134,6 +136,7 @@
         :operation="operation"
         :response-data="responseData"
         :loading="loading"
+        :is-valid="isValid"
         @execute-request="executeRequest"
       />
     </v-col>
@@ -164,41 +167,30 @@ const endpointQueryValues = ref<GenericEndpointQuery>({})
 const endpointQuerySchema = ref<SchemaObject>(getVJSFSchema(operation, pathItemParameters))
 const responseData = ref<Record<string, any> | null>(null)
 const loading = ref(false)
+const isValid = ref(false)
 
-const fullPath = ref<string>(getFullPath())
-
-function getFullPath () {
+const fullPath = computed(() => {
   let fullPath = path
+
+  // Replace path parameters
   if (endpointQueryValues.value.path) {
     for (const [key, value] of Object.entries(endpointQueryValues.value.path)) {
       fullPath = fullPath.replace(`{${key}}`, encodeURIComponent(value))
     }
   }
-  return fullPath
-}
-
-watch(() => endpointQueryValues, () => {
-  fullPath.value = getFullPath()
-}, { deep: true })
-
-const executeRequest = async () => {
-  loading.value = true
-  responseData.value = null
-
-  // Replace path parameters
-  let processedPath = path
-  if (endpointQueryValues.value.path) {
-    for (const [key, value] of Object.entries(endpointQueryValues.value.path)) {
-      processedPath = processedPath.replace(`{${key}}`, encodeURIComponent(value))
-    }
-  }
 
   // Build URL with query parameters
-  let url = `${serverUrl || ''}${processedPath}`
+  let url = `${serverUrl || ''}${fullPath}`
   if (endpointQueryValues.value.query && Object.keys(endpointQueryValues.value.query).length > 0) {
     const queryParams = new URLSearchParams(endpointQueryValues.value.query).toString()
     url += `?${queryParams}`
   }
+  return url
+})
+
+async function executeRequest () {
+  loading.value = true
+  responseData.value = null
 
   // Prepare headers
   const headers: Record<string, string> = {}
@@ -216,14 +208,13 @@ const executeRequest = async () => {
     if (contentType === 'multipart/form-data') {
       const formData = new FormData()
       for (const [key, value] of Object.entries(endpointQueryValues.value.body)) {
-        if (key !== 'contentType') {
-          if (value instanceof File) {
-            formData.append(key, value, value.name)
-          } else if (typeof value === 'object') {
-            formData.append(key, JSON.stringify(value))
-          } else {
-            formData.append(key, value as string | Blob)
-          }
+        if (key === 'contentType' || value === undefined) continue
+        if (value instanceof File) {
+          formData.append(key, value, value.name)
+        } else if (typeof value === 'object') {
+          formData.append(key, JSON.stringify(value))
+        } else {
+          formData.append(key, value as string | Blob)
         }
       }
       body = formData
@@ -233,11 +224,21 @@ const executeRequest = async () => {
     }
   }
 
-  const response = await fetch(url, {
-    method: method.toUpperCase(),
-    headers,
-    body
-  })
+  let response = null
+  try {
+    response = await fetch(fullPath.value, {
+      method: method.toUpperCase(),
+      headers,
+      body
+    })
+  } catch (e: any) {
+    responseData.value = {
+      status: 'Error',
+      statusText: e.message
+    }
+    loading.value = false
+    return
+  }
 
   const contentType = response.headers.get('content-type')
   let responseType

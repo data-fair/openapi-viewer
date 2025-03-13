@@ -19,7 +19,7 @@
         color="primary"
         :prepend-icon="mdiPlay"
         :loading="loading"
-        :disabled="loading"
+        :disabled="loading || !isValid"
         @click="emit('executeRequest')"
       >
         {{ t('execute') }}
@@ -96,10 +96,11 @@
 import type { Operation } from '#api/types'
 import YAML from 'js-yaml'
 
-const { operation, responseData } = defineProps<{
+const { operation, responseData, loading, isValid } = defineProps<{
   operation: Operation
   responseData: Record<string, any> | null
   loading: boolean
+  isValid: boolean | null
 }>()
 
 const emit = defineEmits(['executeRequest'])

@@ -160,6 +160,8 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
     // @ts-ignore
     if (!Object.keys(prop.properties || {}).length && !prop.oneOf?.length) {
       delete schema.properties[key as keyof typeof schema.properties]
+    } else {
+      schema.required.push(key)
     }
   }
 
@@ -250,6 +252,7 @@ export const resolveExamples = (object: { example?: string, examples?: Map<strin
 
 const vjsfSchemaBase = {
   type: 'object',
+  required: [],
   properties: {
     header: {
       type: 'object',
@@ -258,8 +261,8 @@ const vjsfSchemaBase = {
         en: 'Headers',
         fr: 'En-têtes'
       },
-      properties: {} as Record<string, any>,
-      required: [] as string[]
+      properties: {},
+      required: []
     },
     path: {
       type: 'object',
@@ -268,8 +271,8 @@ const vjsfSchemaBase = {
         en: 'Path parameters',
         fr: 'Paramètres de route'
       },
-      properties: {} as Record<string, any>,
-      required: [] as string[]
+      properties: {},
+      required: []
     },
     query: {
       type: 'object',
@@ -278,8 +281,8 @@ const vjsfSchemaBase = {
         en: 'Query parameters',
         fr: 'Paramètres de requête'
       },
-      properties: {} as Record<string, any>,
-      required: [] as string[]
+      properties: {},
+      required: []
     },
     body: {
       type: 'object',
@@ -290,7 +293,7 @@ const vjsfSchemaBase = {
       },
       description: '',
       oneOfLayout: { label: 'Select a content type' },
-      oneOf: [] as Record<string, any>[],
+      oneOf: [],
       layout: {
         defaultData: {
           contentType: '',
@@ -301,6 +304,7 @@ const vjsfSchemaBase = {
   }
 } as {
   type: 'object'
+  required: string[]
   properties: Record<'header' | 'path' | 'query', {
     type: 'object'
     title: string

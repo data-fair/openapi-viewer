@@ -11,34 +11,25 @@
   <pre
     style="white-space: pre-wrap; word-break: break-all;"
     class="text-body-2"
-  ><code>{{ url }}</code></pre>
+  ><code>{{ fullPath }}</code></pre>
 </template>
 
 <script setup lang="ts">
 import type { GenericEndpointQuery } from '#api/types'
 
-const { endpointQueryValues, serverUrl, method, path } = defineProps<{
+const { endpointQueryValues, method, fullPath } = defineProps<{
   endpointQueryValues: GenericEndpointQuery
-  serverUrl: string | null
   method: string
-  path: string
+  fullPath: string
 }>()
 
 const { t } = useI18n()
 
-const snippet = ref('')
-const url = ref('')
-
-function generateSnippet () {
-  const curlCommand = [`curl -X ${method.toUpperCase()}`]
-
-  // Construire l'URL complète
-  url.value = `${serverUrl || ''}${path}`
-  if (endpointQueryValues.query && Object.keys(endpointQueryValues.query).length > 0) {
-    const queryParams = new URLSearchParams(endpointQueryValues.query).toString()
-    url.value += `?${queryParams}`
-  }
-  curlCommand.push(`"${url.value}"`)
+const snippet = computed(() => {
+  const curlCommand = [
+    `curl -X ${method.toUpperCase()}`,
+    `"${fullPath}"`
+  ]
 
   // Ajouter les headers
   if (endpointQueryValues.header) {
@@ -55,7 +46,7 @@ function generateSnippet () {
     if (contentType === 'multipart/form-data') {
       const params = []
       for (const [key, value] of Object.entries(endpointQueryValues.body)) {
-        if (key === 'contentType') continue
+        if (key === 'contentType' || value === undefined) continue
         if (value instanceof File) {
           params.push(`-F "${key}=@${value.name}"`)
         } else {
@@ -68,10 +59,9 @@ function generateSnippet () {
     }
   }
 
-  snippet.value = curlCommand.join(' \\\n  ')
-}
+  return curlCommand.join(' \\\n  ')
+})
 
-watch(() => endpointQueryValues, generateSnippet, { deep: true, immediate: true })
 </script>
 
 <i18n lang="yaml">

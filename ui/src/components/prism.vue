@@ -73,7 +73,6 @@ const highlightedCode = computed(() => {
     return code
   }
 
-  // return Prism.highlight(code, prismLanguage, language ?? 'markup')
   return Prism.highlight(code, prismLanguage, language ?? 'markup')
 })
 

@@ -4,7 +4,7 @@
     class="position-relative text-body-2"
   >
     <v-tooltip
-      v-if="copy"
+      v-if="copy && /<([a-zA-Z]+)([^>]*)>(.*?)<\/\1>/.test(highlightedCode)"
       :text="t('copy')"
       location="top right"
       open-delay="500"
@@ -73,6 +73,7 @@ const highlightedCode = computed(() => {
     return code
   }
 
+  // return Prism.highlight(code, prismLanguage, language ?? 'markup')
   return Prism.highlight(code, prismLanguage, language ?? 'markup')
 })
 

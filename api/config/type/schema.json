@@ -17,6 +17,9 @@
     "useSimpleDirectory"
   ],
   "properties": {
+    "defaultUrl": {
+      "type": "string"
+    },
     "allowedUrls": {
       "type": "object",
       "patternProperties": {

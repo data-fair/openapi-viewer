@@ -7,11 +7,10 @@ import config from 'config'
 const apiConfig = process.env.NODE_ENV === 'test' ? config.util.loadFileConfigs(process.env.NODE_CONFIG_DIR, { skipConfigSources: true }) : config
 assertValid(apiConfig, { lang: 'en', name: 'config', internal: true })
 
-config.util.makeImmutable(apiConfig)
-
 export default apiConfig as ApiConfig
 
 export const uiConfig = {
+  defaultUrl: apiConfig.defaultUrl,
   allowedUrls: apiConfig.allowedUrls,
   useSimpleDirectory: apiConfig.useSimpleDirectory
 }

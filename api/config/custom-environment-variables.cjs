@@ -1,4 +1,5 @@
 module.exports = {
+  defaultUrl: 'DEFAULT_URL',
   allowedUrls: {
     __name: 'ALLOWED_URLS',
     __format: 'json'

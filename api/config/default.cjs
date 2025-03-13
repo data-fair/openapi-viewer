@@ -1,5 +1,5 @@
 module.exports = {
-  allowedUrls: undefined,
+  allowedUrls: {},
   port: 8080,
   serveUi: true,
   useSimpleDirectory: true

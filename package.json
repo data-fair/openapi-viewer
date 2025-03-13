@@ -1,6 +1,6 @@
 {
-  "name": "@data-fair/openapi-viewer",
-  "version": "1.6.6",
+  "name": "openapi-viewer",
+  "version": "1.6.7",
   "description": "",
   "main": "index.js",
   "type": "module",

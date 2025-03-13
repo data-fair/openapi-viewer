@@ -1,0 +1,56 @@
+[
+  {
+    "id": "alone",
+    "firstName": "I am",
+    "lastName": "Alone",
+    "email": "alone@no.org",
+    "password": {
+      "clear": "passwd"
+    }
+  },
+  {
+    "id": "user1",
+    "firstName": "User1",
+    "lastName": "Koumoul",
+    "email": "user1@test.com",
+    "password": {
+      "clear": "passwd"
+    }
+  },
+  {
+    "id": "contrib1",
+    "firstName": "Contrib1",
+    "lastName": "Koumoul",
+    "email": "contrib1@test.com",
+    "password": {
+      "clear": "passwd"
+    }
+  },
+  {
+    "id": "admin1",
+    "firstName": "Admin1",
+    "lastName": "Koumoul",
+    "email": "admin1@test.com",
+    "password": {
+      "clear": "passwd"
+    }
+  },
+  {
+    "id": "albanm",
+    "firstName": "Alban",
+    "lastName": "Mouton",
+    "email": "alban.mouton@koumoul.com",
+    "password": {
+      "clear": "passwd"
+    }
+  },
+  {
+    "id": "superadmin",
+    "firstName": "Super",
+    "lastName": "Admin",
+    "email": "superadmin@test.com",
+    "password": {
+      "clear": "superpasswd"
+    }
+  }
+]

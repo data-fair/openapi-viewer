@@ -1,0 +1,42 @@
+{
+  "$id": "https://github.com/data-fair/openapi-viewer/api/config",
+  "x-exports": [
+    "types",
+    "validate"
+  ],
+  "x-ajv": {
+    "coerceTypes": "array"
+  },
+  "type": "object",
+  "title": "Api config",
+  "additionalProperties": false,
+  "required": [
+    "allowedUrls",
+    "port",
+    "serveUi",
+    "useSimpleDirectory"
+  ],
+  "properties": {
+    "allowedUrls": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+$": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "port": {
+      "type": "number"
+    },
+    "serveUi": {
+      "type": "boolean"
+    },
+    "useSimpleDirectory": {
+      "type": "boolean"
+    },
+    "util": {},
+    "get": {},
+    "has": {}
+  }
+}

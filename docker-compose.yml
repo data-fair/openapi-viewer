@@ -1,0 +1,56 @@
+services:
+
+  #####
+  # reverse proxy for the whole environment
+  #####
+
+  nginx:
+    image: nginx:1.23.1-alpine
+    network_mode: host
+    volumes:
+      - ./dev/resources/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  #####
+  # related services from the data-fair stack
+  #####
+
+  simple-directory:
+    profiles:
+      - dev
+    image: ghcr.io/data-fair/simple-directory:next
+    network_mode: host
+    depends_on:
+      - mongo
+    environment:
+      - DEBUG=session
+      - ADMINS=["superadmin@test.com"]
+      - PUBLIC_URL=http://localhost:5600/simple-directory
+      - MAILDEV_ACTIVE=true
+      - STORAGE_TYPE=file
+      - AUTHRATELIMIT_ATTEMPTS=200
+      - OBSERVER_ACTIVE=false
+      - MANAGE_PARTNERS=true
+      - MANAGE_DEPARTMENTS=true
+      - SECRET_LIMITS=secretlimits
+      - CIPHER_PASSWORD=dev
+      - CONTACT=contact@test.com
+      - MONGO_URL=mongodb://localhost:27017/simple-directory
+    volumes:
+      - ./dev/resources/users.json:/app/data/users.json
+      - ./dev/resources/organizations.json:/app/data/organizations.json
+
+  #####
+  # db
+  #####
+
+  mongo:
+    profiles:
+      - dev
+    image: mongo:4.2
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

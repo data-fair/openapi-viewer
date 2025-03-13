@@ -1,40 +1,59 @@
 # OpenAPI 3 viewer
 
-This service is designed to easily browse and test a REST API described with the [OpenAPI 3.0 Specification](https://github.com/OAI/OpenAPI-Specification) (fka Swagger Specification). This service mainly uses [vue-openapi](https://github.com/koumoul-dev/vue-openapi) component. It also provides a simple nodeJS backend for proxy purpose.
-
-See it in action :
- * https://koumoul.com/openapi-viewer/
+This service is designed to easily browse and test a REST API described with the [OpenAPI 3.0 Specification](https://github.com/OAI/OpenAPI-Specification).
 
 ## Sponsors
 
 | | Click [here to support the development of this project](https://github.com/sponsors/koumoul-dev). |
 |-|-|
-| [<img alt="Koumoul logo" src="https://koumoul.com/static/logo-slogan.png" height="40">](https://koumoul.com) | [Koumoul](https://koumoul.com) develops the Data Fair ecosystem and hosts it as an online service. |
-| [<img alt="Dawizz logo" src="https://dawizz.fr/logo-Dawizz-all-about-your-data-home.png" height="40">](https://dawizz.fr) | [Dawizz](https://dawizz.fr) uses the Data Fair ecosystem inside its platform and supports its development. |
-
-## Install
-
-Clone this project and install dependencies with `npm install` or `yarn` then :
-```
-npm run dev
-```
-
-## Launch the service with Docker
-
-A Docker image is publicly available. Run the following command :
-
-```
-docker run -p 8080:8080 ghcr.io/data-fair/openapi-viewer
-```
-
-and go to this [page](http://localhost:8080/)
+| ![Koumoul logo](https://koumoul.com/static/logo-slogan.png) | [Koumoul](https://koumoul.com) develops the Data Fair ecosystem and hosts it as an online service. |
+| ![Dawizz logo](https://dawizz.fr/logo-Dawizz-all-about-your-data-home.png) | [Dawizz](https://dawizz.fr) uses the Data Fair ecosystem inside its platform and supports its development. |
 
 ## Query parameters
-You can use the followings query parameters to prefill viewer
 
- * **url** : The location of the API documentation file to load, in OpenAPI v3 JSON format.
- * **proxy** : true or false if you want to fetch API documentation file using this service backend as a proxy. Defaults to false.
-Can be usefull if the API description can't be reached with CORS headers. Do not use the proxy if you want to access an API description located on *localhost*.
- * **headers** : URI encoded JSON dictionnary of headers that will be used to prefill parameters if they match. Can be usefull to prefill *x-api-key* or *authorization* headers.
- * **query-params** : URI encoded JSON dictionnary of query parameters that will be used to prefill parameters if they match. Can be usefull to prefill an *organizationId* parameter in a multi-tenant application.
- * **hide-toolbar** : true or false of you want to hide toolbar. This can be usefull for iframe integration. Defaults to false.
+You can use the followings query parameters to prefill the viewer :
+
+### Available Parameters
+
+- **drawerLocation** : The location of the navigation-drawer. Can be `left` or `right`. Defaults to `left`.
+- **urlType** : The type of the URL defined in the environment variable `ALLOWED_URLS`.
+
+> *Examples of ALLOWED_URLS :*
+>
+> ```json
+> {
+>   "exampleYaml": "https://example1.com/openapi.yaml",
+>   "exampleWithUrlTemplate": "https://example2.com/{id}/openapi.json"
+> }
+> ```
+
+> ⚠️ **Deprecated**: `url` and `hide-toolbar` are deprecated.
+>
+> - ~~**url** : The location of the API documentation file to load, in OpenAPI v3 JSON format.~~
+> - ~~**hide-toolbar** : `true` or `false` to hide the toolbar (useful for iframe integration). Defaults to `false`.~~
+
+### Directly Linking to an API Operation
+
+You can append a query parameter `operation` with an `operationId` as its value to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
+
+> ⚠️ The hash part of the URL has been replaced by the query parameter `operation`.
+
+## Integration with SimpleDirectory
+
+By default, the viewer is designed to work seamlessly with **[SimpleDirectory](https://github.com/data-fair/simple-directory)**.  
+This ensures full integration with the ecosystem where it is deployed, including:
+
+- **Theming**: Automatically adapts to the platform's look and feel.
+- **Language**: Uses the same language settings as the environment.
+
+### Standalone Mode
+
+If you want to disable this integration and run the viewer in standalone mode, set the environment variable:
+
+```bash
+USE_SIMPLE_DIRECTORY=false
+```
+
+## Developers
+
+Take a look at the [contribution guidelines](./CONTRIBUTING.md).

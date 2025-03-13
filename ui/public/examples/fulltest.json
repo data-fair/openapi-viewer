@@ -1,0 +1,699 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Titre de l'API",
+    "description": "Ceci est un _exemple complet_ de documentation d'API selon la norme OpenAPI 3. La description peut contenir du **markdown**, tel que du texte en **gras** ou _italique_, des listes, des liens, des images, et bien plus encore. \n\n Cette API permet de rien gérer avec des rien, des rien et des rien. Vous ne pouvez pas tester les différents points de terminaison pour comprendre leur fonctionnement.\n\nExemple de lien dans une description [https://example.com/docs](https://example.com/docs).",
+    "termsOfService": "https://example.com/terms",
+    "contact": {
+      "name": "Équipe de support",
+      "url": "https://example.com/support",
+      "email": "contact@example.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/v1",
+      "description": "Serveur principal de l'API"
+    },
+    {
+      "url": "https://staging-api.example.com/v1",
+      "description": "Serveur de préproduction"
+    }
+  ],
+  "tags": [
+    {
+      "name": "B Tag",
+      "description": "Ce tag doit être le premier dans la liste des tags"
+    },
+    {
+      "name": "A Tag",
+      "description": "Ce tag doit être le deuxième dans la liste des tags"
+    },
+    {
+      "name": "Tag sans operations",
+      "description": "Ce tag ne contient pas d'opérations"
+    },
+    {
+      "name": "Tag doc externe",
+      "description": "Ce tag contient une documentation externe",
+      "externalDocs": {
+        "description": "Documentation externe pour ce tag",
+        "url": "https://example.com/docs"
+      }
+    }
+  ],
+  "paths": {
+    "/RouteA": {
+      "get": {
+        "summary": "La route la plus simple",
+        "description": "Cette route permet de récupérer les informations disponibles pour la route A. Elle peut être utilisée pour interroger l'API et obtenir des données spécifiques.",
+        "operationId": "getRouteA",
+        "tags": [
+          "A Tag"
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse réussie avec les données de la RouteA",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseA"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Non trouvé, les données demandées ne sont pas disponibles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/RouteAB": {
+      "post": {
+        "summary": "Créer une ressource via la RouteAB",
+        "description": "Cette route possède a la fois le Tag A et le Tag B",
+        "operationId": "createRouteAC",
+        "tags": [
+          "A Tag",
+          "B Tag"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestC"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ressource créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseC"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/RouteAllMethods": {
+      "get": {
+        "summary": "Obtenir les informations de la RouteAllMethods",
+        "description": "Cette route permet de récupérer les informations disponibles pour la route avec toutes les méthodes.",
+        "operationId": "getRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse réussie avec les données de la RouteAllMethods",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer une ressource via la RouteAllMethods",
+        "description": "Cette route permet de créer une ressource en utilisant la méthode POST.",
+        "operationId": "postRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestC"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ressource créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseC"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Mettre à jour une ressource via la RouteAllMethods",
+        "description": "Cette route permet de mettre à jour une ressource en utilisant la méthode PUT.",
+        "operationId": "putRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestC"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ressource mise à jour avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseC"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modifier partiellement une ressource via la RouteAllMethods",
+        "description": "Cette route permet de modifier partiellement une ressource en utilisant la méthode PATCH.",
+        "operationId": "patchRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestC"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ressource modifiée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseC"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer une ressource via la RouteAllMethods",
+        "description": "Cette route permet de supprimer une ressource en utilisant la méthode DELETE.",
+        "operationId": "deleteRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "responses": {
+          "204": {
+            "description": "Ressource supprimée avec succès"
+          }
+        }
+      },
+      "options": {
+        "summary": "Obtenir les options de la RouteAllMethods",
+        "description": "Cette route permet d'obtenir les options de communication disponibles pour la ressource.",
+        "operationId": "optionsRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "responses": {
+          "200": {
+            "description": "Options récupérées avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "summary": "Obtenir les en-têtes de la RouteAllMethods",
+        "description": "Cette route permet d'obtenir les en-têtes de la ressource sans le corps de la réponse.",
+        "operationId": "headRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "responses": {
+          "200": {
+            "description": "En-têtes récupérées avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "trace": {
+        "summary": "Obtenir la trace de la RouteAllMethods",
+        "description": "Cette route permet d'obtenir la trace de la ressource pour le débogage.",
+        "operationId": "traceRouteAllMethods",
+        "tags": [
+          "TagAllMethods"
+        ],
+        "responses": {
+          "200": {
+            "description": "Trace récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/RouteSansOperationId": {
+      "get": {
+        "tags": [
+          "Tag doc externe"
+        ],
+        "summary": "Obtenir des données sans opération ID",
+        "description": "Cette route permet de récupérer des informations générales sans l'attribution d'un identifiant d'opération spécifique. Elle est plus générique et peut être utilisée pour obtenir des données sans manipulation complexe.",
+        "responses": {
+          "200": {
+            "description": "Données récupérées avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/RouteSansTag": {
+      "get": {
+        "summary": "Cette route n'a pas de tag",
+        "operationId": "getRouteSansTag",
+        "responses": {
+          "200": {
+            "description": "Données récupérées avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Reponses": {
+      "get": {
+        "summary": "Obtenir des réponses variées",
+        "description": "Cette route permet de tester différentes réponses HTTP.",
+        "operationId": "getReponses",
+        "tags": [
+          "A Tag"
+        ],
+        "responses": {
+          "2XX": {
+            "description": "Toues les réponses commençant par 2 sont des réussites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "Exemple de réponse 200",
+                    "value": {
+                      "message": "Réponse 200"
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "example": "<message>Réponse 200</message>"
+                }
+              },
+              "text/plain": {
+                "examples": {
+                  "example1": {
+                    "summary": "Exemple de réponse 200",
+                    "value": "Réponse 200"
+                  },
+                  "example2": {
+                    "summary": "Exemple de réponse 201",
+                    "value": "Réponse 201"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "x-rate-limit": {
+                "description": "Nombre de requêtes autorisées par minute",
+                "schema": {
+                  "type": "integer"
+                },
+                "required": true,
+                "deprecated": true,
+                "example": 200
+              },
+              "x-expires-after": {
+                "description": "Date d'expiration de la réponse",
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "required": true
+              }
+            },
+            "links": {
+              "related": {
+                "operationId": "getRouteA",
+                "description": "Lien vers la route A pour obtenir des informations supplémentaires"
+              },
+              "self": {
+                "operationId": "getReponses",
+                "description": "Lien vers cette route pour obtenir des réponses variées"
+              }
+            }
+          },
+          "201": {
+            "description": "Ressource créée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          },
+          "300": {
+            "description": "Choix multiples",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Toues les réponses commençant par 4 sont des requetes incorrectes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requête incorrecte",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Non trouvé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "418": {
+            "description": "Je suis une théière",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Request": {
+      "get": {
+        "summary": "Obtenir des informations sur les requêtes",
+        "description": "Cette route permet de tester différents paramètres de requête.",
+        "operationId": "getRequest",
+        "tags": [
+          "A Tag"
+        ],
+        "parameters": [
+          {
+            "name": "testString",
+            "in": "query",
+            "description": "Un paramètre de chaîne de caractères pour tester",
+            "schema": {
+              "title": "Une string",
+              "type": "string"
+            }
+          },
+          {
+            "name": "requiredString",
+            "in": "query",
+            "description": "Un paramètre de chaîne de caractères requis",
+            "required": true,
+            "schema": {
+              "title": "Une string requise",
+              "type": "string"
+            }
+          },
+          {
+            "name": "deprecatedString",
+            "in": "query",
+            "description": "Un paramètre de chaîne de caractères déprécié",
+            "deprecated": true,
+            "schema": {
+              "title": "Une string dépréciée",
+              "type": "string"
+            }
+          },
+          {
+            "name": "testBoolean",
+            "in": "query",
+            "description": "Un paramètre booléen pour tester",
+            "schema": {
+              "title": "Un booléen",
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "testInteger",
+            "in": "query",
+            "description": "Un paramètre entier pour tester, compris entre **1** et **10**, avec une valeur par défaut de **5**",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "default": 5
+            }
+          },
+          {
+            "name": "testEnum",
+            "in": "query",
+            "description": "Un paramètre enum pour tester",
+            "schema": {
+              "title": "Une enum",
+              "type": "string",
+              "enum": ["value1", "value2", "value3"]
+            }
+          },
+          {
+            "name": "testArrayOneOf",
+            "in": "query",
+            "description": "Un paramètre tableau de chaînes de caractères avec oneOf pour tester",
+            "schema": {
+              "title": "Un tableau de oneOf",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "oneOf": [
+                  {
+                    "const": "value1",
+                    "title": "Valeur 1"
+                  },
+                  {
+                    "const": "value2",
+                    "title": "Valeur 2"
+                  },
+                  {
+                    "const": "value3",
+                    "title": "Valeur 3"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "2XX": {
+            "description": "Toues les réponses commençant par 2 sont des réussites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xss": {
+      "get": {
+        "summary": "Test de sécurité XSS",
+        "description": "<script>alert('XSS Test!')</script>Cette route permet de tester la sécurité contre les attaques XSS.",
+        "operationId": "getXSS",
+        "tags": [
+          "A Tag"
+        ],
+        "responses": {
+          "200": {
+            "description": "[Click me to see an alert](javascript:alert('Hacked!'))",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseA"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResponseA": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Les données de la RouteA"
+          }
+        }
+      },
+      "ResponseB": {
+        "type": "object",
+        "properties": {
+          "details": {
+            "type": "string",
+            "description": "Les détails de la RouteB"
+          }
+        }
+      },
+      "ResponseC": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Le statut de la création"
+          }
+        }
+      },
+      "RequestC": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nom de la ressource à créer"
+          },
+          "value": {
+            "type": "integer",
+            "description": "Valeur associée à la ressource"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "GeneralResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message générique retourné par la route"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Code d'erreur HTTP"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message d'erreur"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+# no need to run quality checks on every small commit, husky already did it on the dev computer
+# in this case we simply build the docker image
+
+name: Build simple commit
+
+on:
+  push:
+    branches: ['*']
+    # branches: ['master']
+    tags-ignore: [ 'v*.*.*' ]
+
+jobs:
+  build:
+    uses: ./.github/workflows/reuse-build.yml
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send Keel notifications to staging-koumoul.com
+      run: |
+        curl -s --fail --show-error -X POST https://keel.admin.staging-koumoul.com/v1/webhooks/native -u ${{ secrets.KEEL_STAGING_USER }}:${{ secrets.KEEL_STAGING_PASSWORD }} -d '{"name": "ghcr.io/${{ github.repository }}", "tag": "${{ github.ref_name }}"}'

@@ -37,6 +37,7 @@ export default defineConfig({
     }),
     VueRouter({
       dts: './dts/typed-router.d.ts',
+      exclude: process.env.NODE_ENV === 'development' ? [] : ['src/pages/dev.vue']
     }),
     Vue({ template: { compilerOptions: { isCustomElement: (tag) => ['d-frame'].includes(tag) } } }),
     VueI18nPlugin(),

@@ -152,7 +152,7 @@ watch(route.query, () => {
     url.value = route.query.url
 
   // --- New way to handle the URL ---
-  } else {
+  } else if (route.query.urlType) {
     // Check url type
     if (!Object.keys($uiConfig.allowedUrls).includes(route.query.urlType as string)) {
       errorMessage.value = t('invalidUrlType')
@@ -172,6 +172,10 @@ watch(route.query, () => {
 
     // Rempalce the template params with the query params
     url.value = urlTemplate.parseTemplate(template).expand(queryParams)
+  } else if ($uiConfig.defaultUrl) {
+    url.value = $uiConfig.defaultUrl
+  } else {
+    errorMessage.value = t('missingUrl')
   }
 
   urlFetch.refresh()
@@ -182,6 +186,7 @@ watch(route.query, () => {
 <i18n lang="yaml">
   en:
     error: "Error"
+    missingUrl: "Missing URL parameter."
     errorCannotRetrieveData: "Cannot retrieve data for this URL."
     errorCrossDomain: "Cross-domain URLs are not allowed."
     errorHashNotMatch: "The selected operation does not match any operationId or path in the OpenAPI specs."
@@ -190,6 +195,7 @@ watch(route.query, () => {
     missingParams: "Missing parameters: {params}"
   fr:
     error: "Erreur"
+    missingUrl: "Paramètre URL manquant."
     errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL."
     errorCrossDomain: "Les URLs cross-domain ne sont pas autorisées."
     errorHashNotMatch: "L'opération sélectionnée ne correspond à aucun operationId ou path dans les spécifications OpenAPI."

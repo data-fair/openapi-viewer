@@ -84,11 +84,12 @@
                 :schema="endpointQuerySchema"
                 :options="vjsfOptions"
               >
-                <template #schema-and-examples="{ schema, examples}">
+                <template #schema-and-examples="{ schema, examples }">
                   <!-- Show tabs selector only if there are examples, else just show the schema window -->
                   <v-tabs
-                    v-if="(examples && Object.keys(examples).length > 0) || (Array.isArray(examples) && examples.length > 0)"
+                    v-if="examples?.length > 0"
                     v-model="schemaOrExamplesTab"
+                    class="mb-2"
                   >
                     <v-tab value="schema">
                       {{ t('schema') }}
@@ -105,13 +106,26 @@
                       />
                     </v-tabs-window-item>
                     <v-tabs-window-item value="examples">
+                      <v-select
+                        v-if="examples.length > 1 || examples[0].summary"
+                        v-model="exampleSelected"
+                        class="mt-2"
+                        density="compact"
+                        hide-details="auto"
+                        variant="outlined"
+                        item-title="summary"
+                        item-value="key"
+                        :label="t('examples')"
+                        :items="examples"
+                        :readonly="examples.length === 1"
+                      />
                       <prism
-                        :key="examples"
+                        :key="exampleSelected"
                         language="json"
                         max-height="400px"
                         copy
                       >
-                        {{ JSON.stringify(examples, null, 2) }}
+                        {{ JSON.stringify(examples.find((e: any) => e.key === exampleSelected)?.value, null, 2) }}
                       </prism>
                     </v-tabs-window-item>
                   </v-tabs-window>
@@ -148,7 +162,7 @@ import type { GenericEndpointQuery, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
 import type { SchemaObject } from 'ajv'
 
-import Vjsf from '@koumoul/vjsf'
+import Vjsf, { type Options as VjsfOptions } from '@koumoul/vjsf'
 import { marked } from 'marked'
 
 const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
@@ -161,14 +175,16 @@ const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
 
 const { t } = useI18n()
 
-const panelLeft = ref<string>('parameters')
-const schemaOrExamplesTab = ref<string>('schema')
 const endpointQueryValues = ref<GenericEndpointQuery>({})
 const endpointQuerySchema = ref<SchemaObject>(getVJSFSchema(operation, pathItemParameters))
 const responseData = ref<Record<string, any> | null>(null)
+const panelLeft = ref<string>('parameters')
+const schemaOrExamplesTab = ref<string>('schema')
+const exampleSelected = ref<string>('default')
 const loading = ref(false)
 const isValid = ref(false)
 
+console.log(endpointQuerySchema.value)
 const fullPath = computed(() => {
   let fullPath = path
 
@@ -275,7 +291,7 @@ async function executeRequest () {
   loading.value = false
 }
 
-const vjsfOptions = {
+const vjsfOptions: VjsfOptions = {
   density: 'comfortable',
   initialValidation: 'always',
   lang: 'en',
@@ -283,7 +299,7 @@ const vjsfOptions = {
   updateOn: 'blur',
   useDefault: 'placeholder' as const,
   useDeprecated: true,
-  useExample: 'help',
+  useExamples: 'help',
   useTitle: 'hint' as const,
   validateOn: 'blur',
   xI18n: true

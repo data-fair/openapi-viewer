@@ -36,22 +36,18 @@ You can use the followings query parameters to prefill the viewer :
 
 You can append a query parameter `operation` with an `operationId` as its value to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
 
-> ⚠️ The hash part of the URL has been replaced by the query parameter `operation`.
-
 ## Integration with SimpleDirectory
 
-By default, the viewer is designed to work seamlessly with **[SimpleDirectory](https://github.com/data-fair/simple-directory)**.  
-This ensures full integration with the ecosystem where it is deployed, including:
+By default, the viewer runs in **standalone mode** and does not integrate with **[SimpleDirectory](https://github.com/data-fair/simple-directory)**.  
+However, you can enable integration to benefit from:
 
 - **Theming**: Automatically adapts to the platform's look and feel.
 - **Language**: Uses the same language settings as the environment.
 
-### Standalone Mode
-
-If you want to disable this integration and run the viewer in standalone mode, set the environment variable:
+To enable integration with SimpleDirectory, set the environment variable:
 
 ```bash
-USE_SIMPLE_DIRECTORY=false
+USE_SIMPLE_DIRECTORY=true
 ```
 
 ## Developers

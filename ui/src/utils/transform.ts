@@ -47,6 +47,7 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
       if (paramSchema?.examples) paramSchema.examples.concat(examples)
       else if (paramSchema?.items?.examples) paramSchema.items.examples.concat(examples)
       else if (paramSchema?.items) paramSchema.items.examples = examples
+      else paramSchema.examples = examples
     }
 
     schema.properties[param.in].properties[param.name] = {
@@ -70,7 +71,7 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
             name: 'schema-and-examples',
             props: {
               schema: requestBody.content[contentType].schema,
-              examples: resolveExamples(requestBody.content[contentType])
+              examples: resolveRequestBodyExamples(requestBody.content[contentType])
             }
           }
         }
@@ -239,14 +240,32 @@ const resolveParameters = (
  * -> Generate one resolved examples list
  * -> if they are one example, return it in a list
  */
-export const resolveExamples = (object: { example?: string, examples?: Map<string, Record<string, any>> }) => {
+const resolveExamples = (object: { example?: any, examples?: Map<string, Record<string, any>> }) => {
   const examples = []
-  if (object.example) examples.push(object.example)
-  else if (object.examples) {
-    for (const example of object.examples.values()) {
-      if (example.value) examples.push(example.value)
+  if (object.example) {
+    examples.push(typeof object.example === 'object' ? JSON.stringify(object.example, null, 2) : object.example)
+  } else if (object.examples) {
+    for (const example of Object.values(object.examples)) {
+      if (example.value) {
+        examples.push(typeof example.value === 'object' ? JSON.stringify(example.value, null, 2) : example.value)
+      }
     }
   }
+  return examples
+}
+
+const resolveRequestBodyExamples = (object: { example?: any, examples?: Map<string, Record<string, any>> }) => {
+  const examples: { key: string, summary?: string, value?: any }[] = []
+  if (object.example) {
+    examples.push({ key: 'default', value: object.example })
+  } else if (object.examples) {
+    let isFirst = true
+    for (const [key, example] of Object.entries(object.examples)) {
+      examples.push({ key: isFirst ? 'default' : key, summary: example.summary, value: example.value })
+      isFirst = false
+    }
+  }
+
   return examples
 }
 

@@ -12,13 +12,15 @@
           'text-disabled': item.deprecated,
           'font-italic': item.deprecated
         }"
+        class="ml-2"
       >
         {{ item.path }}
       </span>
     </template>
-    <template #append>
+    <template #prepend>
       <v-chip
         density="compact"
+        size="small"
         :color="colorMethods[item.method]"
         :disabled="item.deprecated"
         :text="item.method.toUpperCase()"
@@ -29,8 +31,10 @@
       activator="parent"
       close-delay="250"
       open-delay="500"
-      :text="item.summary"
-    />
+    >
+      {{ item.path }}<br>
+      {{ item.summary }}
+    </v-tooltip>
   </v-list-item>
 </template>
 

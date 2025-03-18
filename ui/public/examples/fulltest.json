@@ -95,6 +95,21 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RequestC"
+              },
+              "examples": {
+                "Tous les champs": {
+                  "summary": "Exemple de requête avec tous les champs",
+                  "value": {
+                    "name": "Ressource 1",
+                    "value": 100
+                  }
+                },
+                "Certains champs": {
+                  "summary": "Exemple de requête avec certains champs comme le champ value",
+                  "value": {
+                    "name": "Ressource 2"
+                  }
+                }
               }
             }
           }
@@ -157,6 +172,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RequestC"
+              },
+              "examples": {
+                "Tous les champs": {
+                  "summary": "Exemple de requête avec tous les champs",
+                  "value": {
+                    "name": "Ressource 1",
+                    "value": 100
+                  }
+                }
               }
             }
           }
@@ -187,6 +211,10 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RequestC"
+              },
+              "example": {
+                "name": "Ressource 1",
+                "value": 100
               }
             }
           }
@@ -329,7 +357,7 @@
         }
       }
     },
-    "/RouteSansTag": {
+    "/Longue/RouteSansTag/SurPlusieursLignes": {
       "get": {
         "summary": "Cette route n'a pas de tag",
         "operationId": "getRouteSansTag",
@@ -587,6 +615,72 @@
                 ]
               }
             }
+          },
+          {
+            "name": "example1",
+            "in": "query",
+            "description": "Un parametre avec un simple exemple",
+            "schema": {
+              "title": "Une string",
+              "type": "string"
+            },
+            "example": "Je suis l'exemple"
+          },
+          {
+            "name": "example2",
+            "in": "query",
+            "description": "Un parametre avec des exemples",
+            "schema": {
+              "title": "Une string",
+              "type": "string"
+            },
+            "examples": {
+              "example1": {
+                "summary": "Exemple 1",
+                "value": "Je suis l'exemple 1"
+              },
+              "example2": {
+                "summary": "Exemple 2",
+                "value": "Je suis l'exemple 2"
+              }
+            }
+          },
+          {
+            "name": "example3",
+            "in": "query",
+            "description": "Un parametre avec un exemple mais du mauvais type",
+            "schema": {
+              "title": "Une string",
+              "type": "string"
+            },
+            "example": {
+              "title": "Je suis un objet exemple"
+            }
+          },
+          {
+            "name": "example4",
+            "in": "query",
+            "description": "Un parametre avec un exemple dans le schema",
+            "schema": {
+              "title": "Une string",
+              "type": "string",
+              "examples": [
+                "Je suis l'exemple"
+              ]
+            }
+          },
+          {
+            "name": "example5",
+            "in": "query",
+            "description": "Un parametre avec un exemple dans le schema et un exemple dans le parametre",
+            "schema": {
+              "title": "Une string",
+              "type": "string",
+              "examples": [
+                "Je suis l'exemple"
+              ]
+            },
+            "example": "Je suis l'exemple 2"
           }
         ],
         "responses": {

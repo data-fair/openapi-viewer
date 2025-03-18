@@ -3,7 +3,10 @@
     :paths="derefDoc?.paths"
     :tags="derefDoc?.tags"
   />
-  <v-container data-iframe-height>
+  <v-container
+    data-iframe-height
+    fluid
+  >
     <v-alert
       v-if="errorMessage"
       type="error"

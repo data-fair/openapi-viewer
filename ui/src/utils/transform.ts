@@ -38,6 +38,8 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
   const parameters = resolveParameters(pathItemParameters, operation.parameters as Parameter[])
   for (const param of parameters) {
     if (param.in === 'cookie') continue
+    // @ts-ignore Not allowed in the OpenAPI spec, but this behavior should not be blocking.
+    if (param.in === 'body') continue
     const paramSchema = param.schema as Record<string, any>
     if (!paramSchema) continue // Parameters should have a content key or schema key. // TODO: Content isn't supported yet
 
@@ -62,7 +64,6 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
   if (operation.requestBody) {
     const requestBody = operation.requestBody as Record<string, any>
     schema.properties.body.description = requestBody.description || ''
-    schema.properties.body.oneOf = []
 
     for (const contentType of Object.keys(requestBody.content)) {
       const slotsLayout = {

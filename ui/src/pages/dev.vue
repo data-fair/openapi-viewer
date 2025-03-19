@@ -22,7 +22,7 @@ const links = [
   ['With drawer to the right', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=fulltest.json&drawerLocation=right'],
   ['Example Data Fair', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=api-docs.json'],
   ['Example recursive', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=recustive.json'],
-  ['Example pet store', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=petstore.json']
+  ['Example pet store', 'http://localhost:5600/openapi-viewer/?urlType=petstore']
 ]
 </script>
 

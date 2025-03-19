@@ -17,10 +17,10 @@
         {{ item.path }}
       </span>
     </template>
-    <template #prepend>
+    <template #append>
       <v-chip
         density="compact"
-        size="small"
+        variant="text"
         :color="colorMethods[item.method]"
         :disabled="item.deprecated"
         :text="item.method.toUpperCase()"
@@ -53,12 +53,12 @@ const { formattedOperations, tag } = defineProps<{
 
 const colorMethods: Record<string, string> = {
   delete: 'error',
-  get: 'primary',
-  patch: 'secondary',
+  get: '#61affe',
+  patch: '#50e3c2',
   post: 'success',
-  put: 'info',
-  options: 'default',
-  head: 'default',
+  put: '#fca130',
+  options: '#0d5aa7',
+  head: '#9012fe',
   trace: 'default'
 }
 

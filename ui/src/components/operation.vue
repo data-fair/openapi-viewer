@@ -184,7 +184,6 @@ const exampleSelected = ref<string>('default')
 const loading = ref(false)
 const isValid = ref(false)
 
-console.log(endpointQuerySchema.value)
 const fullPath = computed(() => {
   let fullPath = path
 

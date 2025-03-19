@@ -32,7 +32,6 @@
       <v-list-group
         v-for="tag in allTags"
         :key="tag"
-        fluid
       >
         <template #activator="{ props: innerProps }">
           <v-list-item

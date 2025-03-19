@@ -29,13 +29,13 @@
       v-for="({ response, code }) in sortedResponses"
       :key="code"
       :value="code"
-      class="mt-2"
+      :class="{ 'mt-2': !response.description }"
     >
       <!-- Description -->
       <div
         v-if="response.description"
         v-safe-html="marked(response.description)"
-        class="mb-4 mt-2"
+        class="mb-4"
       />
 
       <!-- Content -->

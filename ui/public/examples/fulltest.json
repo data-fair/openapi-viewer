@@ -363,7 +363,24 @@
         "operationId": "getRouteSansTag",
         "responses": {
           "200": {
-            "description": "Données récupérées avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deprecated": {
+      "get": {
+        "summary": "Route dépréciée",
+        "operationId": "getDeprecated",
+        "deprecated": true,
+        "responses": {
+          "200": {
             "content": {
               "application/json": {
                 "schema": {

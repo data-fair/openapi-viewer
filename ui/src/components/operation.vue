@@ -1,6 +1,6 @@
 <template>
   <!-- Title / Deprecated? of the operation -->
-  <h1>
+  <h2>
     {{ operation.summary }}
     <v-chip
       v-if="operation.deprecated"
@@ -9,11 +9,22 @@
       :prepend-icon="mdiAlertCircle"
       :text="t('deprecated')"
     />
-  </h1>
+  </h2>
+  <div class="d-flex align-center">
+    <v-chip
+      density="compact"
+      variant="text"
+      class="pa-0"
+      :color="colorMethods[method]"
+      :text="method.toUpperCase()"
+    />
+    <span class="ml-2">{{ serverUrl }}{{ path }}</span>
+  </div>
 
   <div
     v-if="operation.description"
     v-safe-html="marked(operation.description)"
+    class="mt-2"
   />
 
   <!-- External documentation -->
@@ -59,7 +70,7 @@
         <v-tab
           value="snippet"
         >
-          Curl / Url
+          Curl
         </v-tab>
       </v-tabs>
 

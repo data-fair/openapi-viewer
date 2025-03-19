@@ -1,5 +1,4 @@
 <template>
-  <span class="text-h6">{{ t('curlCommand') }}</span>
   <prism
     :key="snippet || 'loading'"
     language="bash"
@@ -7,11 +6,6 @@
   >
     {{ snippet }}
   </prism>
-  <span class="text-h6">{{ t('urlRequest') }}</span>
-  <pre
-    style="white-space: pre-wrap; word-break: break-all;"
-    class="text-body-2"
-  ><code>{{ fullPath }}</code></pre>
 </template>
 
 <script setup lang="ts">
@@ -22,8 +16,6 @@ const { endpointQueryValues, method, fullPath } = defineProps<{
   method: string
   fullPath: string
 }>()
-
-const { t } = useI18n()
 
 const snippet = computed(() => {
   const curlCommand = [
@@ -63,15 +55,6 @@ const snippet = computed(() => {
 })
 
 </script>
-
-<i18n lang="yaml">
-  en:
-    curlCommand: 'Curl command'
-    urlRequest: 'URL request'
-  fr:
-    curlCommand: 'Commande curl'
-    urlRequest: 'Url de la requête'
-</i18n>
 
 <style scoped>
 </style>

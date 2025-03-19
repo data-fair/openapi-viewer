@@ -2,6 +2,7 @@
   <v-navigation-drawer
     permanent
     :location="$route.query.drawerLocation === 'right' ? 'right' : 'left'"
+    :width="350"
   >
     <v-list
       class="pa-1"
@@ -29,8 +30,9 @@
 
       <!-- All tags -->
       <v-list-group
-        v-for="tag in orderedTags"
+        v-for="tag in allTags"
         :key="tag"
+        fluid
       >
         <template #activator="{ props: innerProps }">
           <v-list-item
@@ -116,30 +118,13 @@ const formattedOperations = computed(() => {
     }
   }
 
-  // Sort each category alphabetically by path and place deprecated items at the end
-  for (const tag in categorized) {
-    categorized[tag].sort((a, b) => {
-      if (a.deprecated && !b.deprecated) return 1
-      if (!a.deprecated && b.deprecated) return -1
-      return a.path.localeCompare(b.path)
-    })
-  }
-
-  // Add tags without operations
-  tags?.forEach(tag => {
-    if (!categorized[tag.name]) {
-      categorized[tag.name] = []
-    }
-  })
-
   return categorized
 })
 
-const orderedTags = computed(() => {
+const allTags = computed(() => {
   const providedTags = tags?.map(tag => tag.name) || []
   const extraTags = Object.keys(formattedOperations.value)
     .filter(tag => tag !== 'default' && !providedTags.includes(tag))
-    // .sort()
 
   return [...providedTags, ...extraTags]
 })

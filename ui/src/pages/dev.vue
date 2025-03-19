@@ -18,7 +18,6 @@
 <script setup lang="ts">
 const links = [
   ['Default URL', 'http://localhost:5600/openapi-viewer/'],
-  ['Direct url parameter', `http://localhost:5600/openapi-viewer/?url=${encodeURIComponent('examples/fulltest.json')}`],
   ['Allowed url', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=fulltest.json'],
   ['With drawer to the right', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=fulltest.json&drawerLocation=right'],
   ['Example Data Fair', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=api-docs.json'],

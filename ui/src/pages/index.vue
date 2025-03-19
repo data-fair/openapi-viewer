@@ -1,15 +1,12 @@
 <template>
-  <!--
-  Deprecated for security reasons, do not allow users to enter a URL directly.
-  <top-bar
-    v-if="$route.query['hide-toolbar'] !== 'true'"
-  />
-  -->
   <navigation-drawer
     :paths="derefDoc?.paths"
     :tags="derefDoc?.tags"
   />
-  <v-container data-iframe-height>
+  <v-container
+    data-iframe-height
+    fluid
+  >
     <v-alert
       v-if="errorMessage"
       type="error"
@@ -62,7 +59,7 @@ import YAML from 'js-yaml'
 
 const { t } = useI18n()
 const route = useRoute()
-const url = ref<string>('') // const url = useStringSearchParam('url')
+const url = ref<string>('')
 const errorMessage = ref<string | null>(null)
 const dereferencing = shallowRef(false) // True if the dereferencing is in progress
 
@@ -139,20 +136,7 @@ watch(route.query, () => {
   derefDoc.value = undefined
   errorMessage.value = null
 
-  // --- Deprecated to the next major version ---
-  if (route.query.url && route.query.url.length > 0 && typeof route.query.url === 'string') {
-    console.error('The "url" query parameter is deprecated, please use the "urlType" query parameter and setup the environment variable ALLOWED_URLS.')
-    const parsedUrl = new URL(route.query.url, window.location.origin)
-    const urlDomain = parsedUrl.hostname
-
-    if (urlDomain && urlDomain !== window.location.hostname) {
-      errorMessage.value = t('errorCrossDomain')
-      return
-    }
-    url.value = route.query.url
-
-  // --- New way to handle the URL ---
-  } else if (route.query.urlType) {
+  if (route.query.urlType) {
     // Check url type
     if (!Object.keys($uiConfig.allowedUrls).includes(route.query.urlType as string)) {
       errorMessage.value = t('invalidUrlType')
@@ -170,7 +154,7 @@ watch(route.query, () => {
       return
     }
 
-    // Rempalce the template params with the query params
+    // Replace the template params with the query params
     url.value = urlTemplate.parseTemplate(template).expand(queryParams)
   } else if ($uiConfig.defaultUrl) {
     url.value = $uiConfig.defaultUrl
@@ -188,7 +172,6 @@ watch(route.query, () => {
     error: "Error"
     missingUrl: "Missing URL parameter."
     errorCannotRetrieveData: "Cannot retrieve data for this URL."
-    errorCrossDomain: "Cross-domain URLs are not allowed."
     errorHashNotMatch: "The selected operation does not match any operationId or path in the OpenAPI specs."
     errorOpenAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference."
     invalidUrlType: "Invalid URL type."
@@ -197,7 +180,6 @@ watch(route.query, () => {
     error: "Erreur"
     missingUrl: "Paramètre URL manquant."
     errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL."
-    errorCrossDomain: "Les URLs cross-domain ne sont pas autorisées."
     errorHashNotMatch: "L'opération sélectionnée ne correspond à aucun operationId ou path dans les spécifications OpenAPI."
     errorOpenAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire."
     invalidUrlType: "Type d'URL invalide."

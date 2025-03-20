@@ -3,9 +3,9 @@
   "info": {
     "title": "API principale",
     "description": "\nCette documentation interactive à destination des développeurs permet de gérer les ressources de ce service de publication de données.\n\nNotez que l'API réelle est plus riche, chaque jeu de données et chaque service distant disposant de sa propre API documentée séparément.\n\nPour utiliser cette API dans un programme vous aurez besoin d'une clé que vous pouvez créer dans vos paramètres personnels ou dans les paramètres d'une organisation dont vous êtes administrateur.\n\nPour des exemples simples de publication de données vous pouvez consulter la <a href=\"https://data-fair.github.io/4/interoperate/api\" target=\"blank\">documentation sur ce sujet</a>.\n",
-    "version": "4.34.0",
+    "version": "4.37.1",
     "x-api-id": "data-fair",
-    "termsOfService": "https://koumoul.com/platform/term-of-service",
+    "termsOfService": "https://koumoul.com/pages/conditions-generales-dutilisation",
     "contact": {
       "name": "Koumoul",
       "url": "https://koumoul.com",
@@ -7202,14 +7202,15 @@
     },
     "/api-docs.json": {
       "get": {
-        "summary": "Accéder à cette documentation au format OpenAPI v3.",
+        "summary": "Obtenir la documentation OpenAPI",
+        "description": "Accéder à cette documentation au format OpenAPI v3.",
         "operationId": "getApiDoc",
         "tags": [
           "Administration"
         ],
         "responses": {
           "200": {
-            "description": "Etat de santé du service.",
+            "description": "La documentation de l'API",
             "content": {
               "application/json": {
                 "schema": {
@@ -7223,7 +7224,8 @@
     },
     "/vocabulary": {
       "get": {
-        "summary": "Lister les concepts utilisables pour annoter la donnée sur ce service.",
+        "summary": "Lister les concepts",
+        "description": "Récupérer la liste des concepts utilisables pour annoter la donnée sur ce service.",
         "operationId": "getVocabulary",
         "tags": [
           "Administration"
@@ -7269,7 +7271,8 @@
     },
     "/datasets": {
       "get": {
-        "summary": "Récupérer la liste des jeux de données.",
+        "summary": "Lister les jeux de données",
+        "description": "Récupérer la liste des jeux de données.",
         "operationId": "listDatasets",
         "tags": [
           "Jeux de données"
@@ -7584,7 +7587,7 @@
         }
       },
       "post": {
-        "summary": "Importer un jeu de données.",
+        "summary": "Créer un jeu de données",
         "operationId": "postDataset",
         "tags": [
           "Jeux de données"
@@ -7628,7 +7631,8 @@
         }
       ],
       "get": {
-        "summary": "Récupérer les informations d'un jeu de données.",
+        "summary": "Lire les informations d'un jeu de données",
+        "description": "Récupérer les informations d'un jeu de données.",
         "operationId": "getDataset",
         "tags": [
           "Jeux de données"
@@ -7647,7 +7651,8 @@
         }
       },
       "put": {
-        "summary": "Créer ou mettre à jour un jeu de données.",
+        "summary": "Créer ou mettre à jour un jeu de données",
+        "description": "Créer ou mettre à jour un jeu de données.",
         "operationId": "putDataset",
         "tags": [
           "Jeux de données"
@@ -7687,7 +7692,8 @@
         }
       },
       "patch": {
-        "summary": "Modifier seulement certaines informations.",
+        "summary": "Modifier un jeu de données",
+        "description": "Modifier seulement certaines informations d'un jeu de données.",
         "operationId": "patchDataset",
         "tags": [
           "Jeux de données"
@@ -7717,7 +7723,7 @@
         }
       },
       "delete": {
-        "summary": "Supprimer un jeu de données.",
+        "summary": "Supprimer un jeu de données",
         "operationId": "deleteDataset",
         "tags": [
           "Jeux de données"
@@ -7731,7 +7737,8 @@
     },
     "/applications": {
       "get": {
-        "summary": "Récupérer la liste des applications.",
+        "summary": "Lister les applications",
+        "description": "Récupérer la liste des applications.",
         "operationId": "listApplications",
         "tags": [
           "Applications"
@@ -7959,7 +7966,7 @@
         }
       },
       "post": {
-        "summary": "Configurer une application.",
+        "summary": "Configurer une application",
         "operationId": "postApplication",
         "tags": [
           "Applications"
@@ -8003,7 +8010,8 @@
         }
       ],
       "get": {
-        "summary": "Récupérer les informations d'une application.",
+        "summary": "Lire les informations d'une application",
+        "description": "Récupérer les informations d'une application.",
         "operationId": "getApplication",
         "tags": [
           "Applications"
@@ -8022,7 +8030,8 @@
         }
       },
       "put": {
-        "summary": "Créer ou mettre à jour une application.",
+        "summary": "Créer ou mettre à jour une application",
+        "description": "Créer ou mettre à jour une application.",
         "operationId": "putApplication",
         "tags": [
           "Applications"
@@ -8062,7 +8071,8 @@
         }
       },
       "patch": {
-        "summary": "Modifier certaines informations d'une application.",
+        "summary": "Modifier une informations",
+        "description": "Modifier seulement certaines informations d'une application.",
         "operationId": "patchApplication",
         "tags": [
           "Applications"
@@ -8092,7 +8102,7 @@
         }
       },
       "delete": {
-        "summary": "Supprimer une application.",
+        "summary": "Supprimer une application",
         "operationId": "deleteApplication",
         "tags": [
           "Applications"

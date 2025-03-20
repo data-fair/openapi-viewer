@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="8">
+    <v-col>
       <!-- Title & Version -->
       <h1>
         {{ info.title }}
@@ -79,7 +79,10 @@
       </template>
     </v-col>
 
-    <v-col cols="4">
+    <v-col
+      cols="12"
+      md="4"
+    >
       <v-card
         v-if="info.contact || info.license || externalDocs || info.termsOfService"
         variant="elevated"

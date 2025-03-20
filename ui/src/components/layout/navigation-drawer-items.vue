@@ -4,12 +4,14 @@
     :key="item.path"
     :active="$route.query.operation === `${item.hash}`"
     :class="{
-      'text-disabled font-italic': item.deprecated
+      'text-disabled font-italic': item.deprecated,
     }"
-    :title="item.summary"
     rounded
     @click="$router.push({ query: { ...$route.query, operation: item.hash} })"
   >
+    <v-list-item-title class="text-wrap">
+      {{ item.summary }}
+    </v-list-item-title>
     <template #append>
       <v-chip
         density="compact"

@@ -1,27 +1,18 @@
 openapi: 3.1.0
 info:
   title: API principale
-  description: >
-    
-    Cette documentation interactive à destination des développeurs permet de
-    gérer les ressources de ce service de publication de données.
+  description: |
 
+    Cette documentation interactive à destination des développeurs permet de gérer les ressources de ce service de publication de données.
 
-    Notez que l'API réelle est plus riche, chaque jeu de données et chaque
-    service distant disposant de sa propre API documentée séparément.
+    Notez que l'API réelle est plus riche, chaque jeu de données et chaque service distant disposant de sa propre API documentée séparément.
 
+    Pour utiliser cette API dans un programme vous aurez besoin d'une clé que vous pouvez créer dans vos paramètres personnels ou dans les paramètres d'une organisation dont vous êtes administrateur.
 
-    Pour utiliser cette API dans un programme vous aurez besoin d'une clé que
-    vous pouvez créer dans vos paramètres personnels ou dans les paramètres
-    d'une organisation dont vous êtes administrateur.
-
-
-    Pour des exemples simples de publication de données vous pouvez consulter la
-    <a href="https://data-fair.github.io/4/interoperate/api"
-    target="blank">documentation sur ce sujet</a>.
-  version: 4.34.0
+    Pour des exemples simples de publication de données vous pouvez consulter la <a href="https://data-fair.github.io/4/interoperate/api" target="blank">documentation sur ce sujet</a>.
+  version: 4.37.1
   x-api-id: data-fair
-  termsOfService: https://koumoul.com/platform/term-of-service
+  termsOfService: https://koumoul.com/pages/conditions-generales-dutilisation
   contact:
     name: Koumoul
     url: https://koumoul.com
@@ -41,8 +32,7 @@ components:
           description: Globally unique identifier of the dataset
         slug:
           type: string
-          description: Identifier of the dataset, usually a slug for URL readability
-            (unique inside the tenant)
+          description: Identifier of the dataset, usually a slug for URL readability (unique inside the tenant)
         href:
           type: string
           description: Readonly field. The URL where this resource can be fetched
@@ -80,7 +70,7 @@ components:
           type: string
           description: update frequency
           enum:
-            - ""
+            - ''
             - triennial
             - biennial
             - annual
@@ -132,19 +122,19 @@ components:
                   separator:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   dateFormat:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   dateTimeFormat:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   timeZone:
                     type:
                       - string
-                      - "null"
+                      - 'null'
             props:
               type: object
               additionalProperties: false
@@ -154,9 +144,7 @@ components:
                   description: Number of lines this file has.
                 linesDelimiter:
                   type: string
-                  description: "New line character or characters (can be \r
-
-                    ))"
+                  description: "New line character or characters (can be \r\n))"
                 fieldsDelimiter:
                   type: string
                   description: Fields delimiter
@@ -256,18 +244,13 @@ components:
                   name:
                     type: string
                     title: Nom du fichier
-                    description: Ce nom doit contenir l'extension qui doit correspondre au format du
-                      fichier téléchargé.
+                    description: Ce nom doit contenir l'extension qui doit correspondre au format du fichier téléchargé.
                     x-rules:
                       - hasExtension
                   targetUrl:
                     type: string
                     title: URL de téléchargement
-                    description: Cette URL n'est pas consultable après écriture. Elle est utilisée
-                      pour télécharger le fichier depuis un service distant et
-                      peut contenir un secret. Vous pouvez la laisser vide quand
-                      vous modifiez les autres informations, mais vous devez la
-                      renseigner de nouveau si vous changez le nom de fichier.
+                    description: Cette URL n'est pas consultable après écriture. Elle est utilisée pour télécharger le fichier depuis un service distant et peut contenir un secret. Vous pouvez la laisser vide quand vous modifiez les autres informations, mais vous devez la renseigner de nouveau si vous changez le nom de fichier.
         remoteFile:
           type: object
           additionalProperties: true
@@ -276,8 +259,7 @@ components:
           properties:
             name:
               type: string
-              description: Name of the remote file that was used to create or update this
-                dataset
+              description: Name of the remote file that was used to create or update this dataset
             url:
               type: string
               description: Url from where the file can be fetched
@@ -456,13 +438,10 @@ components:
             role:
               type: string
               deprecated: true
-              description: DEPRECATED - If this is set and owner is an organization, this
-                restrict ownership to users of this organization having this
-                role or admin role
+              description: DEPRECATED - If this is set and owner is an organization, this restrict ownership to users of this organization having this role or admin role
             department:
               type: string
-              description: If this is set and owner is an organization, this gives ownership
-                to users of this organization that belong to this department
+              description: If this is set and owner is an organization, this gives ownership to users of this organization that belong to this department
             departmentName:
               type: string
               description: The display name of the department
@@ -495,12 +474,10 @@ components:
         errorRetry:
           type: string
           format: date-time
-          description: If defined the task that triggered an error will be retried after a
-            delay.
+          description: If defined the task that triggered an error will be retried after a delay.
         primaryKey:
           type: array
-          description: List of properties of the schema used as unique primary key for
-            each line
+          description: List of properties of the schema used as unique primary key for each line
           items:
             type: string
         schema:
@@ -520,11 +497,11 @@ components:
               format:
                 type:
                   - string
-                  - "null"
+                  - 'null'
               x-originalName:
                 type:
                   - string
-                  - "null"
+                  - 'null'
               title:
                 type: string
               description:
@@ -537,7 +514,7 @@ components:
                 deprecated: true
                 type:
                   - string
-                  - "null"
+                  - 'null'
               x-concept:
                 type: object
                 properties:
@@ -557,76 +534,55 @@ components:
                     default: true
                     x-display: switch
                     title: Filtrable sur valeur exacte
-                    description: Désactivez cette capacité si la donnée contient par exemple des
-                      textes longs pour lesquels des filtres sur valeurs exactes
-                      ont peu de sens.
+                    description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels des filtres sur valeurs exactes ont peu de sens.
                   values:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Triable et groupable
-                    description: Désactivez cette capacité si la donnée contient par exemple des
-                      textes longs pour lesquels trier ou grouper par valeur a
-                      peu de sens.
+                    description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels trier ou grouper par valeur a peu de sens.
                   textStandard:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Texte analysé pour recherche textuelle
-                    description: Désactivez cette capacité dans le cas d'un code, une url, etc.
-                      N'importe quel contenu sur lequel la recherche de mots a
-                      peu de sens.
+                    description: Désactivez cette capacité dans le cas d'un code, une url, etc. N'importe quel contenu sur lequel la recherche de mots a peu de sens.
                   text:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Texte analysé spécifiquement pour la langue française
-                    description: Désactivez cette capacité pour tout contenu qui n'est pas en langue
-                      française ou pour lequel la recherche de mots a peu de
-                      sens.
+                    description: Désactivez cette capacité pour tout contenu qui n'est pas en langue française ou pour lequel la recherche de mots a peu de sens.
                   textAgg:
                     type: boolean
                     default: false
                     x-display: switch
                     title: Statistiques de mots
-                    description: Activez cette capacité si avez l'intention d'obtenir des
-                      statistiques sur les occurrences de mots (par exemple pour
-                      construire un nuage de mot).
+                    description: Activez cette capacité si avez l'intention d'obtenir des statistiques sur les occurrences de mots (par exemple pour construire un nuage de mot).
                   wildcard:
                     type: boolean
                     default: false
                     x-display: switch
                     title: Texte filtrable sur groupe de caractères
-                    description: Activez cette capacité si vous avez l'intention de filtrer ce
-                      contenu spécifiquement sur une suite de caractères (par
-                      exemple si un filtre sur mots entiers ou sur valeur exacte
-                      ne convient pas).
+                    description: Activez cette capacité si vous avez l'intention de filtrer ce contenu spécifiquement sur une suite de caractères (par exemple si un filtre sur mots entiers ou sur valeur exacte ne convient pas).
                   insensitive:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Tri amélioré avec casse et accents
-                    description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du
-                      tri ou bien si il ne contient pas de variations avec
-                      accents et majuscules.
+                    description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du tri ou bien si il ne contient pas de variations avec accents et majuscules.
                   geoShape:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Formes géométriques complexes
-                    description: Désactivez cette capacité si la donnée ne contient que des
-                      géométries basiques de points ou bien si requêter les
-                      géométries uniquement à partir de leurs centroïdes est
-                      suffisant pour vos besoins.
+                    description: Désactivez cette capacité si la donnée ne contient que des géométries basiques de points ou bien si requêter les géométries uniquement à partir de leurs centroïdes est suffisant pour vos besoins.
                   indexAttachment:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Contenu des pièces jointes analysé pour recherche textuelle
-                    description: Désactivez cette option si vous souhaitez que les pièces jointes
-                      soient simplement téléchargeables et que l'extraction de
-                      leur contenu textuel pour recherche de mots n'est pas
-                      pertinente.
+                    description: Désactivez cette option si vous souhaitez que les pièces jointes soient simplement téléchargeables et que l'extraction de leur contenu textuel pour recherche de mots n'est pas pertinente.
               x-labels:
                 type: object
               x-labelsRestricted:
@@ -658,15 +614,13 @@ components:
                     description: L'identifiant du service distant utilisé pour l'enrichissement
                   action:
                     type: string
-                    description: L'identifiant de l'action du service distant à utiliser pour
-                      l'enrichissement
+                    description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
               x-display:
                 type: string
               enum:
                 type: array
                 readOnly: true
-                description: This differs from JSON schema. It is not a restriction, just and
-                  observation of the values that are present in the dataset.
+                description: This differs from JSON schema. It is not a restriction, just and observation of the values that are present in the dataset.
               x-cardinality:
                 type: integer
                 description: The number of distinct values for this field
@@ -708,8 +662,7 @@ components:
           description: The original time zone of the calendar.
         projection:
           type: object
-          description: The cartographic projection of this dataset. Refers to the list of
-            supported projections in contract/projections.json
+          description: The cartographic projection of this dataset. Refers to the list of supported projections in contract/projections.json
           properties:
             title:
               type: string
@@ -781,12 +734,10 @@ components:
                     description: L'identifiant du service distant utilisé pour l'enrichissement
                   action:
                     type: string
-                    description: L'identifiant de l'action du service distant à utiliser pour
-                      l'enrichissement
+                    description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
                   select:
                     type: array
-                    description: La liste des colonnes à sélectionner dans le retour du service
-                      distant. Toutes les colonnes si absent ou vide.
+                    description: La liste des colonnes à sélectionner dans le retour du service distant. Toutes les colonnes si absent ou vide.
                     items:
                       type: string
                   shortId:
@@ -795,8 +746,7 @@ components:
                     readOnly: true
                   propertyPrefix:
                     type: string
-                    description: Chaine à utiliser comme préfixe des clés de champs issus de cette
-                      extension
+                    description: Chaine à utiliser comme préfixe des clés de champs issus de cette extension
         masterData:
           type: object
           title: Données de référence
@@ -828,9 +778,7 @@ components:
                     title: Description
                     x-display: textarea
                     x-props:
-                      placeholder: exemple "cet enrichissement vous permet de récupérer les
-                        informations de plusieurs produits à partir d'une liste
-                        de codes produits."
+                      placeholder: exemple "cet enrichissement vous permet de récupérer les informations de plusieurs produits à partir d'une liste de codes produits."
                   filters:
                     type: array
                     title: Filtres statiques
@@ -933,18 +881,11 @@ components:
                   sort:
                     type: string
                     title: Tri pour choisir parmi des résultats ambigus
-                    description: >-
-                      
-                      Remarque : ce paramètre est optionnel et utile uniquement
-                      si la manière d'établir une correspondance est susceptible
-                      de retourner plusieurs résultats par ligne.
+                    description: |-
 
+                      Remarque : ce paramètre est optionnel et utile uniquement si la manière d'établir une correspondance est susceptible de retourner plusieurs résultats par ligne.
 
-                      Le tri est exprimé sous forme d'une liste de clés de
-                      colonnes séparées par des virgules. Par défaut le tri est
-                      ascendant, si un nom de colonne est préfixé par un "-"
-                      alors le tri sera descendant.
-
+                      Le tri est exprimé sous forme d'une liste de clés de colonnes séparées par des virgules. Par défaut le tri est ascendant, si un nom de colonne est préfixé par un "-" alors le tri sera descendant.
 
                       Exemple: ma_colonne,-ma_colonne2
             singleSearchs:
@@ -975,8 +916,7 @@ components:
                     title: Description
                     x-display: textarea
                     x-props:
-                      placeholder: exemple "récupérez un code produit en effectuant une recherche dans
-                        son code ou son libellé"
+                      placeholder: exemple "récupérez un code produit en effectuant une recherche dans son code ou son libellé"
                   output:
                     type: object
                     title: Propriété à retourner (code)
@@ -1043,9 +983,7 @@ components:
                 description: L'identifiant du catalogue de destination de cette publication.
               status:
                 type: string
-                description: A simple flag to clearly identify the publications that were
-                  successful. If "published" then the targetUrl key should be
-                  defined, If "error" then the error key should be defined.
+                description: A simple flag to clearly identify the publications that were successful. If "published" then the targetUrl key should be defined, If "error" then the error key should be defined.
                 enum:
                   - waiting
                   - published
@@ -1061,12 +999,10 @@ components:
                 type: string
               result:
                 type: object
-                description: The result of pushing the publication. The structure of this object
-                  is permissive and depends on the type of catalog
+                description: The result of pushing the publication. The structure of this object is permissive and depends on the type of catalog
               addToDataset:
                 type: object
-                description: Fill this object to create a new resource (or community resource)
-                  to an existing dataset.
+                description: Fill this object to create a new resource (or community resource) to an existing dataset.
                 properties:
                   id:
                     type: string
@@ -1087,8 +1023,7 @@ components:
             type: string
         requestedPublicationSites:
           type: array
-          description: References to all sites the dataset would be exposed in if
-            validated by an admin.
+          description: References to all sites the dataset would be exposed in if validated by an admin.
           items:
             type: string
         hasFiles:
@@ -1102,8 +1037,7 @@ components:
         isVirtual:
           type: boolean
           default: false
-          description: Used to identify virtual datasets. A virtual datasets does not have
-            data, only references to other datasets.
+          description: Used to identify virtual datasets. A virtual datasets does not have data, only references to other datasets.
         virtual:
           type: object
           description: A configuration object dedicated to virtual datasets.
@@ -1136,9 +1070,7 @@ components:
         isRest:
           type: boolean
           default: false
-          description: Used to identify REST datasets. A REST dataset is not created from
-            a data file, but instead is based on a dynamic collection in a
-            database.
+          description: Used to identify REST datasets. A REST dataset is not created from a data file, but instead is based on a dynamic collection in a database.
         rest:
           type: object
           description: A configuration object dedicated to REST datasets.
@@ -1171,8 +1103,7 @@ components:
             history:
               type: boolean
               default: false
-              description: Set to true to let data-fair store revisions of the lines in the
-                dataset.
+              description: Set to true to let data-fair store revisions of the lines in the dataset.
             historyTTL:
               type: object
               additionalProperties: false
@@ -1206,8 +1137,7 @@ components:
         isMetaOnly:
           type: boolean
           default: false
-          description: Used to identify datasets without any local data and only some
-            metadata.
+          description: Used to identify datasets without any local data and only some metadata.
         topics:
           type: array
           title: Liste de thématiques
@@ -1229,9 +1159,7 @@ components:
                 x-display: color-picker
               icon:
                 title: Icône
-                description: Il est possible de consulter plus facilement la liste des icones
-                  disponibles sur <a href="https://materialdesignicons.com"
-                  target="_blank">ce site</a>.
+                description: Il est possible de consulter plus facilement la liste des icones disponibles sur <a href="https://materialdesignicons.com" target="_blank">ce site</a>.
                 type: object
                 x-fromUrl: https://koumoul.com/data-fair/api/v1/datasets/icons-mdi-latest/lines?q={q}
                 x-itemKey: name
@@ -1248,8 +1176,7 @@ components:
           properties:
             resizeMode:
               type: string
-              description: Define how the thumbnails will be adapted to the size requested by
-                visualizations
+              description: Define how the thumbnails will be adapted to the size requested by visualizations
               enum:
                 - crop
                 - smartCrop
@@ -1290,9 +1217,7 @@ components:
           type: array
           items:
             type: object
-            description: Permission to do the operations (identified by their id). If type
-              and id are not set, then the operation is set to public. roles
-              array is used only with type organization
+            description: Permission to do the operations (identified by their id). If type and id are not set, then the operation is set to public. roles array is used only with type organization
             additionalProperties: false
             anyOf:
               - required:
@@ -1317,8 +1242,7 @@ components:
                 description: Email of the user
               department:
                 type: string
-                description: Identifier of the department or "*" for any department (same as
-                  empty) or "-" for no department
+                description: Identifier of the department or "*" for any department (same as empty) or "-" for no department
               departmentName:
                 type: string
                 description: Name of the department
@@ -1379,7 +1303,7 @@ components:
         esWarning:
           type:
             - string
-            - "null"
+            - 'null'
           enum:
             - MissingIndex
             - IndexHealthRed
@@ -1387,8 +1311,7 @@ components:
             - ShardingRecommended
         draft:
           title: Dataset draft
-          description: Some properties waiting for confirmation before being merged into
-            the main dataset info
+          description: Some properties waiting for confirmation before being merged into the main dataset info
           type: object
           additionalProperties: false
           properties:
@@ -1412,8 +1335,7 @@ components:
                     - compatible
             validateDraft:
               type: boolean
-              title: indicates that the draft was validated and is being processed to replace
-                the current state
+              title: indicates that the draft was validated and is being processed to replace the current state
             schema:
               type: array
               description: JSON schema properties of the fields
@@ -1431,11 +1353,11 @@ components:
                   format:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   x-originalName:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   title:
                     type: string
                   description:
@@ -1448,7 +1370,7 @@ components:
                     deprecated: true
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   x-concept:
                     type: object
                     properties:
@@ -1468,76 +1390,55 @@ components:
                         default: true
                         x-display: switch
                         title: Filtrable sur valeur exacte
-                        description: Désactivez cette capacité si la donnée contient par exemple des
-                          textes longs pour lesquels des filtres sur valeurs
-                          exactes ont peu de sens.
+                        description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels des filtres sur valeurs exactes ont peu de sens.
                       values:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Triable et groupable
-                        description: Désactivez cette capacité si la donnée contient par exemple des
-                          textes longs pour lesquels trier ou grouper par valeur
-                          a peu de sens.
+                        description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels trier ou grouper par valeur a peu de sens.
                       textStandard:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Texte analysé pour recherche textuelle
-                        description: Désactivez cette capacité dans le cas d'un code, une url, etc.
-                          N'importe quel contenu sur lequel la recherche de mots
-                          a peu de sens.
+                        description: Désactivez cette capacité dans le cas d'un code, une url, etc. N'importe quel contenu sur lequel la recherche de mots a peu de sens.
                       text:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Texte analysé spécifiquement pour la langue française
-                        description: Désactivez cette capacité pour tout contenu qui n'est pas en langue
-                          française ou pour lequel la recherche de mots a peu de
-                          sens.
+                        description: Désactivez cette capacité pour tout contenu qui n'est pas en langue française ou pour lequel la recherche de mots a peu de sens.
                       textAgg:
                         type: boolean
                         default: false
                         x-display: switch
                         title: Statistiques de mots
-                        description: Activez cette capacité si avez l'intention d'obtenir des
-                          statistiques sur les occurrences de mots (par exemple
-                          pour construire un nuage de mot).
+                        description: Activez cette capacité si avez l'intention d'obtenir des statistiques sur les occurrences de mots (par exemple pour construire un nuage de mot).
                       wildcard:
                         type: boolean
                         default: false
                         x-display: switch
                         title: Texte filtrable sur groupe de caractères
-                        description: Activez cette capacité si vous avez l'intention de filtrer ce
-                          contenu spécifiquement sur une suite de caractères
-                          (par exemple si un filtre sur mots entiers ou sur
-                          valeur exacte ne convient pas).
+                        description: Activez cette capacité si vous avez l'intention de filtrer ce contenu spécifiquement sur une suite de caractères (par exemple si un filtre sur mots entiers ou sur valeur exacte ne convient pas).
                       insensitive:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Tri amélioré avec casse et accents
-                        description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du
-                          tri ou bien si il ne contient pas de variations avec
-                          accents et majuscules.
+                        description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du tri ou bien si il ne contient pas de variations avec accents et majuscules.
                       geoShape:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Formes géométriques complexes
-                        description: Désactivez cette capacité si la donnée ne contient que des
-                          géométries basiques de points ou bien si requêter les
-                          géométries uniquement à partir de leurs centroïdes est
-                          suffisant pour vos besoins.
+                        description: Désactivez cette capacité si la donnée ne contient que des géométries basiques de points ou bien si requêter les géométries uniquement à partir de leurs centroïdes est suffisant pour vos besoins.
                       indexAttachment:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Contenu des pièces jointes analysé pour recherche textuelle
-                        description: Désactivez cette option si vous souhaitez que les pièces jointes
-                          soient simplement téléchargeables et que l'extraction
-                          de leur contenu textuel pour recherche de mots n'est
-                          pas pertinente.
+                        description: Désactivez cette option si vous souhaitez que les pièces jointes soient simplement téléchargeables et que l'extraction de leur contenu textuel pour recherche de mots n'est pas pertinente.
                   x-labels:
                     type: object
                   x-labelsRestricted:
@@ -1569,15 +1470,13 @@ components:
                         description: L'identifiant du service distant utilisé pour l'enrichissement
                       action:
                         type: string
-                        description: L'identifiant de l'action du service distant à utiliser pour
-                          l'enrichissement
+                        description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
                   x-display:
                     type: string
                   enum:
                     type: array
                     readOnly: true
-                    description: This differs from JSON schema. It is not a restriction, just and
-                      observation of the values that are present in the dataset.
+                    description: This differs from JSON schema. It is not a restriction, just and observation of the values that are present in the dataset.
                   x-cardinality:
                     type: integer
                     description: The number of distinct values for this field
@@ -1668,12 +1567,10 @@ components:
                         description: L'identifiant du service distant utilisé pour l'enrichissement
                       action:
                         type: string
-                        description: L'identifiant de l'action du service distant à utiliser pour
-                          l'enrichissement
+                        description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
                       select:
                         type: array
-                        description: La liste des colonnes à sélectionner dans le retour du service
-                          distant. Toutes les colonnes si absent ou vide.
+                        description: La liste des colonnes à sélectionner dans le retour du service distant. Toutes les colonnes si absent ou vide.
                         items:
                           type: string
                       shortId:
@@ -1682,12 +1579,10 @@ components:
                         readOnly: true
                       propertyPrefix:
                         type: string
-                        description: Chaine à utiliser comme préfixe des clés de champs issus de cette
-                          extension
+                        description: Chaine à utiliser comme préfixe des clés de champs issus de cette extension
             publications:
               type: array
-              description: References to all the catalogs the dataset metadata is published
-                too
+              description: References to all the catalogs the dataset metadata is published too
               items:
                 type: object
                 required:
@@ -1702,10 +1597,7 @@ components:
                     description: L'identifiant du catalogue de destination de cette publication.
                   status:
                     type: string
-                    description: A simple flag to clearly identify the publications that were
-                      successful. If "published" then the targetUrl key should
-                      be defined, If "error" then the error key should be
-                      defined.
+                    description: A simple flag to clearly identify the publications that were successful. If "published" then the targetUrl key should be defined, If "error" then the error key should be defined.
                     enum:
                       - waiting
                       - published
@@ -1721,12 +1613,10 @@ components:
                     type: string
                   result:
                     type: object
-                    description: The result of pushing the publication. The structure of this object
-                      is permissive and depends on the type of catalog
+                    description: The result of pushing the publication. The structure of this object is permissive and depends on the type of catalog
                   addToDataset:
                     type: object
-                    description: Fill this object to create a new resource (or community resource)
-                      to an existing dataset.
+                    description: Fill this object to create a new resource (or community resource) to an existing dataset.
                     properties:
                       id:
                         type: string
@@ -1806,8 +1696,7 @@ components:
                 history:
                   type: boolean
                   default: false
-                  description: Set to true to let data-fair store revisions of the lines in the
-                    dataset.
+                  description: Set to true to let data-fair store revisions of the lines in the dataset.
                 historyTTL:
                   type: object
                   additionalProperties: false
@@ -1847,8 +1736,7 @@ components:
               description: Set to true to use attached files as illustrations of the line
             projection:
               type: object
-              description: The cartographic projection of this dataset. Refers to the list of
-                supported projections in contract/projections.json
+              description: The cartographic projection of this dataset. Refers to the list of supported projections in contract/projections.json
               properties:
                 title:
                   type: string
@@ -1925,19 +1813,13 @@ components:
                       name:
                         type: string
                         title: Nom du fichier
-                        description: Ce nom doit contenir l'extension qui doit correspondre au format du
-                          fichier téléchargé.
+                        description: Ce nom doit contenir l'extension qui doit correspondre au format du fichier téléchargé.
                         x-rules:
                           - hasExtension
                       targetUrl:
                         type: string
                         title: URL de téléchargement
-                        description: Cette URL n'est pas consultable après écriture. Elle est utilisée
-                          pour télécharger le fichier depuis un service distant
-                          et peut contenir un secret. Vous pouvez la laisser
-                          vide quand vous modifiez les autres informations, mais
-                          vous devez la renseigner de nouveau si vous changez le
-                          nom de fichier.
+                        description: Cette URL n'est pas consultable après écriture. Elle est utilisée pour télécharger le fichier depuis un service distant et peut contenir un secret. Vous pouvez la laisser vide quand vous modifiez les autres informations, mais vous devez la renseigner de nouveau si vous changez le nom de fichier.
             topics:
               type: array
               title: Liste de thématiques
@@ -1959,9 +1841,7 @@ components:
                     x-display: color-picker
                   icon:
                     title: Icône
-                    description: Il est possible de consulter plus facilement la liste des icones
-                      disponibles sur <a href="https://materialdesignicons.com"
-                      target="_blank">ce site</a>.
+                    description: Il est possible de consulter plus facilement la liste des icones disponibles sur <a href="https://materialdesignicons.com" target="_blank">ce site</a>.
                     type: object
                     x-fromUrl: https://koumoul.com/data-fair/api/v1/datasets/icons-mdi-latest/lines?q={q}
                     x-itemKey: name
@@ -1978,8 +1858,7 @@ components:
               properties:
                 resizeMode:
                   type: string
-                  description: Define how the thumbnails will be adapted to the size requested by
-                    visualizations
+                  description: Define how the thumbnails will be adapted to the size requested by visualizations
                   enum:
                     - crop
                     - smartCrop
@@ -2016,9 +1895,7 @@ components:
                         title: Description
                         x-display: textarea
                         x-props:
-                          placeholder: exemple "cet enrichissement vous permet de récupérer les
-                            informations de plusieurs produits à partir d'une
-                            liste de codes produits."
+                          placeholder: exemple "cet enrichissement vous permet de récupérer les informations de plusieurs produits à partir d'une liste de codes produits."
                       filters:
                         type: array
                         title: Filtres statiques
@@ -2121,19 +1998,11 @@ components:
                       sort:
                         type: string
                         title: Tri pour choisir parmi des résultats ambigus
-                        description: >-
-                          
-                          Remarque : ce paramètre est optionnel et utile
-                          uniquement si la manière d'établir une correspondance
-                          est susceptible de retourner plusieurs résultats par
-                          ligne.
+                        description: |-
 
+                          Remarque : ce paramètre est optionnel et utile uniquement si la manière d'établir une correspondance est susceptible de retourner plusieurs résultats par ligne.
 
-                          Le tri est exprimé sous forme d'une liste de clés de
-                          colonnes séparées par des virgules. Par défaut le tri
-                          est ascendant, si un nom de colonne est préfixé par un
-                          "-" alors le tri sera descendant.
-
+                          Le tri est exprimé sous forme d'une liste de clés de colonnes séparées par des virgules. Par défaut le tri est ascendant, si un nom de colonne est préfixé par un "-" alors le tri sera descendant.
 
                           Exemple: ma_colonne,-ma_colonne2
                 singleSearchs:
@@ -2164,8 +2033,7 @@ components:
                         title: Description
                         x-display: textarea
                         x-props:
-                          placeholder: exemple "récupérez un code produit en effectuant une recherche dans
-                            son code ou son libellé"
+                          placeholder: exemple "récupérez un code produit en effectuant une recherche dans son code ou son libellé"
                       output:
                         type: object
                         title: Propriété à retourner (code)
@@ -2217,8 +2085,7 @@ components:
                       title: Initialisation de jeux éditables
             primaryKey:
               type: array
-              description: List of properties of the schema used as unique primary key for
-                each line
+              description: List of properties of the schema used as unique primary key for each line
               items:
                 type: string
             image:
@@ -2246,7 +2113,7 @@ components:
               type: string
               description: update frequency
               enum:
-                - ""
+                - ''
                 - triennial
                 - biennial
                 - annual
@@ -2271,7 +2138,7 @@ components:
       properties:
         schema:
           type:
-            - "null"
+            - 'null'
             - array
           description: JSON schema properties of the fields
           items:
@@ -2288,11 +2155,11 @@ components:
               format:
                 type:
                   - string
-                  - "null"
+                  - 'null'
               x-originalName:
                 type:
                   - string
-                  - "null"
+                  - 'null'
               title:
                 type: string
               description:
@@ -2305,7 +2172,7 @@ components:
                 deprecated: true
                 type:
                   - string
-                  - "null"
+                  - 'null'
               x-concept:
                 type: object
                 properties:
@@ -2325,76 +2192,55 @@ components:
                     default: true
                     x-display: switch
                     title: Filtrable sur valeur exacte
-                    description: Désactivez cette capacité si la donnée contient par exemple des
-                      textes longs pour lesquels des filtres sur valeurs exactes
-                      ont peu de sens.
+                    description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels des filtres sur valeurs exactes ont peu de sens.
                   values:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Triable et groupable
-                    description: Désactivez cette capacité si la donnée contient par exemple des
-                      textes longs pour lesquels trier ou grouper par valeur a
-                      peu de sens.
+                    description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels trier ou grouper par valeur a peu de sens.
                   textStandard:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Texte analysé pour recherche textuelle
-                    description: Désactivez cette capacité dans le cas d'un code, une url, etc.
-                      N'importe quel contenu sur lequel la recherche de mots a
-                      peu de sens.
+                    description: Désactivez cette capacité dans le cas d'un code, une url, etc. N'importe quel contenu sur lequel la recherche de mots a peu de sens.
                   text:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Texte analysé spécifiquement pour la langue française
-                    description: Désactivez cette capacité pour tout contenu qui n'est pas en langue
-                      française ou pour lequel la recherche de mots a peu de
-                      sens.
+                    description: Désactivez cette capacité pour tout contenu qui n'est pas en langue française ou pour lequel la recherche de mots a peu de sens.
                   textAgg:
                     type: boolean
                     default: false
                     x-display: switch
                     title: Statistiques de mots
-                    description: Activez cette capacité si avez l'intention d'obtenir des
-                      statistiques sur les occurrences de mots (par exemple pour
-                      construire un nuage de mot).
+                    description: Activez cette capacité si avez l'intention d'obtenir des statistiques sur les occurrences de mots (par exemple pour construire un nuage de mot).
                   wildcard:
                     type: boolean
                     default: false
                     x-display: switch
                     title: Texte filtrable sur groupe de caractères
-                    description: Activez cette capacité si vous avez l'intention de filtrer ce
-                      contenu spécifiquement sur une suite de caractères (par
-                      exemple si un filtre sur mots entiers ou sur valeur exacte
-                      ne convient pas).
+                    description: Activez cette capacité si vous avez l'intention de filtrer ce contenu spécifiquement sur une suite de caractères (par exemple si un filtre sur mots entiers ou sur valeur exacte ne convient pas).
                   insensitive:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Tri amélioré avec casse et accents
-                    description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du
-                      tri ou bien si il ne contient pas de variations avec
-                      accents et majuscules.
+                    description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du tri ou bien si il ne contient pas de variations avec accents et majuscules.
                   geoShape:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Formes géométriques complexes
-                    description: Désactivez cette capacité si la donnée ne contient que des
-                      géométries basiques de points ou bien si requêter les
-                      géométries uniquement à partir de leurs centroïdes est
-                      suffisant pour vos besoins.
+                    description: Désactivez cette capacité si la donnée ne contient que des géométries basiques de points ou bien si requêter les géométries uniquement à partir de leurs centroïdes est suffisant pour vos besoins.
                   indexAttachment:
                     type: boolean
                     default: true
                     x-display: switch
                     title: Contenu des pièces jointes analysé pour recherche textuelle
-                    description: Désactivez cette option si vous souhaitez que les pièces jointes
-                      soient simplement téléchargeables et que l'extraction de
-                      leur contenu textuel pour recherche de mots n'est pas
-                      pertinente.
+                    description: Désactivez cette option si vous souhaitez que les pièces jointes soient simplement téléchargeables et que l'extraction de leur contenu textuel pour recherche de mots n'est pas pertinente.
               x-labels:
                 type: object
               x-labelsRestricted:
@@ -2426,15 +2272,13 @@ components:
                     description: L'identifiant du service distant utilisé pour l'enrichissement
                   action:
                     type: string
-                    description: L'identifiant de l'action du service distant à utiliser pour
-                      l'enrichissement
+                    description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
               x-display:
                 type: string
               enum:
                 type: array
                 readOnly: true
-                description: This differs from JSON schema. It is not a restriction, just and
-                  observation of the values that are present in the dataset.
+                description: This differs from JSON schema. It is not a restriction, just and observation of the values that are present in the dataset.
               x-cardinality:
                 type: integer
                 description: The number of distinct values for this field
@@ -2455,23 +2299,22 @@ components:
                     type: string
         description:
           type:
-            - "null"
+            - 'null'
             - string
           description: Detailed description of the dataset
         title:
           type:
-            - "null"
+            - 'null'
             - string
           description: Short title of the dataset
         slug:
           type:
-            - "null"
+            - 'null'
             - string
-          description: Identifier of the dataset, usually a slug for URL readability
-            (unique inside the tenant)
+          description: Identifier of the dataset, usually a slug for URL readability (unique inside the tenant)
         license:
           type:
-            - "null"
+            - 'null'
             - object
           additionalProperties: false
           required:
@@ -2486,17 +2329,17 @@ components:
               description: The URL where the license can be read
         origin:
           type:
-            - "null"
+            - 'null'
             - string
           description: The URL where the original data can be found
         image:
           type:
-            - "null"
+            - 'null'
             - string
           description: URL d'une image, illustration du jeu de données
         extensions:
           type:
-            - "null"
+            - 'null'
             - array
           description: Définition des enrichissements appliqués à ce jeu de données
           items:
@@ -2546,12 +2389,10 @@ components:
                     description: L'identifiant du service distant utilisé pour l'enrichissement
                   action:
                     type: string
-                    description: L'identifiant de l'action du service distant à utiliser pour
-                      l'enrichissement
+                    description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
                   select:
                     type: array
-                    description: La liste des colonnes à sélectionner dans le retour du service
-                      distant. Toutes les colonnes si absent ou vide.
+                    description: La liste des colonnes à sélectionner dans le retour du service distant. Toutes les colonnes si absent ou vide.
                     items:
                       type: string
                   shortId:
@@ -2560,11 +2401,10 @@ components:
                     readOnly: true
                   propertyPrefix:
                     type: string
-                    description: Chaine à utiliser comme préfixe des clés de champs issus de cette
-                      extension
+                    description: Chaine à utiliser comme préfixe des clés de champs issus de cette extension
         publications:
           type:
-            - "null"
+            - 'null'
             - array
           description: References to all the catalogs the dataset metadata is published too
           items:
@@ -2581,9 +2421,7 @@ components:
                 description: L'identifiant du catalogue de destination de cette publication.
               status:
                 type: string
-                description: A simple flag to clearly identify the publications that were
-                  successful. If "published" then the targetUrl key should be
-                  defined, If "error" then the error key should be defined.
+                description: A simple flag to clearly identify the publications that were successful. If "published" then the targetUrl key should be defined, If "error" then the error key should be defined.
                 enum:
                   - waiting
                   - published
@@ -2599,12 +2437,10 @@ components:
                 type: string
               result:
                 type: object
-                description: The result of pushing the publication. The structure of this object
-                  is permissive and depends on the type of catalog
+                description: The result of pushing the publication. The structure of this object is permissive and depends on the type of catalog
               addToDataset:
                 type: object
-                description: Fill this object to create a new resource (or community resource)
-                  to an existing dataset.
+                description: Fill this object to create a new resource (or community resource) to an existing dataset.
                 properties:
                   id:
                     type: string
@@ -2620,22 +2456,21 @@ components:
                     type: string
         publicationSites:
           type:
-            - "null"
+            - 'null'
             - array
           description: References to all sites the dataset is exposed in.
           items:
             type: string
         requestedPublicationSites:
           type:
-            - "null"
+            - 'null'
             - array
-          description: References to all sites the dataset would be exposed in if
-            validated by an admin.
+          description: References to all sites the dataset would be exposed in if validated by an admin.
           items:
             type: string
         virtual:
           type:
-            - "null"
+            - 'null'
             - object
           description: A configuration object dedicated to virtual datasets.
           required:
@@ -2666,7 +2501,7 @@ components:
               type: boolean
         rest:
           type:
-            - "null"
+            - 'null'
             - object
           description: A configuration object dedicated to REST datasets.
           properties:
@@ -2698,8 +2533,7 @@ components:
             history:
               type: boolean
               default: false
-              description: Set to true to let data-fair store revisions of the lines in the
-                dataset.
+              description: Set to true to let data-fair store revisions of the lines in the dataset.
             historyTTL:
               type: object
               additionalProperties: false
@@ -2732,21 +2566,20 @@ components:
                 - sha256
         extras:
           type:
-            - "null"
+            - 'null'
             - object
           description: An object for extra content from client services of data-fair
         attachmentsAsImage:
           type:
-            - "null"
+            - 'null'
             - boolean
           default: false
           description: Set to true to use attached files as illustrations of the line
         projection:
           type:
-            - "null"
+            - 'null'
             - object
-          description: The cartographic projection of this dataset. Refers to the list of
-            supported projections in contract/projections.json
+          description: The cartographic projection of this dataset. Refers to the list of supported projections in contract/projections.json
           properties:
             title:
               type: string
@@ -2754,7 +2587,7 @@ components:
               type: string
         attachments:
           type:
-            - "null"
+            - 'null'
             - array
           items:
             type: object
@@ -2825,21 +2658,16 @@ components:
                   name:
                     type: string
                     title: Nom du fichier
-                    description: Ce nom doit contenir l'extension qui doit correspondre au format du
-                      fichier téléchargé.
+                    description: Ce nom doit contenir l'extension qui doit correspondre au format du fichier téléchargé.
                     x-rules:
                       - hasExtension
                   targetUrl:
                     type: string
                     title: URL de téléchargement
-                    description: Cette URL n'est pas consultable après écriture. Elle est utilisée
-                      pour télécharger le fichier depuis un service distant et
-                      peut contenir un secret. Vous pouvez la laisser vide quand
-                      vous modifiez les autres informations, mais vous devez la
-                      renseigner de nouveau si vous changez le nom de fichier.
+                    description: Cette URL n'est pas consultable après écriture. Elle est utilisée pour télécharger le fichier depuis un service distant et peut contenir un secret. Vous pouvez la laisser vide quand vous modifiez les autres informations, mais vous devez la renseigner de nouveau si vous changez le nom de fichier.
         topics:
           type:
-            - "null"
+            - 'null'
             - array
           title: Liste de thématiques
           x-itemTitle: title
@@ -2860,9 +2688,7 @@ components:
                 x-display: color-picker
               icon:
                 title: Icône
-                description: Il est possible de consulter plus facilement la liste des icones
-                  disponibles sur <a href="https://materialdesignicons.com"
-                  target="_blank">ce site</a>.
+                description: Il est possible de consulter plus facilement la liste des icones disponibles sur <a href="https://materialdesignicons.com" target="_blank">ce site</a>.
                 type: object
                 x-fromUrl: https://koumoul.com/data-fair/api/v1/datasets/icons-mdi-latest/lines?q={q}
                 x-itemKey: name
@@ -2876,13 +2702,12 @@ components:
                     type: string
         thumbnails:
           type:
-            - "null"
+            - 'null'
             - object
           properties:
             resizeMode:
               type: string
-              description: Define how the thumbnails will be adapted to the size requested by
-                visualizations
+              description: Define how the thumbnails will be adapted to the size requested by visualizations
               enum:
                 - crop
                 - smartCrop
@@ -2890,7 +2715,7 @@ components:
               default: crop
         masterData:
           type:
-            - "null"
+            - 'null'
             - object
           title: Données de référence
           properties:
@@ -2921,9 +2746,7 @@ components:
                     title: Description
                     x-display: textarea
                     x-props:
-                      placeholder: exemple "cet enrichissement vous permet de récupérer les
-                        informations de plusieurs produits à partir d'une liste
-                        de codes produits."
+                      placeholder: exemple "cet enrichissement vous permet de récupérer les informations de plusieurs produits à partir d'une liste de codes produits."
                   filters:
                     type: array
                     title: Filtres statiques
@@ -3026,18 +2849,11 @@ components:
                   sort:
                     type: string
                     title: Tri pour choisir parmi des résultats ambigus
-                    description: >-
-                      
-                      Remarque : ce paramètre est optionnel et utile uniquement
-                      si la manière d'établir une correspondance est susceptible
-                      de retourner plusieurs résultats par ligne.
+                    description: |-
 
+                      Remarque : ce paramètre est optionnel et utile uniquement si la manière d'établir une correspondance est susceptible de retourner plusieurs résultats par ligne.
 
-                      Le tri est exprimé sous forme d'une liste de clés de
-                      colonnes séparées par des virgules. Par défaut le tri est
-                      ascendant, si un nom de colonne est préfixé par un "-"
-                      alors le tri sera descendant.
-
+                      Le tri est exprimé sous forme d'une liste de clés de colonnes séparées par des virgules. Par défaut le tri est ascendant, si un nom de colonne est préfixé par un "-" alors le tri sera descendant.
 
                       Exemple: ma_colonne,-ma_colonne2
             singleSearchs:
@@ -3068,8 +2884,7 @@ components:
                     title: Description
                     x-display: textarea
                     x-props:
-                      placeholder: exemple "récupérez un code produit en effectuant une recherche dans
-                        son code ou son libellé"
+                      placeholder: exemple "récupérez un code produit en effectuant une recherche dans son code ou son libellé"
                   output:
                     type: object
                     title: Propriété à retourner (code)
@@ -3121,15 +2936,14 @@ components:
                   title: Initialisation de jeux éditables
         primaryKey:
           type:
-            - "null"
+            - 'null'
             - array
-          description: List of properties of the schema used as unique primary key for
-            each line
+          description: List of properties of the schema used as unique primary key for each line
           items:
             type: string
         exports:
           type:
-            - "null"
+            - 'null'
             - object
           properties:
             restToCSV:
@@ -3149,12 +2963,12 @@ components:
                       format: date-time
         spatial:
           type:
-            - "null"
+            - 'null'
             - string
           description: spatial coverage
         temporal:
           type:
-            - "null"
+            - 'null'
             - object
           description: temporal coverage
           properties:
@@ -3166,11 +2980,11 @@ components:
               format: date
         frequency:
           type:
-            - "null"
+            - 'null'
             - string
           description: update frequency
           enum:
-            - ""
+            - ''
             - triennial
             - biennial
             - annual
@@ -3190,14 +3004,14 @@ components:
             - irregular
         keywords:
           type:
-            - "null"
+            - 'null'
             - array
           description: keywords
           items:
             type: string
         analysis:
           type:
-            - "null"
+            - 'null'
             - object
           additionalProperties: false
           properties:
@@ -3209,7 +3023,7 @@ components:
                 - slug
         remoteFile:
           type:
-            - "null"
+            - 'null'
             - object
           additionalProperties: true
           required:
@@ -3217,8 +3031,7 @@ components:
           properties:
             name:
               type: string
-              description: Name of the remote file that was used to create or update this
-                dataset
+              description: Name of the remote file that was used to create or update this dataset
             url:
               type: string
               description: Url from where the file can be fetched
@@ -3253,7 +3066,7 @@ components:
               type: boolean
         readApiKey:
           type:
-            - "null"
+            - 'null'
             - object
           additionalProperties: false
           properties:
@@ -3292,7 +3105,7 @@ components:
           properties:
             schema:
               type:
-                - "null"
+                - 'null'
                 - array
               description: JSON schema properties of the fields
               items:
@@ -3309,11 +3122,11 @@ components:
                   format:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   x-originalName:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   title:
                     type: string
                   description:
@@ -3326,7 +3139,7 @@ components:
                     deprecated: true
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   x-concept:
                     type: object
                     properties:
@@ -3346,76 +3159,55 @@ components:
                         default: true
                         x-display: switch
                         title: Filtrable sur valeur exacte
-                        description: Désactivez cette capacité si la donnée contient par exemple des
-                          textes longs pour lesquels des filtres sur valeurs
-                          exactes ont peu de sens.
+                        description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels des filtres sur valeurs exactes ont peu de sens.
                       values:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Triable et groupable
-                        description: Désactivez cette capacité si la donnée contient par exemple des
-                          textes longs pour lesquels trier ou grouper par valeur
-                          a peu de sens.
+                        description: Désactivez cette capacité si la donnée contient par exemple des textes longs pour lesquels trier ou grouper par valeur a peu de sens.
                       textStandard:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Texte analysé pour recherche textuelle
-                        description: Désactivez cette capacité dans le cas d'un code, une url, etc.
-                          N'importe quel contenu sur lequel la recherche de mots
-                          a peu de sens.
+                        description: Désactivez cette capacité dans le cas d'un code, une url, etc. N'importe quel contenu sur lequel la recherche de mots a peu de sens.
                       text:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Texte analysé spécifiquement pour la langue française
-                        description: Désactivez cette capacité pour tout contenu qui n'est pas en langue
-                          française ou pour lequel la recherche de mots a peu de
-                          sens.
+                        description: Désactivez cette capacité pour tout contenu qui n'est pas en langue française ou pour lequel la recherche de mots a peu de sens.
                       textAgg:
                         type: boolean
                         default: false
                         x-display: switch
                         title: Statistiques de mots
-                        description: Activez cette capacité si avez l'intention d'obtenir des
-                          statistiques sur les occurrences de mots (par exemple
-                          pour construire un nuage de mot).
+                        description: Activez cette capacité si avez l'intention d'obtenir des statistiques sur les occurrences de mots (par exemple pour construire un nuage de mot).
                       wildcard:
                         type: boolean
                         default: false
                         x-display: switch
                         title: Texte filtrable sur groupe de caractères
-                        description: Activez cette capacité si vous avez l'intention de filtrer ce
-                          contenu spécifiquement sur une suite de caractères
-                          (par exemple si un filtre sur mots entiers ou sur
-                          valeur exacte ne convient pas).
+                        description: Activez cette capacité si vous avez l'intention de filtrer ce contenu spécifiquement sur une suite de caractères (par exemple si un filtre sur mots entiers ou sur valeur exacte ne convient pas).
                       insensitive:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Tri amélioré avec casse et accents
-                        description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du
-                          tri ou bien si il ne contient pas de variations avec
-                          accents et majuscules.
+                        description: Désactivez cette capacité si le contenu ne sera pas utilisé pour du tri ou bien si il ne contient pas de variations avec accents et majuscules.
                       geoShape:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Formes géométriques complexes
-                        description: Désactivez cette capacité si la donnée ne contient que des
-                          géométries basiques de points ou bien si requêter les
-                          géométries uniquement à partir de leurs centroïdes est
-                          suffisant pour vos besoins.
+                        description: Désactivez cette capacité si la donnée ne contient que des géométries basiques de points ou bien si requêter les géométries uniquement à partir de leurs centroïdes est suffisant pour vos besoins.
                       indexAttachment:
                         type: boolean
                         default: true
                         x-display: switch
                         title: Contenu des pièces jointes analysé pour recherche textuelle
-                        description: Désactivez cette option si vous souhaitez que les pièces jointes
-                          soient simplement téléchargeables et que l'extraction
-                          de leur contenu textuel pour recherche de mots n'est
-                          pas pertinente.
+                        description: Désactivez cette option si vous souhaitez que les pièces jointes soient simplement téléchargeables et que l'extraction de leur contenu textuel pour recherche de mots n'est pas pertinente.
                   x-labels:
                     type: object
                   x-labelsRestricted:
@@ -3447,15 +3239,13 @@ components:
                         description: L'identifiant du service distant utilisé pour l'enrichissement
                       action:
                         type: string
-                        description: L'identifiant de l'action du service distant à utiliser pour
-                          l'enrichissement
+                        description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
                   x-display:
                     type: string
                   enum:
                     type: array
                     readOnly: true
-                    description: This differs from JSON schema. It is not a restriction, just and
-                      observation of the values that are present in the dataset.
+                    description: This differs from JSON schema. It is not a restriction, just and observation of the values that are present in the dataset.
                   x-cardinality:
                     type: integer
                     description: The number of distinct values for this field
@@ -3476,23 +3266,22 @@ components:
                         type: string
             description:
               type:
-                - "null"
+                - 'null'
                 - string
               description: Detailed description of the dataset
             title:
               type:
-                - "null"
+                - 'null'
                 - string
               description: Short title of the dataset
             slug:
               type:
-                - "null"
+                - 'null'
                 - string
-              description: Identifier of the dataset, usually a slug for URL readability
-                (unique inside the tenant)
+              description: Identifier of the dataset, usually a slug for URL readability (unique inside the tenant)
             license:
               type:
-                - "null"
+                - 'null'
                 - object
               additionalProperties: false
               required:
@@ -3507,17 +3296,17 @@ components:
                   description: The URL where the license can be read
             origin:
               type:
-                - "null"
+                - 'null'
                 - string
               description: The URL where the original data can be found
             image:
               type:
-                - "null"
+                - 'null'
                 - string
               description: URL d'une image, illustration du jeu de données
             extensions:
               type:
-                - "null"
+                - 'null'
                 - array
               description: Définition des enrichissements appliqués à ce jeu de données
               items:
@@ -3567,12 +3356,10 @@ components:
                         description: L'identifiant du service distant utilisé pour l'enrichissement
                       action:
                         type: string
-                        description: L'identifiant de l'action du service distant à utiliser pour
-                          l'enrichissement
+                        description: L'identifiant de l'action du service distant à utiliser pour l'enrichissement
                       select:
                         type: array
-                        description: La liste des colonnes à sélectionner dans le retour du service
-                          distant. Toutes les colonnes si absent ou vide.
+                        description: La liste des colonnes à sélectionner dans le retour du service distant. Toutes les colonnes si absent ou vide.
                         items:
                           type: string
                       shortId:
@@ -3581,14 +3368,12 @@ components:
                         readOnly: true
                       propertyPrefix:
                         type: string
-                        description: Chaine à utiliser comme préfixe des clés de champs issus de cette
-                          extension
+                        description: Chaine à utiliser comme préfixe des clés de champs issus de cette extension
             publications:
               type:
-                - "null"
+                - 'null'
                 - array
-              description: References to all the catalogs the dataset metadata is published
-                too
+              description: References to all the catalogs the dataset metadata is published too
               items:
                 type: object
                 required:
@@ -3603,10 +3388,7 @@ components:
                     description: L'identifiant du catalogue de destination de cette publication.
                   status:
                     type: string
-                    description: A simple flag to clearly identify the publications that were
-                      successful. If "published" then the targetUrl key should
-                      be defined, If "error" then the error key should be
-                      defined.
+                    description: A simple flag to clearly identify the publications that were successful. If "published" then the targetUrl key should be defined, If "error" then the error key should be defined.
                     enum:
                       - waiting
                       - published
@@ -3622,12 +3404,10 @@ components:
                     type: string
                   result:
                     type: object
-                    description: The result of pushing the publication. The structure of this object
-                      is permissive and depends on the type of catalog
+                    description: The result of pushing the publication. The structure of this object is permissive and depends on the type of catalog
                   addToDataset:
                     type: object
-                    description: Fill this object to create a new resource (or community resource)
-                      to an existing dataset.
+                    description: Fill this object to create a new resource (or community resource) to an existing dataset.
                     properties:
                       id:
                         type: string
@@ -3643,22 +3423,21 @@ components:
                         type: string
             publicationSites:
               type:
-                - "null"
+                - 'null'
                 - array
               description: References to all sites the dataset is exposed in.
               items:
                 type: string
             requestedPublicationSites:
               type:
-                - "null"
+                - 'null'
                 - array
-              description: References to all sites the dataset would be exposed in if
-                validated by an admin.
+              description: References to all sites the dataset would be exposed in if validated by an admin.
               items:
                 type: string
             virtual:
               type:
-                - "null"
+                - 'null'
                 - object
               description: A configuration object dedicated to virtual datasets.
               required:
@@ -3689,7 +3468,7 @@ components:
                   type: boolean
             rest:
               type:
-                - "null"
+                - 'null'
                 - object
               description: A configuration object dedicated to REST datasets.
               properties:
@@ -3721,8 +3500,7 @@ components:
                 history:
                   type: boolean
                   default: false
-                  description: Set to true to let data-fair store revisions of the lines in the
-                    dataset.
+                  description: Set to true to let data-fair store revisions of the lines in the dataset.
                 historyTTL:
                   type: object
                   additionalProperties: false
@@ -3755,21 +3533,20 @@ components:
                     - sha256
             extras:
               type:
-                - "null"
+                - 'null'
                 - object
               description: An object for extra content from client services of data-fair
             attachmentsAsImage:
               type:
-                - "null"
+                - 'null'
                 - boolean
               default: false
               description: Set to true to use attached files as illustrations of the line
             projection:
               type:
-                - "null"
+                - 'null'
                 - object
-              description: The cartographic projection of this dataset. Refers to the list of
-                supported projections in contract/projections.json
+              description: The cartographic projection of this dataset. Refers to the list of supported projections in contract/projections.json
               properties:
                 title:
                   type: string
@@ -3777,7 +3554,7 @@ components:
                   type: string
             attachments:
               type:
-                - "null"
+                - 'null'
                 - array
               items:
                 type: object
@@ -3848,22 +3625,16 @@ components:
                       name:
                         type: string
                         title: Nom du fichier
-                        description: Ce nom doit contenir l'extension qui doit correspondre au format du
-                          fichier téléchargé.
+                        description: Ce nom doit contenir l'extension qui doit correspondre au format du fichier téléchargé.
                         x-rules:
                           - hasExtension
                       targetUrl:
                         type: string
                         title: URL de téléchargement
-                        description: Cette URL n'est pas consultable après écriture. Elle est utilisée
-                          pour télécharger le fichier depuis un service distant
-                          et peut contenir un secret. Vous pouvez la laisser
-                          vide quand vous modifiez les autres informations, mais
-                          vous devez la renseigner de nouveau si vous changez le
-                          nom de fichier.
+                        description: Cette URL n'est pas consultable après écriture. Elle est utilisée pour télécharger le fichier depuis un service distant et peut contenir un secret. Vous pouvez la laisser vide quand vous modifiez les autres informations, mais vous devez la renseigner de nouveau si vous changez le nom de fichier.
             topics:
               type:
-                - "null"
+                - 'null'
                 - array
               title: Liste de thématiques
               x-itemTitle: title
@@ -3884,9 +3655,7 @@ components:
                     x-display: color-picker
                   icon:
                     title: Icône
-                    description: Il est possible de consulter plus facilement la liste des icones
-                      disponibles sur <a href="https://materialdesignicons.com"
-                      target="_blank">ce site</a>.
+                    description: Il est possible de consulter plus facilement la liste des icones disponibles sur <a href="https://materialdesignicons.com" target="_blank">ce site</a>.
                     type: object
                     x-fromUrl: https://koumoul.com/data-fair/api/v1/datasets/icons-mdi-latest/lines?q={q}
                     x-itemKey: name
@@ -3900,13 +3669,12 @@ components:
                         type: string
             thumbnails:
               type:
-                - "null"
+                - 'null'
                 - object
               properties:
                 resizeMode:
                   type: string
-                  description: Define how the thumbnails will be adapted to the size requested by
-                    visualizations
+                  description: Define how the thumbnails will be adapted to the size requested by visualizations
                   enum:
                     - crop
                     - smartCrop
@@ -3914,7 +3682,7 @@ components:
                   default: crop
             masterData:
               type:
-                - "null"
+                - 'null'
                 - object
               title: Données de référence
               properties:
@@ -3945,9 +3713,7 @@ components:
                         title: Description
                         x-display: textarea
                         x-props:
-                          placeholder: exemple "cet enrichissement vous permet de récupérer les
-                            informations de plusieurs produits à partir d'une
-                            liste de codes produits."
+                          placeholder: exemple "cet enrichissement vous permet de récupérer les informations de plusieurs produits à partir d'une liste de codes produits."
                       filters:
                         type: array
                         title: Filtres statiques
@@ -4050,19 +3816,11 @@ components:
                       sort:
                         type: string
                         title: Tri pour choisir parmi des résultats ambigus
-                        description: >-
-                          
-                          Remarque : ce paramètre est optionnel et utile
-                          uniquement si la manière d'établir une correspondance
-                          est susceptible de retourner plusieurs résultats par
-                          ligne.
+                        description: |-
 
+                          Remarque : ce paramètre est optionnel et utile uniquement si la manière d'établir une correspondance est susceptible de retourner plusieurs résultats par ligne.
 
-                          Le tri est exprimé sous forme d'une liste de clés de
-                          colonnes séparées par des virgules. Par défaut le tri
-                          est ascendant, si un nom de colonne est préfixé par un
-                          "-" alors le tri sera descendant.
-
+                          Le tri est exprimé sous forme d'une liste de clés de colonnes séparées par des virgules. Par défaut le tri est ascendant, si un nom de colonne est préfixé par un "-" alors le tri sera descendant.
 
                           Exemple: ma_colonne,-ma_colonne2
                 singleSearchs:
@@ -4093,8 +3851,7 @@ components:
                         title: Description
                         x-display: textarea
                         x-props:
-                          placeholder: exemple "récupérez un code produit en effectuant une recherche dans
-                            son code ou son libellé"
+                          placeholder: exemple "récupérez un code produit en effectuant une recherche dans son code ou son libellé"
                       output:
                         type: object
                         title: Propriété à retourner (code)
@@ -4146,15 +3903,14 @@ components:
                       title: Initialisation de jeux éditables
             primaryKey:
               type:
-                - "null"
+                - 'null'
                 - array
-              description: List of properties of the schema used as unique primary key for
-                each line
+              description: List of properties of the schema used as unique primary key for each line
               items:
                 type: string
             exports:
               type:
-                - "null"
+                - 'null'
                 - object
               properties:
                 restToCSV:
@@ -4174,12 +3930,12 @@ components:
                           format: date-time
             spatial:
               type:
-                - "null"
+                - 'null'
                 - string
               description: spatial coverage
             temporal:
               type:
-                - "null"
+                - 'null'
                 - object
               description: temporal coverage
               properties:
@@ -4191,11 +3947,11 @@ components:
                   format: date
             frequency:
               type:
-                - "null"
+                - 'null'
                 - string
               description: update frequency
               enum:
-                - ""
+                - ''
                 - triennial
                 - biennial
                 - annual
@@ -4215,14 +3971,14 @@ components:
                 - irregular
             keywords:
               type:
-                - "null"
+                - 'null'
                 - array
               description: keywords
               items:
                 type: string
             analysis:
               type:
-                - "null"
+                - 'null'
                 - object
               additionalProperties: false
               properties:
@@ -4240,8 +3996,7 @@ components:
               properties:
                 name:
                   type: string
-                  description: Name of the remote file that was used to create or update this
-                    dataset
+                  description: Name of the remote file that was used to create or update this dataset
                 url:
                   type: string
                   description: Url from where the file can be fetched
@@ -4276,7 +4031,7 @@ components:
                   type: boolean
             readApiKey:
               type:
-                - "null"
+                - 'null'
                 - object
               additionalProperties: false
               properties:
@@ -4326,19 +4081,15 @@ components:
             isVirtual:
               type: boolean
               default: false
-              description: Used to identify virtual datasets. A virtual datasets does not have
-                data, only references to other datasets.
+              description: Used to identify virtual datasets. A virtual datasets does not have data, only references to other datasets.
             isRest:
               type: boolean
               default: false
-              description: Used to identify REST datasets. A REST dataset is not created from
-                a data file, but instead is based on a dynamic collection in a
-                database.
+              description: Used to identify REST datasets. A REST dataset is not created from a data file, but instead is based on a dynamic collection in a database.
             isMetaOnly:
               type: boolean
               default: false
-              description: Used to identify datasets without any local data and only some
-                metadata.
+              description: Used to identify datasets without any local data and only some metadata.
             owner:
               type: object
               additionalProperties: false
@@ -4361,13 +4112,10 @@ components:
                 role:
                   type: string
                   deprecated: true
-                  description: DEPRECATED - If this is set and owner is an organization, this
-                    restrict ownership to users of this organization having this
-                    role or admin role
+                  description: DEPRECATED - If this is set and owner is an organization, this restrict ownership to users of this organization having this role or admin role
                 department:
                   type: string
-                  description: If this is set and owner is an organization, this gives ownership
-                    to users of this organization that belong to this department
+                  description: If this is set and owner is an organization, this gives ownership to users of this organization that belong to this department
                 departmentName:
                   type: string
                   description: The display name of the department
@@ -4379,9 +4127,7 @@ components:
           format: binary
     remoteService:
       title: Remote service
-      description: A remote service must be described with the openAPI 3.0
-        specification. If the API is secured, there must be at least one api-key
-        based security scheme available.
+      description: A remote service must be described with the openAPI 3.0 specification. If the API is secured, there must be at least one api-key based security scheme available.
       type: object
       additionalProperties: false
       required:
@@ -4489,20 +4235,16 @@ components:
               role:
                 type: string
                 deprecated: true
-                description: DEPRECATED - If this is set and owner is an organization, this
-                  restrict ownership to users of this organization having this
-                  role or admin role
+                description: DEPRECATED - If this is set and owner is an organization, this restrict ownership to users of this organization having this role or admin role
               department:
                 type: string
-                description: If this is set and owner is an organization, this gives ownership
-                  to users of this organization that belong to this department
+                description: If this is set and owner is an organization, this gives ownership to users of this organization that belong to this department
               departmentName:
                 type: string
                 description: The display name of the department
         parameters:
           type: array
-          description: DEPRECATED. Some parameters name/values associations to send to all
-            operations of the reverse proxy
+          description: DEPRECATED. Some parameters name/values associations to send to all operations of the reverse proxy
           items:
             type: object
             additionalProperties: false
@@ -4558,8 +4300,7 @@ components:
           description: Short title of the configuration for an remote service
         parameters:
           type: array
-          description: DEPRECATED. Some parameters name/values associations to send to all
-            operations of the reverse proxy
+          description: DEPRECATED. Some parameters name/values associations to send to all operations of the reverse proxy
           items:
             type: object
             additionalProperties: false
@@ -4604,13 +4345,10 @@ components:
               role:
                 type: string
                 deprecated: true
-                description: DEPRECATED - If this is set and owner is an organization, this
-                  restrict ownership to users of this organization having this
-                  role or admin role
+                description: DEPRECATED - If this is set and owner is an organization, this restrict ownership to users of this organization having this role or admin role
               department:
                 type: string
-                description: If this is set and owner is an organization, this gives ownership
-                  to users of this organization that belong to this department
+                description: If this is set and owner is an organization, this gives ownership to users of this organization that belong to this department
               departmentName:
                 type: string
                 description: The display name of the department
@@ -4644,8 +4382,7 @@ components:
           description: Globally unique identifier of the application
         slug:
           type: string
-          description: Identifier of the application, usually a slug for URL readability
-            (unique inside the tenant)
+          description: Identifier of the application, usually a slug for URL readability (unique inside the tenant)
         href:
           type: string
           description: Readonly field. The URL where this resource can be fetched
@@ -4725,21 +4462,16 @@ components:
             role:
               type: string
               deprecated: true
-              description: DEPRECATED - If this is set and owner is an organization, this
-                restrict ownership to users of this organization having this
-                role or admin role
+              description: DEPRECATED - If this is set and owner is an organization, this restrict ownership to users of this organization having this role or admin role
             department:
               type: string
-              description: If this is set and owner is an organization, this gives ownership
-                to users of this organization that belong to this department
+              description: If this is set and owner is an organization, this gives ownership to users of this organization that belong to this department
             departmentName:
               type: string
               description: The display name of the department
         configuration:
           type: object
-          description: A free format configuration object used by applications. A minimal
-            common structure is used to ensure proper linking between
-            applications and datasets and remote services
+          description: A free format configuration object used by applications. A minimal common structure is used to ensure proper linking between applications and datasets and remote services
           additionalProperties: true
           properties:
             datasets:
@@ -4747,7 +4479,7 @@ components:
               items:
                 type:
                   - object
-                  - "null"
+                  - 'null'
                 required:
                   - href
                 properties:
@@ -4755,15 +4487,12 @@ components:
                     type: string
                   key:
                     type: string
-                    description: Not the id of the dataset, but a key inside this configuration
-                      object to define the role of the dataset in this context.
+                    description: Not the id of the dataset, but a key inside this configuration object to define the role of the dataset in this context.
                   name:
                     type: string
                   applicationKeyPermissions:
                     type: object
-                    description: The permissions that should be applied to users accessing this
-                      dataset through a protecte application key of this
-                      application
+                    description: The permissions that should be applied to users accessing this dataset through a protecte application key of this application
                     default:
                       classes:
                         - read
@@ -4780,9 +4509,7 @@ components:
                           description: API permission classes that can be used
         configurationDraft:
           type: object
-          description: A free format configuration object used by applications. A minimal
-            common structure is used to ensure proper linking between
-            applications and datasets and remote services
+          description: A free format configuration object used by applications. A minimal common structure is used to ensure proper linking between applications and datasets and remote services
           additionalProperties: true
           properties:
             datasets:
@@ -4790,7 +4517,7 @@ components:
               items:
                 type:
                   - object
-                  - "null"
+                  - 'null'
                 required:
                   - href
                 properties:
@@ -4798,15 +4525,12 @@ components:
                     type: string
                   key:
                     type: string
-                    description: Not the id of the dataset, but a key inside this configuration
-                      object to define the role of the dataset in this context.
+                    description: Not the id of the dataset, but a key inside this configuration object to define the role of the dataset in this context.
                   name:
                     type: string
                   applicationKeyPermissions:
                     type: object
-                    description: The permissions that should be applied to users accessing this
-                      dataset through a protecte application key of this
-                      application
+                    description: The permissions that should be applied to users accessing this dataset through a protecte application key of this application
                     default:
                       classes:
                         - read
@@ -4827,8 +4551,7 @@ components:
           description: The URL the base application is located at (replaced by baseApp.url)
         urlDraft:
           type: string
-          description: The URL the base application for the draft configuration is located
-            at (replaced by baseAppDraft.url)
+          description: The URL the base application for the draft configuration is located at (replaced by baseAppDraft.url)
         baseApp:
           type: object
           properties:
@@ -4853,8 +4576,7 @@ components:
           type: string
         publications:
           type: array
-          description: References to all the catalogs the application metadata is
-            published too
+          description: References to all the catalogs the application metadata is published too
           items:
             type: object
             required:
@@ -4869,9 +4591,7 @@ components:
                 description: L'identifiant du catalogue de destination de cette publication.
               status:
                 type: string
-                description: A simple flag to clearly identify the publications that were
-                  successful. If "published" then the targetUrl key should be
-                  defined, If "error" then the error key should be defined.
+                description: A simple flag to clearly identify the publications that were successful. If "published" then the targetUrl key should be defined, If "error" then the error key should be defined.
                 enum:
                   - waiting
                   - published
@@ -4887,8 +4607,7 @@ components:
                 type: string
               result:
                 type: object
-                description: The result of pushing the publication. The structure of this object
-                  is permissive and depends on the type of catalog
+                description: The result of pushing the publication. The structure of this object is permissive and depends on the type of catalog
         publicationSites:
           type: array
           description: References to all sites the application is exposed in.
@@ -4896,8 +4615,7 @@ components:
             type: string
         requestedPublicationSites:
           type: array
-          description: References to all sites the application would be exposed in if
-            validated by an admin.
+          description: References to all sites the application would be exposed in if validated by an admin.
           items:
             type: string
         topics:
@@ -4921,9 +4639,7 @@ components:
                 x-display: color-picker
               icon:
                 title: Icône
-                description: Il est possible de consulter plus facilement la liste des icones
-                  disponibles sur <a href="https://materialdesignicons.com"
-                  target="_blank">ce site</a>.
+                description: Il est possible de consulter plus facilement la liste des icones disponibles sur <a href="https://materialdesignicons.com" target="_blank">ce site</a>.
                 type: object
                 x-fromUrl: https://koumoul.com/data-fair/api/v1/datasets/icons-mdi-latest/lines?q={q}
                 x-itemKey: name
@@ -4981,9 +4697,7 @@ components:
           type: array
           items:
             type: object
-            description: Permission to do the operations (identified by their id). If type
-              and id are not set, then the operation is set to public. roles
-              array is used only with type organization
+            description: Permission to do the operations (identified by their id). If type and id are not set, then the operation is set to public. roles array is used only with type organization
             additionalProperties: false
             anyOf:
               - required:
@@ -5008,8 +4722,7 @@ components:
                 description: Email of the user
               department:
                 type: string
-                description: Identifier of the department or "*" for any department (same as
-                  empty) or "-" for no department
+                description: Identifier of the department or "*" for any department (same as empty) or "-" for no department
               departmentName:
                 type: string
                 description: Name of the department
@@ -5035,11 +4748,9 @@ components:
       properties:
         configuration:
           type:
-            - "null"
+            - 'null'
             - object
-          description: A free format configuration object used by applications. A minimal
-            common structure is used to ensure proper linking between
-            applications and datasets and remote services
+          description: A free format configuration object used by applications. A minimal common structure is used to ensure proper linking between applications and datasets and remote services
           additionalProperties: true
           properties:
             datasets:
@@ -5047,7 +4758,7 @@ components:
               items:
                 type:
                   - object
-                  - "null"
+                  - 'null'
                 required:
                   - href
                 properties:
@@ -5055,15 +4766,12 @@ components:
                     type: string
                   key:
                     type: string
-                    description: Not the id of the dataset, but a key inside this configuration
-                      object to define the role of the dataset in this context.
+                    description: Not the id of the dataset, but a key inside this configuration object to define the role of the dataset in this context.
                   name:
                     type: string
                   applicationKeyPermissions:
                     type: object
-                    description: The permissions that should be applied to users accessing this
-                      dataset through a protecte application key of this
-                      application
+                    description: The permissions that should be applied to users accessing this dataset through a protecte application key of this application
                     default:
                       classes:
                         - read
@@ -5080,43 +4788,40 @@ components:
                           description: API permission classes that can be used
         url:
           type:
-            - "null"
+            - 'null'
             - string
           deprecated: true
           description: The URL the base application is located at (replaced by baseApp.url)
         urlDraft:
           type:
-            - "null"
+            - 'null'
             - string
-          description: The URL the base application for the draft configuration is located
-            at (replaced by baseAppDraft.url)
+          description: The URL the base application for the draft configuration is located at (replaced by baseAppDraft.url)
         description:
           type:
-            - "null"
+            - 'null'
             - string
           description: Detailed description of the application
         image:
           type:
-            - "null"
+            - 'null'
             - string
           description: URL d'une image, illustration du jeu de données
         slug:
           type:
-            - "null"
+            - 'null'
             - string
-          description: Identifier of the application, usually a slug for URL readability
-            (unique inside the tenant)
+          description: Identifier of the application, usually a slug for URL readability (unique inside the tenant)
         title:
           type:
-            - "null"
+            - 'null'
             - string
           description: Short title of the application
         publications:
           type:
-            - "null"
+            - 'null'
             - array
-          description: References to all the catalogs the application metadata is
-            published too
+          description: References to all the catalogs the application metadata is published too
           items:
             type: object
             required:
@@ -5131,9 +4836,7 @@ components:
                 description: L'identifiant du catalogue de destination de cette publication.
               status:
                 type: string
-                description: A simple flag to clearly identify the publications that were
-                  successful. If "published" then the targetUrl key should be
-                  defined, If "error" then the error key should be defined.
+                description: A simple flag to clearly identify the publications that were successful. If "published" then the targetUrl key should be defined, If "error" then the error key should be defined.
                 enum:
                   - waiting
                   - published
@@ -5149,31 +4852,29 @@ components:
                 type: string
               result:
                 type: object
-                description: The result of pushing the publication. The structure of this object
-                  is permissive and depends on the type of catalog
+                description: The result of pushing the publication. The structure of this object is permissive and depends on the type of catalog
         publicationSites:
           type:
-            - "null"
+            - 'null'
             - array
           description: References to all sites the application is exposed in.
           items:
             type: string
         requestedPublicationSites:
           type:
-            - "null"
+            - 'null'
             - array
-          description: References to all sites the application would be exposed in if
-            validated by an admin.
+          description: References to all sites the application would be exposed in if validated by an admin.
           items:
             type: string
         extras:
           type:
-            - "null"
+            - 'null'
             - object
           description: An object for extra content from client services of data-fair
         topics:
           type:
-            - "null"
+            - 'null'
             - array
           title: Liste de thématiques
           x-itemTitle: title
@@ -5194,9 +4895,7 @@ components:
                 x-display: color-picker
               icon:
                 title: Icône
-                description: Il est possible de consulter plus facilement la liste des icones
-                  disponibles sur <a href="https://materialdesignicons.com"
-                  target="_blank">ce site</a>.
+                description: Il est possible de consulter plus facilement la liste des icones disponibles sur <a href="https://materialdesignicons.com" target="_blank">ce site</a>.
                 type: object
                 x-fromUrl: https://koumoul.com/data-fair/api/v1/datasets/icons-mdi-latest/lines?q={q}
                 x-itemKey: name
@@ -5210,12 +4909,12 @@ components:
                     type: string
         preferLargeDisplay:
           type:
-            - "null"
+            - 'null'
             - boolean
           default: false
         attachments:
           type:
-            - "null"
+            - 'null'
             - array
           items:
             type: object
@@ -5253,8 +4952,7 @@ components:
                 title: URL
     catalog:
       title: Catalog
-      description: A catalog configuration to publish metadatas from datasets,
-        services and applications.
+      description: A catalog configuration to publish metadatas from datasets, services and applications.
       type: object
       additionalProperties: false
       required:
@@ -5326,13 +5024,10 @@ components:
             role:
               type: string
               deprecated: true
-              description: DEPRECATED - If this is set and owner is an organization, this
-                restrict ownership to users of this organization having this
-                role or admin role
+              description: DEPRECATED - If this is set and owner is an organization, this restrict ownership to users of this organization having this role or admin role
             department:
               type: string
-              description: If this is set and owner is an organization, this gives ownership
-                to users of this organization that belong to this department
+              description: If this is set and owner is an organization, this gives ownership to users of this organization that belong to this department
             departmentName:
               type: string
               description: The display name of the department
@@ -5357,8 +5052,7 @@ components:
           description: The value of the required api key
         organization:
           type: object
-          description: Leave empty to write in a personal space, otherwise use the id of
-            an organization that you have the right to write into.
+          description: Leave empty to write in a personal space, otherwise use the id of an organization that you have the right to write into.
           properties:
             id:
               type: string
@@ -5392,9 +5086,7 @@ components:
           type: array
           items:
             type: object
-            description: Permission to do the operations (identified by their id). If type
-              and id are not set, then the operation is set to public. roles
-              array is used only with type organization
+            description: Permission to do the operations (identified by their id). If type and id are not set, then the operation is set to public. roles array is used only with type organization
             additionalProperties: false
             anyOf:
               - required:
@@ -5419,8 +5111,7 @@ components:
                 description: Email of the user
               department:
                 type: string
-                description: Identifier of the department or "*" for any department (same as
-                  empty) or "-" for no department
+                description: Identifier of the department or "*" for any department (same as empty) or "-" for no department
               departmentName:
                 type: string
                 description: Name of the department
@@ -5455,8 +5146,7 @@ components:
           description: Short title of the configuration for a catalog
         organization:
           type: object
-          description: Leave empty to write in a personal space, otherwise use the id of
-            an organization that you have the right to write into.
+          description: Leave empty to write in a personal space, otherwise use the id of an organization that you have the right to write into.
           properties:
             id:
               type: string
@@ -5507,31 +5197,33 @@ paths:
         - Administration
       x-operationType: http://schema.org/CheckAction
       responses:
-        "200":
+        '200':
           description: Service ok
-        "500":
+        '500':
           description: Service ko
   /api-docs.json:
     get:
-      summary: Accéder à cette documentation au format OpenAPI v3.
+      summary: Obtenir la documentation OpenAPI
+      description: Accéder à cette documentation au format OpenAPI v3.
       operationId: getApiDoc
       tags:
         - Administration
       responses:
-        "200":
-          description: Etat de santé du service.
+        '200':
+          description: La documentation de l'API
           content:
             application/json:
               schema:
                 type: object
   /vocabulary:
     get:
-      summary: Lister les concepts utilisables pour annoter la donnée sur ce service.
+      summary: Lister les concepts
+      description: Récupérer la liste des concepts utilisables pour annoter la donnée sur ce service.
       operationId: getVocabulary
       tags:
         - Administration
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -5555,7 +5247,8 @@ paths:
                       type: string
   /datasets:
     get:
-      summary: Récupérer la liste des jeux de données.
+      summary: Lister les jeux de données
+      description: Récupérer la liste des jeux de données.
       operationId: listDatasets
       tags:
         - Jeux de données
@@ -5761,16 +5454,11 @@ paths:
             min: 1
         - in: query
           name: visibility
-          description: >-
+          description: |-
             Filtrer sur la visibilité de la ressource.
-
             "public" = voir les ressources publiques
-
-            "private" = voir les ressources privées (celles sur lesquelles
-            aucune permission particulière n'a été appliquée)
-
-            "protected" = voir les ressources protégées (celles sur lesquelles
-            une permission a été donnée à des utilisateurs).
+            "private" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée)
+            "protected" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).
           required: false
           schema:
             title: Filtrer sur la visibilité de la ressource.
@@ -5787,7 +5475,7 @@ paths:
           style: form
           explode: false
       responses:
-        "200":
+        '200':
           description: Liste des jeux de données que l'utilisateur est autorisé à voir.
           content:
             application/json:
@@ -5800,9 +5488,9 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: "#/components/schemas/dataset"
+                      $ref: '#/components/schemas/dataset'
     post:
-      summary: Importer un jeu de données.
+      summary: Créer un jeu de données
       operationId: postDataset
       tags:
         - Jeux de données
@@ -5812,14 +5500,14 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/datasetPost"
+              $ref: '#/components/schemas/datasetPost'
       responses:
-        "200":
+        '200':
           description: Métadonnées sur le dataset créé.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/dataset"
+                $ref: '#/components/schemas/dataset'
   /datasets/{id}:
     parameters:
       - in: path
@@ -5830,19 +5518,21 @@ paths:
           title: Identifiant
           type: string
     get:
-      summary: Récupérer les informations d'un jeu de données.
+      summary: Lire les informations d'un jeu de données
+      description: Récupérer les informations d'un jeu de données.
       operationId: getDataset
       tags:
         - Jeux de données
       responses:
-        "200":
+        '200':
           description: Informations d'un jeu de données.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/dataset"
+                $ref: '#/components/schemas/dataset'
     put:
-      summary: Créer ou mettre à jour un jeu de données.
+      summary: Créer ou mettre à jour un jeu de données
+      description: Créer ou mettre à jour un jeu de données.
       operationId: putDataset
       tags:
         - Jeux de données
@@ -5852,22 +5542,23 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/datasetPost"
+              $ref: '#/components/schemas/datasetPost'
       responses:
-        "200":
+        '200':
           description: Jeu de données modifié.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/dataset"
-        "201":
+                $ref: '#/components/schemas/dataset'
+        '201':
           description: Jeu de données créé.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/dataset"
+                $ref: '#/components/schemas/dataset'
     patch:
-      summary: Modifier seulement certaines informations.
+      summary: Modifier un jeu de données
+      description: Modifier seulement certaines informations d'un jeu de données.
       operationId: patchDataset
       tags:
         - Jeux de données
@@ -5877,25 +5568,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/datasetPatch"
+              $ref: '#/components/schemas/datasetPatch'
       responses:
-        "200":
+        '200':
           description: Informations du jeu de données modifié.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/dataset"
+                $ref: '#/components/schemas/dataset'
     delete:
-      summary: Supprimer un jeu de données.
+      summary: Supprimer un jeu de données
       operationId: deleteDataset
       tags:
         - Jeux de données
       responses:
-        "204":
+        '204':
           description: Jeu de données supprimé.
   /applications:
     get:
-      summary: Récupérer la liste des applications.
+      summary: Lister les applications
+      description: Récupérer la liste des applications.
       operationId: listApplications
       tags:
         - Applications
@@ -6031,16 +5723,11 @@ paths:
             min: 1
         - in: query
           name: visibility
-          description: >-
+          description: |-
             Filtrer sur la visibilité de la ressource.
-
             "public" = voir les ressources publiques
-
-            "private" = voir les ressources privées (celles sur lesquelles
-            aucune permission particulière n'a été appliquée)
-
-            "protected" = voir les ressources protégées (celles sur lesquelles
-            une permission a été donnée à des utilisateurs).
+            "private" = voir les ressources privées (celles sur lesquelles aucune permission particulière n'a été appliquée)
+            "protected" = voir les ressources protégées (celles sur lesquelles une permission a été donnée à des utilisateurs).
           required: false
           schema:
             title: Filtrer sur la visibilité de la ressource.
@@ -6057,7 +5744,7 @@ paths:
           style: form
           explode: false
       responses:
-        "200":
+        '200':
           description: Liste des applications que l'utilisateur est autorisé à voir.
           content:
             application/json:
@@ -6070,9 +5757,9 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: "#/components/schemas/application"
+                      $ref: '#/components/schemas/application'
     post:
-      summary: Configurer une application.
+      summary: Configurer une application
       operationId: postApplication
       tags:
         - Applications
@@ -6082,14 +5769,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/application"
+              $ref: '#/components/schemas/application'
       responses:
-        "201":
+        '201':
           description: Les informations de configuration de l'application.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
+                $ref: '#/components/schemas/application'
   /applications/{id}:
     parameters:
       - in: path
@@ -6100,19 +5787,21 @@ paths:
           title: Identifiant
           type: string
     get:
-      summary: Récupérer les informations d'une application.
+      summary: Lire les informations d'une application
+      description: Récupérer les informations d'une application.
       operationId: getApplication
       tags:
         - Applications
       responses:
-        "200":
+        '200':
           description: Informations d'une application.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
+                $ref: '#/components/schemas/application'
     put:
-      summary: Créer ou mettre à jour une application.
+      summary: Créer ou mettre à jour une application
+      description: Créer ou mettre à jour une application.
       operationId: putApplication
       tags:
         - Applications
@@ -6122,22 +5811,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/application"
+              $ref: '#/components/schemas/application'
       responses:
-        "200":
+        '200':
           description: Application modifiée.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
-        "201":
+                $ref: '#/components/schemas/application'
+        '201':
           description: Application créée.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
+                $ref: '#/components/schemas/application'
     patch:
-      summary: Modifier certaines informations d'une application.
+      summary: Modifier une informations
+      description: Modifier seulement certaines informations d'une application.
       operationId: patchApplication
       tags:
         - Applications
@@ -6147,21 +5837,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/applicationPatch"
+              $ref: '#/components/schemas/applicationPatch'
       responses:
-        "200":
+        '200':
           description: Informations de l'application modifiée.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/application"
+                $ref: '#/components/schemas/application'
     delete:
-      summary: Supprimer une application.
+      summary: Supprimer une application
       operationId: deleteApplication
       tags:
         - Applications
       responses:
-        "204":
+        '204':
           description: Application supprimée.
 externalDocs:
   description: Documentation sur Github

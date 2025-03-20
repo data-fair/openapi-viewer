@@ -1,4 +1,4 @@
-# OpenAPI 3 viewer
+# OpenAPI viewer
 
 This service is designed to easily browse and test a REST API described with the [OpenAPI 3.0 Specification](https://github.com/OAI/OpenAPI-Specification).
 
@@ -9,14 +9,26 @@ This service is designed to easily browse and test a REST API described with the
 | ![Koumoul logo](https://koumoul.com/static/logo-slogan.png) | [Koumoul](https://koumoul.com) develops the Data Fair ecosystem and hosts it as an online service. |
 | ![Dawizz logo](https://dawizz.fr/logo-Dawizz-all-about-your-data-home.png) | [Dawizz](https://dawizz.fr) uses the Data Fair ecosystem inside its platform and supports its development. |
 
-## Query parameters
+## Parameters
 
-You can use the followings query parameters to prefill the viewer :
-
-### Available Parameters
+### Query Parameters
 
 - **drawerLocation** : The location of the navigation-drawer. Can be `left` or `right`. Defaults to `left`.
 - **urlType** : The type of the URL defined in the environment variable `ALLOWED_URLS`.
+- **operation** : The `operationId` of the operation to navigate to. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
+
+> ⚠️ **Deprecated**:
+>
+> - ~~**url** : The location of the API documentation file to load, in OpenAPI v3 JSON format.~~ *Replaced by the `urlType` query parameter instead and the `ALLOWED_URLS` environment variable.*
+> - ~~**hide-toolbar** : `true` or `false` to hide the toolbar (useful for iframe integration). Defaults to `false`.~~
+
+### Environment Variables
+
+- **USE_SIMPLE_DIRECTORY** : A boolean to enable integration with **[SimpleDirectory](https://github.com/data-fair/simple-directory)**. Defaults to `false`.
+
+- **DEFAULT_URL** : The default URL to load when no `urlType` query parameter is provided.
+
+- **ALLOWED_URLS** : A JSON object containing a list of allowed URLs. The keys are used as the `urlType` query parameter. The values are the URLs to the OpenAPI files. These URLs can contain placeholders enclosed in curly braces {}, which will be replaced by the corresponding query parameters. The placeholders are defined by the keys of the query parameters. Defaults to an empty object.
 
 > *Examples of ALLOWED_URLS :*
 >
@@ -26,15 +38,6 @@ You can use the followings query parameters to prefill the viewer :
 >   "exampleWithUrlTemplate": "https://example2.com/{id}/openapi.json"
 > }
 > ```
-
-> ⚠️ **Deprecated**: `url` and `hide-toolbar` are deprecated.
->
-> - ~~**url** : The location of the API documentation file to load, in OpenAPI v3 JSON format.~~
-> - ~~**hide-toolbar** : `true` or `false` to hide the toolbar (useful for iframe integration). Defaults to `false`.~~
-
-### Directly Linking to an API Operation
-
-You can append a query parameter `operation` with an `operationId` as its value to directly navigate to a specific API operation. [Reference : OpenAPI 3.1 Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object)
 
 ## Integration with SimpleDirectory
 

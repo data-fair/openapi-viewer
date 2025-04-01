@@ -14,7 +14,56 @@
 
   <v-tabs-window v-model="panelRight">
     <v-tabs-window-item value="serverResponse">
+      <v-menu
+        v-if="method.toUpperCase() === 'DELETE'"
+        v-model="showDeleteMenu"
+        :close-on-content-click="false"
+        max-width="500"
+      >
+        <template #activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="my-4"
+            color="primary"
+            :prepend-icon="mdiPlay"
+            :loading="loading"
+            :disabled="loading || !isValid"
+          >
+            {{ t('execute') }}
+          </v-btn>
+        </template>
+        <v-card
+          rounded="lg"
+          variant="elevated"
+        >
+          <v-card-text>
+            <v-alert
+              type="warning"
+              variant="outlined"
+              :title="t('sensitiveOperation')"
+              :text="t('deleteConfirmation')"
+            />
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              variant="text"
+              @click="showDeleteMenu = false"
+            >
+              {{ t('cancel') }}
+            </v-btn>
+            <v-btn
+              color="warning"
+              variant="flat"
+              @click="showDeleteMenu = false; emit('executeRequest')"
+            >
+              {{ t('execute') }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
       <v-btn
+        v-else
         class="my-4"
         color="primary"
         :prepend-icon="mdiPlay"
@@ -96,8 +145,9 @@
 import type { Operation } from '#api/types'
 import YAML from 'js-yaml'
 
-const { operation, responseData, loading, isValid } = defineProps<{
+const { operation, method, responseData, loading, isValid } = defineProps<{
   operation: Operation
+  method: string
   responseData: Record<string, any> | null
   loading: boolean
   isValid: boolean | null
@@ -108,6 +158,7 @@ const emit = defineEmits(['executeRequest'])
 const { t } = useI18n()
 
 const panelRight = ref<string>('serverResponse')
+const showDeleteMenu = ref<boolean>(false)
 
 /*
  * Match the status code with a color
@@ -138,6 +189,8 @@ const getCodeColors = (status: string) => {
 
 <i18n lang="yaml">
   en:
+    cancel: "Cancel"
+    deleteConfirmation: "Are you sure you want to perform this delete request ?"
     execute: "Execute"
     noDocsResponses: "No response documentation."
     parsingFailed: "Unable to parse response."
@@ -145,7 +198,10 @@ const getCodeColors = (status: string) => {
     responseHeaders: "Response Headers"
     responses: Responses
     serverResponse: "Try it out"
+    sensitiveOperation: "Sensitive operation"
   fr:
+    cancel: "Annuler"
+    deleteConfirmation: "Êtes-vous sûr de vouloir effectuer cette requête de suppression ?"
     execute: "Exécuter"
     noDocsResponses: "Aucune documentation de réponse."
     parsingFailed: "Impossible de parser la réponse."
@@ -153,6 +209,7 @@ const getCodeColors = (status: string) => {
     responseHeaders: "En-têtes de la réponse"
     responses: Réponses
     serverResponse: "Essayer"
+    sensitiveOperation: "Opération sensible"
 </i18n>
 
 <style scoped>

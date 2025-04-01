@@ -21,7 +21,8 @@ const links = [
   ['Allowed url', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=fulltest.json'],
   ['With drawer to the right', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=fulltest.json&drawerLocation=right'],
   ['Example Data Fair', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=api-docs.json'],
-  ['Example recursive', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=recustive.json'],
+  ['Example Data Fair YAML', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=api-docs.yaml'],
+  ['Example recursive', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=recusive.yaml'],
   ['Example pet store', 'http://localhost:5600/openapi-viewer/?urlType=petstore']
 ]
 </script>

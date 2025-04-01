@@ -165,6 +165,7 @@
     >
       <operation-panel-right
         :operation="operation"
+        :method="method"
         :response-data="responseData"
         :loading="loading"
         :is-valid="isValid"
@@ -303,7 +304,6 @@ async function executeRequest () {
     headers: Object.fromEntries(response.headers.entries())
   }
 
-  // operationPanelRightRef.value?.setActiveTab('serverResponse')
   loading.value = false
 }
 

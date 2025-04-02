@@ -2,6 +2,7 @@ import { resolve } from 'node:path'
 import express from 'express'
 import { errorHandler, createSiteMiddleware, createSpaMiddleware } from '@data-fair/lib-express'
 import config, { uiConfig } from '#config'
+import adminRouter from './admin/router.js'
 
 export const app = express()
 
@@ -12,6 +13,7 @@ app.use(createSiteMiddleware('openapi-viewer', { prefixOptional: true, neverInte
 app.set('json spaces', 2)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use('/api/admin', adminRouter)
 
 if (config.serveUi) {
   app.use(await createSpaMiddleware(resolve(import.meta.dirname, '../../ui/dist'), uiConfig))

@@ -22,7 +22,7 @@ jobs:
 
     - name: Prepare BUILD.json
       run: |
-        echo '{"version": "${{github.ref_name}}", "repository": "${{github.server_url}}/${{github.repository}}", "commit": "${{github.sha}}"}' > BUILD.json
+        echo '{"version": "${{github.ref_name}}", "repository": "${{github.server_url}}/${{github.repository}}", "commit": "${{github.sha}}", "date": "'$(date -Is)'"}' > BUILD.json
         cat BUILD.json
 
     - name: Prepare docker tags for main image

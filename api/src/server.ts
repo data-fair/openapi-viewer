@@ -2,6 +2,7 @@ import { app } from './app.ts'
 import { createHttpTerminator } from 'http-terminator'
 import config from '#config'
 import http from 'http'
+import { session } from '@data-fair/lib-express'
 
 const server = http.createServer(app)
 const httpTerminator = createHttpTerminator({ server })
@@ -13,6 +14,7 @@ server.keepAliveTimeout = (60 * 1000) + 1000
 server.headersTimeout = (60 * 1000) + 2000
 
 export const start = async () => {
+  if (config.useSimpleDirectory) session.init(config.privateDirectoryUrl)
   server.listen(config.port)
   await new Promise(resolve => server.once('listening', resolve))
 

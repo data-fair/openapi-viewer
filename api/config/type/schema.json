@@ -38,6 +38,10 @@
     "useSimpleDirectory": {
       "type": "boolean"
     },
+    "privateDirectoryUrl": {
+      "type": "string",
+      "pattern": "^https?://"
+    },
     "util": {},
     "get": {},
     "has": {}

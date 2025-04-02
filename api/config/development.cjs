@@ -5,5 +5,7 @@ module.exports = {
     petstore: 'https://petstore.swagger.io/v2/swagger.json'
   },
   port: 8081,
-  serveUi: false
+  serveUi: false,
+  useSimpleDirectory: true,
+  privateDirectoryUrl: 'http://localhost:8080',
 }

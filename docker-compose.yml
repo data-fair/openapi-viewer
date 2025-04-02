@@ -20,11 +20,16 @@ services:
     depends_on:
       - mongo
     environment:
+      - ADMINS=["superadmin@test.com"]
       - PUBLIC_URL=http://localhost:5600/simple-directory
       - OBSERVER_ACTIVE=false
       - CIPHER_PASSWORD=dev
       - CONTACT=contact@test.com
       - MONGO_URL=mongodb://localhost:27017/simple-directory
+      - STORAGE_TYPE=file
+    volumes:
+      - ./dev/resources/users.json:/app/data/users.json
+      - ./dev/resources/organizations.json:/app/data/organizations.json
 
   #####
   # db

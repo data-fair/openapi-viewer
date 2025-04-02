@@ -1,0 +1,28 @@
+[{
+  "id": "orga1",
+  "name": "Orga 1",
+  "members": [{
+    "id": "superadmin",
+    "role": "admin"
+  }, {
+    "id": "admin1",
+    "role": "admin"
+  }, {
+    "id": "user1",
+    "role": "user"
+  }]
+},
+{
+  "id": "orga2",
+  "name": "Orga 2",
+  "members": [{
+    "id": "user1",
+    "role": "user",
+    "department": "dep1"
+  }, {
+    "id": "user2",
+    "role": "user",
+    "department": "dep2"
+  }]
+}
+]

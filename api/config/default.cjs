@@ -3,5 +3,6 @@ module.exports = {
   allowedUrls: {},
   port: 8080,
   serveUi: true,
-  useSimpleDirectory: false
+  useSimpleDirectory: false,
+  privateDirectoryUrl: 'http://simple-directory:8080',
 }

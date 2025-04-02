@@ -6,5 +6,6 @@ module.exports = {
   },
   port: 'PORT',
   serveUi: 'SERVE_UI',
-  useSimpleDirectory: 'USE_SIMPLE_DIRECTORY'
+  useSimpleDirectory: 'USE_SIMPLE_DIRECTORY',
+  privateDirectoryUrl: 'PRIVATE_DIRECTORY_URL',
 }

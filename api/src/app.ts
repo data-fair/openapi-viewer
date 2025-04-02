@@ -2,7 +2,7 @@ import { resolve } from 'node:path'
 import express from 'express'
 import { errorHandler, createSiteMiddleware, createSpaMiddleware } from '@data-fair/lib-express'
 import config, { uiConfig } from '#config'
-import adminRouter from './admin/router.js'
+import adminRouter from './admin/router.ts'
 
 export const app = express()
 

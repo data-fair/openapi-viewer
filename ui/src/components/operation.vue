@@ -253,7 +253,17 @@ async function executeRequest () {
       body = formData
     } else {
       headers['Content-Type'] = contentType
-      body = endpointQueryValues.value.body.value
+      const rawBody = endpointQueryValues.value.body.value
+      // JSON minification to reduce payload size (remove unnecessary spaces/indentations)
+      if (rawBody != null && (contentType.startsWith('application/json') || contentType.includes('+json'))) {
+        try {
+          body = JSON.stringify(JSON.parse(rawBody))
+        } catch (e) { // If JSON parsing fails, use the raw body
+          body = rawBody.trim()
+        }
+      } else {
+        body = rawBody
+      }
     }
   }
 

@@ -608,6 +608,23 @@
             }
           },
           {
+            "name": "testObject",
+            "in": "query",
+            "description": "Tous les paramètres de cet objet doivent commencer par `eq_` ou `lg_`. Ils seront transformés en simples paramètres de query lors de la requête (ex: `?eq_param1=value1&lg_param2=value2`).",
+            "schema": {
+              "title": "Un sous-objet",
+              "type": "object",
+              "patternProperties": {
+                "eq_(.*)": {
+                  "type": "string"
+                },
+                "lg_(.*)": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          {
             "name": "testArrayOneOf",
             "in": "query",
             "description": "Un paramètre tableau de chaînes de caractères avec oneOf pour tester",

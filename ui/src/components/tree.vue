@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import { VTreeview } from 'vuetify/labs/VTreeview'
 
 const { jsonSchema } = defineProps<{
   jsonSchema: any

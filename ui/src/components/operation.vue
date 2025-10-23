@@ -331,7 +331,8 @@ const vjsfOptions: VjsfOptions = {
   useExamples: 'help',
   useTitle: 'hint' as const,
   validateOn: 'blur',
-  xI18n: true
+  xI18n: true,
+  confirmDeleteItem: false
 }
 
 if ($uiConfig.useSimpleDirectory) {

@@ -610,7 +610,7 @@
           {
             "name": "testObject",
             "in": "query",
-            "description": "Tous les paramètres de cet objet doivent commencer par `eq_` ou `lg_`. Ils seront transformés en simples paramètres de query lors de la requête (ex: `?eq_param1=value1&lg_param2=value2`).",
+            "description": "Tous les paramètres de cet objet doivent commencer par un préfixe :\n\n  - `eq_`\n  - `lg_`.\n\nIls seront transformés en simples paramètres de query lors de la requête (ex: `?eq_param1=value1&lg_param2=value2`).",
             "schema": {
               "title": "Un sous-objet",
               "type": "object",

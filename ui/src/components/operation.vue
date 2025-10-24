@@ -166,6 +166,7 @@
       <operation-panel-right
         :operation="operation"
         :method="method"
+        :request-url="requestUrl"
         :response-data="responseData"
         :loading="loading"
         :is-valid="isValid"
@@ -178,7 +179,6 @@
 <script setup lang="ts">
 import type { GenericEndpointQuery, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
-import type { SchemaObject } from 'ajv'
 
 import Vjsf, { type Options as VjsfOptions } from '@koumoul/vjsf'
 import { marked } from 'marked'
@@ -194,8 +194,10 @@ const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
 const { t } = useI18n()
 
 const endpointQueryValues = ref<GenericEndpointQuery>({})
-const endpointQuerySchema = ref<SchemaObject>(getVJSFSchema(operation, pathItemParameters))
+const endpointQuerySchema = getVJSFSchema(operation, pathItemParameters)
+console.log(endpointQuerySchema)
 const responseData = ref<Record<string, any> | null>(null)
+const requestUrl = ref<string>('')
 const panelLeft = ref<string>('parameters')
 const schemaOrExamplesTab = ref<string>('schema')
 const exampleSelected = ref<string>('default')
@@ -215,7 +217,7 @@ const fullPath = computed(() => {
   // Build URL with query parameters
   let url = `${serverUrl || ''}${fullPath}`
   if (endpointQueryValues.value.query && Object.keys(endpointQueryValues.value.query).length > 0) {
-    const queryParams = new URLSearchParams(endpointQueryValues.value.query).toString()
+    const queryParams = serializeQueryParams(endpointQueryValues.value.query, resolveParameters(pathItemParameters, operation.parameters as Parameter[])).toString()
     url += `?${queryParams}`
   }
   return url
@@ -224,6 +226,7 @@ const fullPath = computed(() => {
 async function executeRequest () {
   loading.value = true
   responseData.value = null
+  requestUrl.value = fullPath.value
 
   // Prepare headers
   const headers: Record<string, string> = {}
@@ -328,7 +331,8 @@ const vjsfOptions: VjsfOptions = {
   useExamples: 'help',
   useTitle: 'hint' as const,
   validateOn: 'blur',
-  xI18n: true
+  xI18n: true,
+  confirmDeleteItem: false
 }
 
 if ($uiConfig.useSimpleDirectory) {

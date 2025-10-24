@@ -10,6 +10,8 @@ export type Parameter = ParameterSpec & {
   examples?: Map<string, Record<string, any>>
   example?: any
   schema?: Record<string, any>
+  style?: 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
+  explode?: boolean
 }
 
 export const initTransformer = (schema: OpenAPISpecs) => {
@@ -215,7 +217,7 @@ const resolveSecurities = (
  * -> Merge unique keys based on "name" and "in" fields
  *    (Operation parameters override pathItem parameters)
 */
-const resolveParameters = (
+export const resolveParameters = (
   pathItemParameters: Parameter[],
   operationParameters: Parameter[]
 ) => {

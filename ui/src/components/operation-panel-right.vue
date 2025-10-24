@@ -1,13 +1,9 @@
 <template>
-  <v-tabs
-    v-model="panelRight"
-  >
+  <v-tabs v-model="panelRight">
     <v-tab value="serverResponse">
       {{ t('serverResponse') }}
     </v-tab>
-    <v-tab
-      value="responses"
-    >
+    <v-tab value="responses">
       {{ t('responses') }}
     </v-tab>
   </v-tabs>
@@ -76,15 +72,22 @@
 
       <template v-if="responseData">
         <h4>
-          <v-chip
-            :color="getCodeColors(responseData.status)"
-            :text="responseData.status"
-            density="compact"
-            variant="elevated"
-            label
-          />
-          {{ responseData.statusText }}
+          {{ t('requestUrl') }}
         </h4>
+        <p class="text-break">
+          {{ requestUrl }}
+        </p>
+        <h4>
+          {{ t('status') }}
+        </h4>
+        <v-chip
+          :color="getCodeColors(responseData.status)"
+          :text="responseData.status"
+          density="compact"
+          variant="elevated"
+          label
+        />
+        {{ responseData.statusText || getDefaultStatusText(responseData.status) }}
         <template v-if="responseData.body">
           <h4>{{ t('responseBody') }}</h4>
           <span
@@ -144,10 +147,12 @@
 <script setup lang="ts">
 import type { Operation } from '#api/types'
 import YAML from 'js-yaml'
+import status from 'statuses'
 
 const { operation, method, responseData, loading, isValid } = defineProps<{
   operation: Operation
   method: string
+  requestUrl: string
   responseData: Record<string, any> | null
   loading: boolean
   isValid: boolean | null
@@ -185,6 +190,14 @@ const getCodeColors = (status: string) => {
   }
 }
 
+/*
+ * Get default status text for HTTP status codes using the statuses library
+ */
+const getDefaultStatusText = (statusCode: number | string): string => {
+  const code = typeof statusCode === 'string' ? parseInt(statusCode) : statusCode
+  return status.message[code] || 'Unknown Status'
+}
+
 </script>
 
 <i18n lang="yaml">
@@ -194,22 +207,26 @@ const getCodeColors = (status: string) => {
     execute: "Execute"
     noDocsResponses: "No response documentation."
     parsingFailed: "Unable to parse response."
+    requestUrl: "Request URL"
     responseBody: "Response Body"
     responseHeaders: "Response Headers"
     responses: Responses
     serverResponse: "Try it out"
     sensitiveOperation: "Sensitive operation"
+    status: "Status"
   fr:
     cancel: "Annuler"
     deleteConfirmation: "Êtes-vous sûr de vouloir effectuer cette requête de suppression ?"
     execute: "Exécuter"
     noDocsResponses: "Aucune documentation de réponse."
     parsingFailed: "Impossible de parser la réponse."
+    requestUrl: "URL de la requête"
     responseBody: "Corps de la réponse"
     responseHeaders: "En-têtes de la réponse"
     responses: Réponses
     serverResponse: "Essayer"
     sensitiveOperation: "Opération sensible"
+    status: "Statut"
 </i18n>
 
 <style scoped>

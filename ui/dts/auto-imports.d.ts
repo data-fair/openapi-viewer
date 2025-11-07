@@ -151,7 +151,6 @@ declare module 'vue' {
     readonly dfOwnerAvatar: UnwrapRef<typeof import('@data-fair/lib-vuetify/owner-avatar.vue')['default']>
     readonly dfOwnerPick: UnwrapRef<typeof import('@data-fair/lib-vuetify/owner-pick.vue')['default']>
     readonly dfPersonalMenu: UnwrapRef<typeof import('@data-fair/lib-vuetify/personal-menu.vue')['default']>
-    readonly dfSearchAddress: UnwrapRef<typeof import('@data-fair/lib-vuetify/search-address.vue')['default']>
     readonly dfThemeSwitcher: UnwrapRef<typeof import('@data-fair/lib-vuetify/theme-switcher.vue')['default']>
     readonly dfTutorialAlert: UnwrapRef<typeof import('@data-fair/lib-vuetify/tutorial-alert.vue')['default']>
     readonly dfUiNotif: UnwrapRef<typeof import('@data-fair/lib-vuetify/ui-notif.vue')['default']>

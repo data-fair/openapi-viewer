@@ -192,8 +192,23 @@ const { operation, pathItemParameters, serverUrl, method, path } = defineProps<{
 }>()
 
 const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
 
-const endpointQueryValues = ref<GenericEndpointQuery>({})
+// Init endpointQueryValues from URL query parameters if available
+const initialValues = (() => {
+  const params = route.query.params as string | undefined
+  if (params) {
+    try {
+      return JSON.parse(params)
+    } catch (e) {
+      console.error('Failed to parse params from URL:', e)
+    }
+  }
+  return {}
+})()
+
+const endpointQueryValues = ref<GenericEndpointQuery>(initialValues)
 const endpointQuerySchema = getVJSFSchema(operation, pathItemParameters)
 console.log(endpointQuerySchema)
 const responseData = ref<Record<string, any> | null>(null)
@@ -203,6 +218,16 @@ const schemaOrExamplesTab = ref<string>('schema')
 const exampleSelected = ref<string>('default')
 const loading = ref(false)
 const isValid = ref(false)
+
+// Serialize the endpointQueryValues when they change
+watch(endpointQueryValues, (newValues) => {
+  router.replace({
+    query: {
+      ...route.query,
+      params: JSON.stringify(newValues)
+    }
+  })
+}, { deep: true })
 
 const fullPath = computed(() => {
   let fullPath = path

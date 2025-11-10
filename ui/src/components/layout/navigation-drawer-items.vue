@@ -7,7 +7,7 @@
       'text-disabled font-italic': item.deprecated,
     }"
     rounded
-    @click="$router.push({ query: { ...$route.query, operation: item.hash} })"
+    @click="$router.push({ query: { ...$route.query, operation: item.hash, params: undefined } })"
   >
     <v-list-item-title class="text-wrap">
       {{ item.summary }}

@@ -4,7 +4,6 @@ import type { Parameter } from '~/utils/transform'
 /**
  * Serialize query parameters according to OpenAPI 3.0 specification
  *
- * https://swagger.io/docs/specification/v3_0/serialization
  * @param params - Object containing parameter name and values
  * @param paramSpecs - Array of parameter specifications with style and explode properties
  * @returns URLSearchParams object with properly serialized parameters

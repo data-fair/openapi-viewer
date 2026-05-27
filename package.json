@@ -42,5 +42,8 @@
     "husky": "^9.1.7",
     "neostandard": "^0.12.2",
     "typescript": "^5.7.3"
+  },
+  "overrides": {
+    "vite-plugin-node-polyfills": "0.23.0"
   }
 }

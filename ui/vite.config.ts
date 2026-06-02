@@ -1,26 +1,20 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import VueRouter from 'unplugin-vue-router/vite'
+import VueRouter from 'vue-router/vite'
+import { VueRouterAutoImports } from 'vue-router/unplugin'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import Vuetify from 'vite-plugin-vuetify'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import microTemplate from '@data-fair/lib-utils/micro-template.js'
-import { autoImports } from '@data-fair/lib-vuetify/vite.js'
+import { autoImports, settingsPath } from '@data-fair/lib-vuetify/vite.js'
 import { commonjsDeps } from '@koumoul/vjsf/utils/build.js'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/openapi-viewer',
-  build: {
-    rollupOptions: {
-      output: {
-        experimentalMinChunkSize: 2000
-      }
-    }
-  },
   optimizeDeps: { include: ['debug', ...commonjsDeps] },
   resolve: {
     alias: {
@@ -36,17 +30,18 @@ export default defineConfig({
       },
     }),
     VueRouter({
-      dts: './dts/typed-router.d.ts',
+      dts: './dts/route-map.d.ts',
       exclude: process.env.NODE_ENV === 'development' ? [] : ['src/pages/dev.vue']
     }),
     Vue({ template: { compilerOptions: { isCustomElement: (tag) => ['d-frame'].includes(tag) } } }),
     VueI18nPlugin(),
-    Vuetify(),
+    Vuetify({ styles: { configFile: settingsPath } }),
     AutoImport({
       dts: './dts/auto-imports.d.ts',
       vueTemplate: true,
       imports: [
         ...(autoImports as any),
+        VueRouterAutoImports,
         {
           '~/context': ['$uiConfig', '$sitePath', '$fetch'],
           '@mdi/js': [

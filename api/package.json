@@ -9,11 +9,14 @@
     "#config": "./src/config.ts"
   },
   "dependencies": {
-    "@data-fair/lib-express": "^1.16.0",
-    "@data-fair/lib-node": "^2.5.0",
+    "@data-fair/lib-express": "^1.22.5",
+    "@data-fair/lib-node": "^2.12.1",
     "config": "^3.3.12",
     "express": "^5.0.1",
     "http-terminator": "^3.2.0",
     "prom-client": "^15.1.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
   }
 }

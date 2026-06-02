@@ -32,18 +32,18 @@
     "api"
   ],
   "dependencies": {
-    "@data-fair/lib-types-builder": "^1.6.0"
+    "@data-fair/lib-types-builder": "1.10.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.1",
-    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@playwright/test": "^1.60.0",
     "@types/config": "^3.3.5",
-    "eslint": "^9.17.0",
-    "eslint-plugin-vue": "^9.32.0",
-    "eslint-plugin-vuetify": "github:albanm/eslint-plugin-vuetify",
+    "eslint": "^9.35.0",
+    "eslint-plugin-vue": "^10.4.0",
+    "eslint-plugin-vuetify": "^2.7.2",
     "husky": "^9.1.7",
-    "neostandard": "^0.12.0",
-    "typescript": "^5.7.3"
+    "neostandard": "^0.12.2",
+    "typescript": "^5.8.3"
   }
 }

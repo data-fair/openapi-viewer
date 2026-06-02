@@ -219,15 +219,27 @@ const exampleSelected = ref<string>('default')
 const loading = ref(false)
 const isValid = ref(false)
 
-// Serialize the endpointQueryValues when they change
+// Serialize the endpointQueryValues into the URL when they change.
+// Debounced because, when embedded in data-fair through a d-frame with `sync-params`,
+// every URL write is posted to the parent window and synced back, so writing on each
+// keystroke makes the URL flicker. We also skip the write when the serialized value
+// already matches the URL to avoid redundant navigations / round-trips.
+let paramsWriteTimeout: ReturnType<typeof setTimeout> | undefined
 watch(endpointQueryValues, (newValues) => {
-  router.replace({
-    query: {
-      ...route.query,
-      params: JSON.stringify(newValues)
-    }
-  })
+  const serialized = JSON.stringify(newValues)
+  clearTimeout(paramsWriteTimeout)
+  paramsWriteTimeout = setTimeout(() => {
+    if (route.query.params === serialized) return
+    router.replace({
+      query: {
+        ...route.query,
+        params: serialized
+      }
+    })
+  }, 500)
 }, { deep: true })
+
+onUnmounted(() => clearTimeout(paramsWriteTimeout))
 
 const fullPath = computed(() => {
   let fullPath = path

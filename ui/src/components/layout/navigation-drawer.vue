@@ -17,7 +17,7 @@
         @click="$router.push({ query: { ...$route.query, operation: undefined }})"
       >
         <v-list-item-title
-          class="text-h6"
+          class="text-title-large"
         >
           {{ t('overview') }}
         </v-list-item-title>
@@ -40,7 +40,7 @@
             rounded
           >
             <v-list-item-title
-              class="text-h6"
+              class="text-title-large"
             >
               <!-- External docs -->
               <v-tooltip

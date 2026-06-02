@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 class="text-h4 mb-4">
+    <h2 class="text-headline-large mb-4">
       Exemples
     </h2>
     <v-list>

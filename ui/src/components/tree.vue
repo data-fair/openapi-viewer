@@ -8,7 +8,7 @@
     <template #title="{ item }">
       <p class="text-wrap">
         <span :class="{'text-decoration-line-through font-italic text-gray': item.itemDeprecated}">{{ item.title }}</span>&nbsp;
-        <span class="text-caption text-primary">{{ item.itemType }}</span>
+        <span class="text-body-small text-primary">{{ item.itemType }}</span>
         <v-icon
           v-if="item.itemRequired"
           color="error"
@@ -17,7 +17,7 @@
         />
         <v-chip
           v-if="item.itemFormat"
-          class="ml-2 text-caption"
+          class="ml-2 text-body-small"
           density="compact"
           size="small"
           label
@@ -25,7 +25,7 @@
         />
         <v-chip
           v-if="item.itemDeprecated"
-          class="ml-2 text-caption text-warning"
+          class="ml-2 text-body-small text-warning"
           density="compact"
           size="small"
           :text="t('deprecated')"
@@ -62,7 +62,7 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   // Append enum items if they exist
   if (schema.enum) {
     node.children!.push({
-      title: 'Enum',
+      title: t('enum'),
       children: schema.enum.map((val: any, i: number) => ({ title: `#${i}="${val}"` }))
     })
   }
@@ -70,7 +70,7 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   // Append oneOf items if they exist
   if (schema.oneOf) {
     node.children!.push({
-      title: 'One of',
+      title: t('oneOf'),
       children: schema.oneOf.map((sub: any) => buildTreeItems(sub))
     })
   }
@@ -78,7 +78,7 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   // Append allOf items if they exist
   if (schema.allOf) {
     node.children!.push({
-      title: 'All of',
+      title: t('allOf'),
       children: schema.allOf.map((sub: any) => buildTreeItems(sub))
     })
   }
@@ -86,7 +86,7 @@ function buildTreeItems (schema: any, key?: string, isRequired?: boolean) {
   // Append array items if they exist
   if (schema.items) {
     node.children!.push({
-      title: 'Items',
+      title: t('items'),
       children: [buildTreeItems(schema.items)]
     })
   }
@@ -116,8 +116,16 @@ const treeItems = computed(() => {
 <i18n lang="yaml">
   en:
     deprecated: "Deprecated"
+    enum: "Enum"
+    oneOf: "One of"
+    allOf: "All of"
+    items: "Items"
   fr:
     deprecated: "Déprécié"
+    enum: "Énumération"
+    oneOf: "Un parmi"
+    allOf: "Tous"
+    items: "Éléments"
 </i18n>
 
 <style scoped>

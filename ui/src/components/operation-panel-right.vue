@@ -84,7 +84,7 @@
           :color="getCodeColors(responseData.status)"
           :text="responseData.status"
           density="compact"
-          variant="elevated"
+          variant="flat"
           label
         />
         {{ responseData.statusText || getDefaultStatusText(responseData.status) }}
@@ -107,7 +107,7 @@
           <template v-else-if="responseData.type === 'image'">
             <v-img
               :src="responseData.body"
-              alt="Response Image"
+              :alt="t('responseImageAlt')"
             />
           </template>
           <prism
@@ -195,7 +195,7 @@ const getCodeColors = (status: string) => {
  */
 const getDefaultStatusText = (statusCode: number | string): string => {
   const code = typeof statusCode === 'string' ? parseInt(statusCode) : statusCode
-  return status.message[code] || 'Unknown Status'
+  return status.message[code] || t('unknownStatus')
 }
 
 </script>
@@ -210,10 +210,12 @@ const getDefaultStatusText = (statusCode: number | string): string => {
     requestUrl: "Request URL"
     responseBody: "Response Body"
     responseHeaders: "Response Headers"
+    responseImageAlt: "Response image"
     responses: Responses
     serverResponse: "Try it out"
     sensitiveOperation: "Sensitive operation"
     status: "Status"
+    unknownStatus: "Unknown status"
   fr:
     cancel: "Annuler"
     deleteConfirmation: "Êtes-vous sûr de vouloir effectuer cette requête de suppression ?"
@@ -223,10 +225,12 @@ const getDefaultStatusText = (statusCode: number | string): string => {
     requestUrl: "URL de la requête"
     responseBody: "Corps de la réponse"
     responseHeaders: "En-têtes de la réponse"
+    responseImageAlt: "Image de la réponse"
     responses: Réponses
     serverResponse: "Essayer"
     sensitiveOperation: "Opération sensible"
     status: "Statut"
+    unknownStatus: "Statut inconnu"
 </i18n>
 
 <style scoped>

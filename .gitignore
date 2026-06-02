@@ -1,3 +1,9 @@
 node_modules/
 api/config/local-*
 .type/
+
+# tests de snapshot visuels : locaux uniquement, jamais commités
+tests/**/*.snap.spec.ts
+tests/**/*-snapshots/
+test-results/
+playwright-report/

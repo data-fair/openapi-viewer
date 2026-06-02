@@ -15,9 +15,11 @@
     "lint-fix": "eslint --fix . && npm -w ui run lint-fix",
     "prepare": "husky || true",
     "stop-dev-deps": "docker compose --profile dev stop",
-    "test": "npm run test-base test-it/*.ts",
-    "test-only": "NODE_ENV=test node --experimental-strip-types --test-force-exit --test-only --test-concurrency=1 --test test-it/*.ts",
-    "quality": "npm run lint && npm run build-types && npm run check-types && npm -w ui run build && npm audit --omit=dev --audit-level=critical"
+    "test": "playwright test --project unit",
+    "test-unit": "playwright test --project unit",
+    "test-e2e": "playwright test --project e2e",
+    "test-snapshot": "playwright test --project snapshot",
+    "quality": "npm run lint && npm run build-types && npm run check-types && npm -w ui run build && npm run test-unit && npm audit --omit=dev --audit-level=critical"
   },
   "author": "",
   "license": "MIT",
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
+    "@playwright/test": "^1.60.0",
     "@types/config": "^3.3.5",
     "eslint": "^9.17.0",
     "eslint-plugin-vue": "^9.32.0",

@@ -85,3 +85,31 @@ Access the running services at <http://localhost:5600/openapi-viewer>
 
 - Use <kbd>Ctrl</kbd> + <kbd>Q</kbd> to quit Zellij.
 - Click on a panel, then use <kbd>Ctrl</kbd> + <kbd>C</kbd> then <kbd>Esc</kbd> to stop a terminal and regain access of the panel.
+
+## Tests
+
+Tests use [Playwright](https://playwright.dev/). Three projects are defined in
+`playwright.config.ts` :
+
+- **unit** (`tests/*.unit.spec.ts`) — pure functions (e.g. query params
+  serialization), no browser, no running stack. Run in CI.
+- **e2e** (`tests/*.e2e.spec.ts`) — behavioural checks against the running app.
+  Committed but **not run in CI** (they need the full stack).
+- **snapshot** (`tests/*.snap.spec.ts`) — visual screenshots. **Local only**:
+  spec files and baseline images are gitignored and never committed.
+
+```sh
+# unit tests only (no stack needed)
+npm run test-unit
+
+# e2e / snapshot need the stack running (dev-deps + api + ui, see above)
+npm run test-e2e
+npm run test-snapshot
+
+# review visual diffs side by side (expected / actual / diff)
+npx playwright show-report
+```
+
+The snapshot project is meant for **manual** visual non-regression review (e.g.
+before/after a major Vuetify upgrade): capture baselines, re-run after the
+change, then walk the HTML report to judge each diff.

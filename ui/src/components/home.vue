@@ -15,7 +15,7 @@
       <!-- Summary -->
       <div
         v-if="info.summary"
-        class="text-h6 font-italic"
+        class="text-title-large font-italic"
       >
         {{ info.summary }}
       </div>

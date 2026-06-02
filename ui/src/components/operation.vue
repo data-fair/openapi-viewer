@@ -11,13 +11,12 @@
     />
   </h2>
   <div class="d-flex align-center">
-    <v-chip
-      density="compact"
-      variant="text"
-      class="pa-0"
-      :color="colorMethods[method]"
-      :text="method.toUpperCase()"
-    />
+    <span
+      class="font-weight-bold"
+      :style="{ color: colorMethods[method] }"
+    >
+      {{ method.toUpperCase() }}
+    </span>
     <span class="ml-2">{{ serverUrl }}{{ path }}</span>
   </div>
 
@@ -30,7 +29,7 @@
   <!-- External documentation -->
   <div
     v-if="operation.externalDocs"
-    class="text-h6"
+    class="text-title-large"
   >
     {{ t('externalDoc') }} :
     <v-chip
@@ -47,7 +46,7 @@
   <!-- List of tags -->
   <div
     v-if="operation.tags && operation.tags.length > 1"
-    class="text-h6"
+    class="text-title-large"
   >
     {{ t('tags') }} :
     <v-chip
@@ -210,7 +209,6 @@ const initialValues = (() => {
 
 const endpointQueryValues = ref<GenericEndpointQuery>(initialValues)
 const endpointQuerySchema = getVJSFSchema(operation, pathItemParameters)
-console.log(endpointQuerySchema)
 const responseData = ref<Record<string, any> | null>(null)
 const requestUrl = ref<string>('')
 const panelLeft = ref<string>('parameters')

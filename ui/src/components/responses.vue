@@ -15,7 +15,7 @@
         density="compact"
         :color="getCodeColors(code)"
         :text="code"
-        :variant="selectedCode === code ? 'elevated' : 'tonal'"
+        :variant="selectedCode === code ? 'flat' : 'outlined'"
         label
       />
     </v-tab>

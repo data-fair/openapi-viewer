@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!inline"
-    class="position-relative text-body-2"
+    class="position-relative text-body-medium"
   >
     <v-tooltip
       v-if="copy && /<([a-zA-Z]+)([^>]*)>(.*?)<\/\1>/.test(highlightedCode)"
@@ -78,9 +78,9 @@ const highlightedCode = computed(() => {
 
 async function copyToClipboard () {
   await navigator.clipboard.writeText(slotContent.value as string).then(() => {
-    sendUiNotif({ type: 'success', msg: 'Copied to clipboard !' })
+    sendUiNotif({ type: 'success', msg: t('copied') })
   }).catch(error => {
-    sendUiNotif({ type: 'error', msg: 'Failed to copy', error })
+    sendUiNotif({ type: 'error', msg: t('copyFailed'), error })
   })
 }
 
@@ -89,8 +89,12 @@ async function copyToClipboard () {
 <i18n lang="yaml">
   en:
     copy: "Copy"
+    copied: "Copied to clipboard"
+    copyFailed: "Failed to copy"
   fr:
     copy: "Copier"
+    copied: "Copié dans le presse-papier"
+    copyFailed: "Échec de la copie"
 </i18n>
 
 <style scoped>

@@ -19,7 +19,7 @@
       type="error"
       variant="outlined"
       :text="urlFetch.error.value.message"
-      :title="t('errorCannotRetrieveData')"
+      :title="t('errors.cannotRetrieveData')"
     />
     <template v-if="derefDoc && url.length > 0">
       <home
@@ -41,7 +41,7 @@
       <v-alert
         v-else
         type="warning"
-        :text="t('errorHashNotMatch')"
+        :text="t('errors.hashNotMatch')"
         variant="outlined"
       />
     </template>
@@ -96,7 +96,7 @@ const derefDoc = computedAsync(
       return deref
     } catch (error) {
       if (controller.signal.aborted) return undefined
-      else errorMessage.value = t('errorOpenAPISpecsNotValid')
+      else errorMessage.value = t('errors.openAPISpecsNotValid')
     }
   },
   undefined,
@@ -139,7 +139,7 @@ watch(route.query, () => {
   if (route.query.urlType) {
     // Check url type
     if (!Object.keys($uiConfig.allowedUrls).includes(route.query.urlType as string)) {
-      errorMessage.value = t('invalidUrlType')
+      errorMessage.value = t('errors.invalidUrlType')
       return
     }
 
@@ -150,7 +150,7 @@ watch(route.query, () => {
     const requiredParams = (template.match(/{[^}]+}/g) || []).map((param) => param.slice(1, -1))
     const missingParams = requiredParams.filter((param) => !queryParams[param])
     if (missingParams.length > 0) {
-      errorMessage.value = t('missingParams', { params: missingParams.join(', ') })
+      errorMessage.value = t('errors.missingParams', { params: missingParams.join(', ') })
       return
     }
 
@@ -159,7 +159,7 @@ watch(route.query, () => {
   } else if ($uiConfig.defaultUrl) {
     url.value = $uiConfig.defaultUrl
   } else {
-    errorMessage.value = t('missingUrl')
+    errorMessage.value = t('errors.missingUrl')
   }
 
   urlFetch.refresh()
@@ -170,20 +170,22 @@ watch(route.query, () => {
 <i18n lang="yaml">
   en:
     error: "Error"
-    missingUrl: "Missing URL parameter."
-    errorCannotRetrieveData: "Cannot retrieve data for this URL."
-    errorHashNotMatch: "The selected operation does not match any operationId or path in the OpenAPI specs."
-    errorOpenAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference."
-    invalidUrlType: "Invalid URL type."
-    missingParams: "Missing parameters: {params}"
+    errors:
+      missingUrl: "Missing URL parameter."
+      cannotRetrieveData: "Cannot retrieve data for this URL."
+      hashNotMatch: "The selected operation does not match any operationId or path in the OpenAPI specs."
+      openAPISpecsNotValid: "The provided OpenAPI documentation is not valid, there may be a circular reference."
+      invalidUrlType: "Invalid URL type."
+      missingParams: "Missing parameters: {params}"
   fr:
     error: "Erreur"
-    missingUrl: "Paramètre URL manquant."
-    errorCannotRetrieveData: "Impossible de récupérer les données pour cette URL."
-    errorHashNotMatch: "L'opération sélectionnée ne correspond à aucun operationId ou path dans les spécifications OpenAPI."
-    errorOpenAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire."
-    invalidUrlType: "Type d'URL invalide."
-    missingParams: "Paramètres manquants : {params}"
+    errors:
+      missingUrl: "Paramètre URL manquant."
+      cannotRetrieveData: "Impossible de récupérer les données pour cette URL."
+      hashNotMatch: "L'opération sélectionnée ne correspond à aucun operationId ou path dans les spécifications OpenAPI."
+      openAPISpecsNotValid: "La documentation OpenAPI fournie n'est pas valide, il y a peut-être une référence circulaire."
+      invalidUrlType: "Type d'URL invalide."
+      missingParams: "Paramètres manquants : {params}"
 </i18n>
 
 <style scoped>

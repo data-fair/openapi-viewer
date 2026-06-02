@@ -21,7 +21,16 @@
       :text="urlFetch.error.value.message"
       :title="t('errors.cannotRetrieveData')"
     />
-    <template v-if="derefDoc && url.length > 0">
+
+    <!-- Loading: documentation is being fetched / dereferenced -->
+    <v-skeleton-loader
+      v-else-if="!derefDoc"
+      class="bg-transparent"
+      type="heading, paragraph, heading, list-item-three-line@3"
+    />
+
+    <!-- Loaded -->
+    <template v-else>
       <home
         v-if="!$route.query.operation"
         :info="derefDoc.info"

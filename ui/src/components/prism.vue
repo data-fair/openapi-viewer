@@ -49,7 +49,7 @@ import 'prismjs/components/prism-yaml.min.js'
 const { t } = useI18n()
 const { sendUiNotif } = useUiNotif()
 
-const { inline, language, maxHeight, copy } = defineProps<{
+const { inline, language = 'markup', maxHeight = 'none', copy } = defineProps<{
   inline?: boolean
   language?: string
   maxHeight?: string
@@ -59,12 +59,12 @@ const { inline, language, maxHeight, copy } = defineProps<{
 const slots = defineSlots()
 const slotContent = computed(() => slots.default?.()?.[0]?.children ?? '')
 
-const className = computed(() => `language-${language ?? 'markup'} rounded`)
-const style = computed(() => 'max-height: ' + (maxHeight ?? 'none'))
+const className = computed(() => `language-${language} rounded`)
+const style = computed(() => 'max-height: ' + maxHeight)
 
 const highlightedCode = computed(() => {
   const code = typeof slotContent.value === 'string' ? slotContent.value : ''
-  const prismLanguage = Prism.languages[language ?? 'markup']
+  const prismLanguage = Prism.languages[language]
 
   if (!prismLanguage) {
     console.warn(
@@ -73,7 +73,7 @@ const highlightedCode = computed(() => {
     return code
   }
 
-  return Prism.highlight(code, prismLanguage, language ?? 'markup')
+  return Prism.highlight(code, prismLanguage, language)
 })
 
 async function copyToClipboard () {

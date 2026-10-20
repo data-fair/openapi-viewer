@@ -14,8 +14,14 @@
         divided
         class="mr-2"
       >
-        <v-btn value="petstore" text="petstore" />
-        <v-btn value="example" text="example" />
+        <v-btn
+          value="petstore"
+          text="petstore"
+        />
+        <v-btn
+          value="example"
+          text="example"
+        />
       </v-btn-toggle>
     </v-toolbar>
     <!--
@@ -24,8 +30,8 @@
       chargement d-frame pour pouvoir tester l'affichage embarqué en local.
     -->
     <d-frame
-      :key="urlType"
       id="dev-embed"
+      :key="urlType"
       :src="src"
       class="fill-height"
       resize="no"

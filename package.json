@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build-types": "df-build-types ./",
-    "check-types": "tsc",
+    "check-types": "tsc && npm -w ui run check-types",
     "dev-api": "npm -w api run dev",
     "dev-deps": "docker compose --profile dev up -d --wait",
     "dev-ui": "npm -w ui run dev",
@@ -19,10 +19,13 @@
     "test-unit": "playwright test --project unit",
     "test-e2e": "playwright test --project e2e",
     "test-snapshot": "playwright test --project snapshot",
-    "quality": "npm run lint && npm run build-types && npm run check-types && npm -w ui run build && npm run test-unit && npm audit --omit=dev --audit-level=critical"
+    "quality": "npm run lint && npm run build-types && npm -w ui run build && npm run check-types && npm run test-unit && npm audit --omit=dev --audit-level=critical"
   },
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": "v24"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/data-fair/openapi-viewer.git"
@@ -35,15 +38,15 @@
     "@data-fair/lib-types-builder": "1.10.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@data-fair/lib-utils": "^1.14.0",
     "@playwright/test": "^1.60.0",
-    "@types/config": "^3.3.5",
-    "eslint": "^9.35.0",
+    "eslint": "^10.13.0",
     "eslint-plugin-vue": "^10.4.0",
     "eslint-plugin-vuetify": "^2.7.2",
     "husky": "^9.1.7",
-    "neostandard": "^0.12.2",
+    "neostandard": "^0.14.1",
     "typescript": "^5.8.3"
   }
 }

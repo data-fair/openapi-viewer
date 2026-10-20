@@ -13,7 +13,7 @@ import { autoImports, settingsPath } from '@data-fair/lib-vuetify/vite.js'
 import { commonjsDeps } from '@koumoul/vjsf/utils/build.js'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   base: '/openapi-viewer',
   optimizeDeps: { include: ['debug', ...commonjsDeps] },
   resolve: {
@@ -31,7 +31,7 @@ export default defineConfig({
     }),
     VueRouter({
       dts: './dts/route-map.d.ts',
-      exclude: process.env.NODE_ENV === 'development' ? [] : ['src/pages/dev.vue', 'src/pages/dev-embed.vue']
+      exclude: command === 'build' ? ['src/pages/dev.vue', 'src/pages/dev-embed.vue'] : []
     }),
     Vue({ template: { compilerOptions: { isCustomElement: (tag) => ['d-frame'].includes(tag) } } }),
     VueI18nPlugin(),
@@ -82,4 +82,4 @@ export default defineConfig({
     }
   },
   server: { hmr: { port: 7200 } }
-})
+}))

@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - id: get_version
-      uses: battila7/get-version-action@v2
+      run: echo "major=$(echo "${GITHUB_REF_NAME#v}" | cut -d. -f1)" >> "$GITHUB_OUTPUT"
 
     - name: Send Keel notifications to koumoul.com
       run: |

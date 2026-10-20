@@ -3,6 +3,7 @@
 # =============================
 FROM node:24.22.0-alpine3.24 AS base
 
+RUN apk upgrade --no-cache
 WORKDIR /app
 ENV NODE_ENV=production
 
@@ -67,9 +68,8 @@ RUN mkdir -p /app/api/node_modules
 # =============================
 FROM base AS main
 
-# pick up alpine fixes released after the base image, and drop npm/corepack (unused at runtime, own CVEs)
-RUN apk upgrade --no-cache && \
-    rm -rf /usr/local/lib/node_modules /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack
+# npm, corepack and yarn are never used at runtime and carry their own CVEs
+RUN rm -rf /usr/local/lib/node_modules /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /opt/yarn-* /usr/local/bin/yarn /usr/local/bin/yarnpkg
 
 COPY --from=api-installer /app/node_modules node_modules
 COPY api api

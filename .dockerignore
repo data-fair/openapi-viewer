@@ -1,0 +1,6 @@
+**/node_modules
+**/dist
+ui/dts
+.env
+data
+.git

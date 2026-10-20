@@ -28,6 +28,7 @@
     "dompurify": "^3.2.4",
     "js-yaml": "^4.1.0",
     "marked": "^15.0.6",
+    "ofetch": "^1.5.1",
     "prismjs": "^1.30.0",
     "sass-embedded": "^1.89.2",
     "statuses": "^2.0.1",
@@ -41,7 +42,6 @@
     "vue-i18n": "^11.1.11",
     "vue-router": "^5.0.3",
     "vue-tsc": "^3.0.1",
-    "vuetify": "^4.0.3",
-    "yaml": "^2.7.0"
+    "vuetify": "^4.0.3"
   }
 }

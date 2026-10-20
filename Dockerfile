@@ -1,7 +1,7 @@
 # =============================
 # Base Node image
 # =============================
-FROM node:24.11.1-alpine3.22 AS base
+FROM node:24.22.0-alpine3.24 AS base
 
 WORKDIR /app
 ENV NODE_ENV=production
@@ -46,7 +46,6 @@ RUN npm run build-types
 # =============================
 FROM installer AS ui
 
-RUN npm i --no-save @rollup/rollup-linux-x64-musl
 COPY --from=types /app/api/config api/config
 COPY --from=types /app/api/types api/types
 ADD /api/src/config.ts api/src/config.ts
@@ -67,6 +66,10 @@ RUN mkdir -p /app/api/node_modules
 # Final API Image
 # =============================
 FROM base AS main
+
+# pick up alpine fixes released after the base image, and drop npm/corepack (unused at runtime, own CVEs)
+RUN apk upgrade --no-cache && \
+    rm -rf /usr/local/lib/node_modules /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack
 
 COPY --from=api-installer /app/node_modules node_modules
 COPY api api

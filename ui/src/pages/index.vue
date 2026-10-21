@@ -141,15 +141,15 @@ const fullOperation = computed<{
   return null
 })
 
-watch(route.query, () => {
-  derefDoc.value = undefined
-  errorMessage.value = null
-
+/*
+ * Resolve the doc URL from the query
+ * -> watched by value, so that operation/params changes in the query do not refetch the doc
+ */
+const target = computed<{ url?: string, error?: string }>(() => {
   if (route.query.urlType) {
     // Check url type
     if (!Object.keys($uiConfig.allowedUrls).includes(route.query.urlType as string)) {
-      errorMessage.value = t('errors.invalidUrlType')
-      return
+      return { error: t('errors.invalidUrlType') }
     }
 
     const template = $uiConfig.allowedUrls[route.query.urlType as string]
@@ -159,18 +159,24 @@ watch(route.query, () => {
     const requiredParams = (template.match(/{[^}]+}/g) || []).map((param) => param.slice(1, -1))
     const missingParams = requiredParams.filter((param) => !queryParams[param])
     if (missingParams.length > 0) {
-      errorMessage.value = t('errors.missingParams', { params: missingParams.join(', ') })
-      return
+      return { error: t('errors.missingParams', { params: missingParams.join(', ') }) }
     }
 
     // Replace the template params with the query params
-    url.value = urlTemplate.parseTemplate(template).expand(queryParams)
+    return { url: urlTemplate.parseTemplate(template).expand(queryParams) }
   } else if ($uiConfig.defaultUrl) {
-    url.value = $uiConfig.defaultUrl
+    return { url: $uiConfig.defaultUrl }
   } else {
-    errorMessage.value = t('errors.missingUrl')
+    return { error: t('errors.missingUrl') }
   }
+})
 
+watch([() => target.value.url, () => target.value.error], ([newUrl, error]) => {
+  derefDoc.value = undefined
+  errorMessage.value = error ?? null
+  if (!newUrl) return
+
+  url.value = newUrl
   urlFetch.refresh()
 }, { immediate: true })
 

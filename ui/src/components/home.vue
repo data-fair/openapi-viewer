@@ -208,10 +208,10 @@ marked.setOptions({
   gfm: true
 })
 
-const { info, externalDocs, servers, schemas } = defineProps<{
+const { info, externalDocs = undefined, servers = undefined, schemas } = defineProps<{
   info: OpenAPISpecs['info'],
-  externalDocs: OpenAPISpecs['externalDocs'],
-  servers: OpenAPISpecs['servers'],
+  externalDocs?: OpenAPISpecs['externalDocs'],
+  servers?: OpenAPISpecs['servers'],
   schemas: Components['schemas'] | undefined
 }>()
 

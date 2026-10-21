@@ -14,3 +14,10 @@ export const uiConfig = {
   useSimpleDirectory: apiConfig.useSimpleDirectory
 }
 export type UiConfig = typeof uiConfig
+
+// site theme and public info served by simple-directory, absent in standalone mode
+// the hash placeholders are filled by createSpaMiddleware (privateDirectoryUrl option)
+export const siteResourcesHtml = apiConfig.useSimpleDirectory
+  ? `<link href="{SITE_PATH}/simple-directory/api/sites/{THEME_CSS_HASH}_theme.css" rel="stylesheet">
+    <script src="{SITE_PATH}/simple-directory/api/sites/{PUBLIC_SITE_INFO_HASH}_public.js"></script>`
+  : ''

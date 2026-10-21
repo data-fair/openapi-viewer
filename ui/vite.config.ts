@@ -70,8 +70,8 @@ export default defineConfig(({ command }) => ({
       async transformIndexHtml (html) {
         // in production this injection will be performed by an express middleware
         if (process.env.NODE_ENV !== 'development') return html
-        const { uiConfig } = await import('../api/src/config.ts')
-        return microTemplate(html, { SITE_PATH: '', UI_CONFIG: JSON.stringify(uiConfig) })
+        const { uiConfig, siteResourcesHtml } = await import('../api/src/config.ts')
+        return microTemplate(html, { SITE_RESOURCES: siteResourcesHtml, SITE_PATH: '', UI_CONFIG: JSON.stringify(uiConfig), THEME_CSS_HASH: '', PUBLIC_SITE_INFO_HASH: '' })
       }
     }
   ],

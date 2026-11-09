@@ -32,13 +32,13 @@
     "api"
   ],
   "dependencies": {
-    "@data-fair/lib-types-builder": "1.10.1"
+    "@data-fair/lib-types-builder": "^1.14.6"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@data-fair/lib-dev": "^0.1.1",
-    "@data-fair/lib-utils": "^1.14.0",
+    "@data-fair/lib-utils": "^1.14.2",
     "@playwright/test": "^1.60.0",
     "dotenv": "^18.0.10",
     "eslint": "^10.13.0",

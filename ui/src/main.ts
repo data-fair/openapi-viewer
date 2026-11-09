@@ -47,6 +47,8 @@ import DOMPurify from 'dompurify'
       el.innerHTML = DOMPurify.sanitize(binding.value)
     },
     updated (el: HTMLElement, binding: any) {
+      // called on every update of the parent component, not only when the value changes
+      if (binding.value === binding.oldValue) return
       el.innerHTML = DOMPurify.sanitize(binding.value)
     }
   }

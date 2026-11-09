@@ -1,5 +1,5 @@
 import type { Components, OpenAPISpecs, Operation, Parameter as ParameterSpec } from '#api/types'
-import clone from '@data-fair/lib-utils/clone'
+import clone from '@data-fair/lib-utils/clone.js'
 
 let globalSchema: OpenAPISpecs | undefined
 
@@ -28,7 +28,8 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
     operation.security
   )
   for (const [, sec] of Object.entries(securities)) {
-    if (sec.in === 'cookie') continue
+    // Only apiKey schemes map to a named header/query field (oauth2, http… have no `in`)
+    if (sec?.type !== 'apiKey' || !sec.name || (sec.in !== 'header' && sec.in !== 'query')) continue
     schema.properties[sec.in].properties[sec.name] = {
       type: 'string',
       description:
@@ -39,9 +40,8 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
   // Transform parameters
   const parameters = resolveParameters(pathItemParameters, operation.parameters as Parameter[])
   for (const param of parameters) {
-    if (param.in === 'cookie') continue
-    // @ts-ignore Not allowed in the OpenAPI spec, but this behavior should not be blocking.
-    if (param.in === 'body') continue
+    // Skip cookie, swagger 2 'body' and any unknown location
+    if (param.in !== 'header' && param.in !== 'path' && param.in !== 'query') continue
     const paramSchema = param.schema as Record<string, any>
     if (!paramSchema) continue // Parameters should have a content key or schema key. // TODO: Content isn't supported yet
 
@@ -185,21 +185,17 @@ const resolveSecurities = (
 ) => {
   if (!securitySchemes) return {}
 
-  const globalS = globalSecurities?.reduce((acc, sec) => {
-    const key = Object.keys(sec)[0]
-    if (securitySchemes[key]) {
-      acc[key] = securitySchemes[key]
+  const pickSchemes = (requirements: OpenAPISpecs['security']) => {
+    const acc: Record<string, any> = {}
+    for (const requirement of requirements ?? []) {
+      for (const key of Object.keys(requirement ?? {})) {
+        if (securitySchemes[key]) acc[key] = securitySchemes[key]
+      }
     }
     return acc
-  }, {} as Record<string, any>) || {}
-
-  const operationS = operationSecurities?.reduce((acc, sec) => {
-    const key = Object.keys(sec)[0]
-    if (securitySchemes[key]) {
-      acc[key] = securitySchemes[key]
-    }
-    return acc
-  }, {} as Record<string, any>) || {}
+  }
+  const globalS = pickSchemes(globalSecurities)
+  const operationS = pickSchemes(operationSecurities)
 
   return { ...globalS, ...operationS } as {
     [k: string]: {

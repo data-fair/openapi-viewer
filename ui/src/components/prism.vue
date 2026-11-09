@@ -4,7 +4,7 @@
     class="position-relative text-body-medium"
   >
     <v-tooltip
-      v-if="copy && /<([a-zA-Z]+)([^>]*)>(.*?)<\/\1>/.test(highlightedCode)"
+      v-if="copy && code"
       :text="t('copy')"
       location="top right"
       open-delay="500"
@@ -23,20 +23,30 @@
         />
       </template>
     </v-tooltip>
+    <!-- Prism escapes the code it highlights: its output needs no sanitizing -->
+    <!-- eslint-disable vue/no-v-html -->
     <pre
-      ref="preElement"
       :class="className"
       :style="style"
     ><code
-      v-safe-html="highlightedCode"
+      v-if="highlightedCode !== null"
       :class="className"
-    /></pre>
+      v-html="highlightedCode"
+    /><code
+      v-else
+      :class="className"
+    >{{ code }}</code></pre>
   </div>
   <code
-    v-else
-    v-safe-html="highlightedCode"
+    v-else-if="highlightedCode !== null"
     :class="className"
+    v-html="highlightedCode"
   />
+  <code
+    v-else
+    :class="className"
+  >{{ code }}</code>
+  <!-- eslint-enable vue/no-v-html -->
 </template>
 
 <script setup lang="ts">
@@ -62,22 +72,25 @@ const slotContent = computed(() => slots.default?.()?.[0]?.children ?? '')
 const className = computed(() => `language-${language} rounded`)
 const style = computed(() => 'max-height: ' + maxHeight)
 
+const code = computed(() => typeof slotContent.value === 'string' ? slotContent.value : '')
+
+// past this size, highlighting a response body freezes the page (DOM of hundreds of thousands
+// of tokens): the code is shown as plain text
+const maxHighlightedLength = 100_000
+
+// null: show the code as plain text
 const highlightedCode = computed(() => {
-  const code = typeof slotContent.value === 'string' ? slotContent.value : ''
   const prismLanguage = Prism.languages[language]
-
   if (!prismLanguage) {
-    console.warn(
-      `Prism component for language "${language}" was not found. Did you forget to register it?`
-    )
-    return code
+    console.warn(`Prism component for language "${language}" was not found. Did you forget to register it?`)
+    return null
   }
-
-  return Prism.highlight(code, prismLanguage, language)
+  if (code.value.length > maxHighlightedLength) return null
+  return Prism.highlight(code.value, prismLanguage, language)
 })
 
 async function copyToClipboard () {
-  await navigator.clipboard.writeText(slotContent.value as string).then(() => {
+  await navigator.clipboard.writeText(code.value).then(() => {
     sendUiNotif({ type: 'success', msg: t('copied') })
   }).catch(error => {
     sendUiNotif({ type: 'error', msg: t('copyFailed'), error })

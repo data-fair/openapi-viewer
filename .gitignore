@@ -1,9 +1,23 @@
+# dependencies and generated code
 node_modules/
-api/config/local-*
 .type/
 
-# tests de snapshot visuels : locaux uniquement, jamais commités
-tests/**/*.snap.spec.ts
-tests/**/*-snapshots/
+# local environment and data
+.env
+**/config/local-*
+data/
+dev/logs/
+
+# test output
 test-results/
 playwright-report/
+
+# agent working files
+docs/superpowers/
+.superpowers/
+.playwright-mcp/
+
+# openapi-viewer
+# visual snapshot tests: local only, never committed
+tests/**/*.snap.spec.ts
+tests/**/*-snapshots/

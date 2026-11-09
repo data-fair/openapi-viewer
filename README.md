@@ -1,13 +1,20 @@
-# OpenAPI viewer
+# <img alt="Data FAIR logo" src="https://cdn.jsdelivr.net/gh/data-fair/data-fair@master/ui/src/assets/logo.svg" width="40"> @data-fair/openapi-viewer
 
-This service is designed to easily browse and test a REST API described with the [OpenAPI 3.0 Specification](https://github.com/OAI/OpenAPI-Specification).
+![GitHub License](https://img.shields.io/github/license/data-fair/openapi-viewer) ![GitHub package.json version](https://img.shields.io/github/package-json/v/data-fair/openapi-viewer)  
+*Browse and test a REST API described with the [OpenAPI 3 Specification](https://github.com/OAI/OpenAPI-Specification).*
+
+Part of the [Data Fair](https://datafair.cloud) ecosystem, also usable on its own.
 
 ## Sponsors
 
-| | Click [here to support the development of this project](https://github.com/sponsors/koumoul-dev). |
-|-|-|
-| ![Koumoul logo](https://koumoul.com/static/logo-slogan.png) | [Koumoul](https://koumoul.com) develops the Data Fair ecosystem and hosts it as an online service. |
-| ![Dawizz logo](https://dawizz.fr/logo-Dawizz-all-about-your-data-home.png) | [Dawizz](https://dawizz.fr) uses the Data Fair ecosystem inside its platform and supports its development. |
+<a href="https://koumoul.com"><img alt="Koumoul logo" src="https://cdn.jsdelivr.net/gh/data-fair/data-fair@master/docs/assets/koumoul-logo.png" height="56" align="left"></a>
+
+**[Koumoul](https://koumoul.com)** · *La donnée accessible*<br>
+Koumoul develops the Data Fair ecosystem and hosts it as an online service.
+
+<br clear="left">
+
+Click [here to support the development of this project](https://github.com/sponsors/koumoul-dev).
 
 ## Parameters
 

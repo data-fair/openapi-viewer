@@ -1,28 +1,20 @@
+// Dev environment of openapi-viewer, see @data-fair/lib-dev. Agents: npx --no df-dev status | logs <pane> | restart <pane>
 layout {
-  pane {
-    split_direction "vertical"
-    pane name="openapi-viewer" borderless=true {
-      command "${DEV_SHELL}"
-      args "-ic" "nvm use > /dev/null 2>&1 && bash"
-    }
-    pane name="deps" {
-      command "${DEV_SHELL}"
-      args "-ic" "nvm use > /dev/null 2>&1 && npm run dev-deps && watch -n 4 \"docker compose ps --all --format 'table {{.Name}}\t{{.Status}}'\""
+  pane split_direction="vertical" {
+    pane name="openapi-viewer" borderless=true
+    pane name="status" command="./node_modules/.bin/df-status" {
+      args "--start-deps"
     }
   }
-  pane {
-    split_direction "vertical"
-    pane name="ui" {
-      command "${DEV_SHELL}"
-      args "-ic" "nvm use > /dev/null 2>&1 && npm -w ui run dev"
+  pane split_direction="vertical" {
+    pane name="ui" command="bash" {
+      args "-c" "cd ui && FORCE_COLOR=1 NODE_CONFIG_DIR=../api/config/ exec ../node_modules/.bin/df-mem-cap vite --port $DEV_UI_PORT"
     }
-    pane name="api" {
-      command "${DEV_SHELL}"
-      args "-ic" "nvm use > /dev/null 2>&1 && npm -w api run dev"
+    pane name="api" command="bash" {
+      args "-c" "./node_modules/.bin/df-dev wait-deps && cd api && FORCE_COLOR=1 NODE_ENV=development exec ../node_modules/.bin/nodemon -e js,mjs,ts,json index.ts"
     }
   }
-  pane size=1 borderless=true {
-    command "bash"
-    args "-ic" "echo -n -e \"Dev server available at \\e[1;96mhttp://localhost:5600\\033[0m\""
+  pane name="url" size=1 borderless=true command="bash" {
+    args "-c" "echo -n -e \"Dev server available at \\e[1;96mhttp://$DEV_HOST:$NGINX_PORT/openapi-viewer/dev\\e[0m\"; exec sleep infinity"
   }
 }

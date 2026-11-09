@@ -4,87 +4,52 @@
 
 - A Javascript/Typescript IDE with [Vue.js](https://vuejs.org/) and [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) support.
 - A recent [Docker](https://docs.docker.com/engine/install/) installation.
-- [Node.js v22+](https://nodejs.org/)
+- [Node.js v24.22.1+](https://nodejs.org/)
+- [zellij](https://zellij.dev/) >= 0.44.
 
 ## Install dependencies
 
-1) Install npm dependencies for all workspaces :
+Install npm dependencies for all workspaces, then generate `.env` (ports), the types and the UI build:
 
 ```sh
-npm i
+npm ci
+npx --no df-dev setup
 ```
 
-2) Pull images at first and then once in a while :
+Pull images at first and then once in a while:
 
 ```sh
-docker compose pull
+docker compose --profile '*' pull
 ```
 
-3) Then run the containers :
+## Run the development servers
 
-```sh
-npm run dev-deps
-```
-
-*Stop the containers with this command :*
-
-```sh
-npm run stop-dev-deps
-```
-
-4) Generates the types based on schemas :
-
-```sh
-npm run build-types
-```
-
-## Building and running the Docker images
-
-```sh
-docker build --progress=plain --target=main -t data-fair/openapi-viewer:dev .
-```
-
-## All-in-one development
-
-You can run all services at once thanks to Zellij.
-
-<details>
-<summary>First time instructions</summary>
-
-1) Install Rust's Cargo
-
-```sh
-curl https://sh.rustup.rs -sSf | sh
-# choose 1 when prompted
-```
-
-2) Install Zellij
-
-```sh
-cargo install --locked zellij
-```
-
-3) Install NVM
-
-```sh
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-nvm install
-```
-
-</details>
-
-Run the Zellij command :
+The UI is a [Vite](https://vite.dev/) + Vue project, the API a small [Express](https://expressjs.com) server.
+The development servers run in a zellij session, see `@data-fair/lib-dev`:
 
 ```sh
 npm run dev-zellij
 ```
 
-Access the running services at <http://localhost:5600/openapi-viewer>
+The session prints the URL of the dev page, which links to the example documentations. The dev environment
+runs simple-directory (theme, language, admin session), like the viewer embedded in the data-fair stack; the
+standalone mode (`USE_SIMPLE_DIRECTORY=false`, see the README) needs none of it.
 
-*Tips :*
+Agents operate the running environment with `npx --no df-dev status | logs <pane> | restart <pane>`.
 
-- Use <kbd>Ctrl</kbd> + <kbd>Q</kbd> to quit Zellij.
-- Click on a panel, then use <kbd>Ctrl</kbd> + <kbd>C</kbd> then <kbd>Esc</kbd> to stop a terminal and regain access of the panel.
+## Working on types
+
+Update the types based on schemas:
+
+```sh
+npm run build-types
+```
+
+## Building the Docker image
+
+```sh
+docker build --progress=plain --target=main -t data-fair/openapi-viewer:dev .
+```
 
 ## Tests
 
@@ -102,7 +67,7 @@ Tests use [Playwright](https://playwright.dev/). Three projects are defined in
 # unit tests only (no stack needed)
 npm run test-unit
 
-# e2e / snapshot need the stack running (dev-deps + api + ui, see above)
+# e2e / snapshot need the dev environment running (see above)
 npm run test-e2e
 npm run test-snapshot
 

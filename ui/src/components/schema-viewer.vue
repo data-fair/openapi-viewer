@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import YAML from 'js-yaml'
+import * as YAML from 'js-yaml'
 
 const { jsonSchema } = defineProps<{ jsonSchema: any }>()
 const tab = ref('json')

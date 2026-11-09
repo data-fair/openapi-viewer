@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "NODE_CONFIG_DIR=../api/config/ vite --port 3000",
     "build": "vite build",
     "preview": "vite preview",
     "check-types": "vue-tsc",
@@ -11,8 +10,8 @@
     "lint-fix": "eslint --fix ."
   },
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^11.9.1",
-    "@data-fair/frame": "^0.18.4",
+    "@apidevtools/json-schema-ref-parser": "^16.0.6",
+    "@data-fair/frame": "^0.19.0",
     "@data-fair/lib-utils": "^1.8.0",
     "@data-fair/lib-vue": "^1.27.1",
     "@data-fair/lib-vuetify": "^2.3.0",
@@ -24,9 +23,10 @@
     "@types/statuses": "^2.0.6",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vueuse/core": "^15.0.0",
+    "buffer": "^6.0.3",
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.4",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^5.5.0",
     "marked": "^18.1.1",
     "ofetch": "^1.5.1",
     "prismjs": "^1.30.0",
@@ -36,7 +36,6 @@
     "unplugin-vue-components": "^32.1.0",
     "url-template": "^3.1.1",
     "vite": "^8.0.2",
-    "vite-plugin-node-polyfills": "^0.28.0",
     "vite-plugin-vuetify": "^2.1.3",
     "vue": "^3.5.30",
     "vue-i18n": "^11.1.11",

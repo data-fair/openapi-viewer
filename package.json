@@ -7,14 +7,11 @@
   "scripts": {
     "build-types": "df-build-types ./",
     "check-types": "tsc && npm -w ui run check-types",
-    "dev-api": "npm -w api run dev",
-    "dev-deps": "docker compose --profile dev up -d --wait",
-    "dev-ui": "npm -w ui run dev",
-    "dev-zellij": "export DEV_SHELL=$(basename \"$SHELL\") && zellij --layout .zellij.kdl && rm data/zellij-deps-ready",
+    "dev-zellij": "df-dev zellij",
     "lint": "eslint . && npm -w ui run lint",
     "lint-fix": "eslint --fix . && npm -w ui run lint-fix",
     "prepare": "husky || true",
-    "stop-dev-deps": "docker compose --profile dev stop",
+    "stop-dev-deps": "docker compose --profile '*' stop",
     "test": "playwright test --project unit",
     "test-unit": "playwright test --project unit",
     "test-e2e": "playwright test --project e2e",
@@ -24,7 +21,7 @@
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": "v24"
+    "node": ">=24.22.1"
   },
   "repository": {
     "type": "git",
@@ -35,18 +32,21 @@
     "api"
   ],
   "dependencies": {
-    "@data-fair/lib-types-builder": "1.10.1"
+    "@data-fair/lib-types-builder": "^1.14.6"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
-    "@data-fair/lib-utils": "^1.14.0",
+    "@data-fair/lib-dev": "^0.1.1",
+    "@data-fair/lib-utils": "^1.14.2",
     "@playwright/test": "^1.60.0",
+    "dotenv": "^18.0.10",
     "eslint": "^10.13.0",
     "eslint-plugin-vue": "^10.4.0",
     "eslint-plugin-vuetify": "^2.7.2",
     "husky": "^9.1.7",
     "neostandard": "^0.14.1",
+    "nodemon": "^3.1.14",
     "typescript": "^5.8.3"
   }
 }

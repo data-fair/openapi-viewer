@@ -16,14 +16,16 @@
 </template>
 
 <script setup lang="ts">
+// same origin as this page, whatever the dev env's port
+const base = window.location.origin + $sitePath
 const links = [
-  ['Default URL', 'http://localhost:5600/openapi-viewer/'],
-  ['Allowed url', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=fulltest.json'],
-  ['With drawer to the right', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=fulltest.json&drawerLocation=right'],
-  ['Example Data Fair', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=api-docs.json'],
-  ['Example Data Fair YAML', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=api-docs.yaml'],
-  ['Example recursive', 'http://localhost:5600/openapi-viewer/?urlType=example&filename=recusive.yaml'],
-  ['Example pet store', 'http://localhost:5600/openapi-viewer/?urlType=petstore']
+  ['Default URL', base + '/openapi-viewer/'],
+  ['Allowed url', base + '/openapi-viewer/?urlType=example&filename=fulltest.json'],
+  ['With drawer to the right', base + '/openapi-viewer/?urlType=example&filename=fulltest.json&drawerLocation=right'],
+  ['Example Data Fair', base + '/openapi-viewer/?urlType=example&filename=api-docs.json'],
+  ['Example Data Fair YAML', base + '/openapi-viewer/?urlType=example&filename=api-docs.yaml'],
+  ['Example recursive', base + '/openapi-viewer/?urlType=example&filename=recursive.yaml'],
+  ['Example pet store', base + '/openapi-viewer/?urlType=petstore']
 ]
 </script>
 

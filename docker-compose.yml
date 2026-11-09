@@ -1,46 +1,68 @@
 services:
 
-  #####
-  # reverse proxy for the whole environment
-  #####
-
   nginx:
-    image: nginx:1.23.1-alpine
+    image: nginx:1.29.4-alpine
     network_mode: host
+    environment:
+      - DEV_HOST=${DEV_HOST}
+      - NGINX_PORT=${NGINX_PORT}
+      - DEV_API_PORT=${DEV_API_PORT}
+      - DEV_UI_PORT=${DEV_UI_PORT}
+      - SD_PORT=${SD_PORT}
     volumes:
-      - ./dev/resources/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./dev/resources/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro
 
-  #####
-  # related services from the data-fair stack
-  #####
-
+  # theme, language and admin session of the integrated mode (useSimpleDirectory in the dev config)
   simple-directory:
     image: ghcr.io/data-fair/simple-directory:master
     network_mode: host
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     environment:
-      - ADMINS=["superadmin@test.com"]
-      - PUBLIC_URL=http://localhost:5600/simple-directory
+      - PORT=${SD_PORT}
+      - PUBLIC_URL=http://${DEV_HOST}:${NGINX_PORT}/simple-directory
+      - MONGO_URL=mongodb://localhost:${MONGO_PORT}/simple-directory
       - OBSERVER_ACTIVE=false
-      - CIPHER_PASSWORD=dev
-      - CONTACT=contact@test.com
-      - MONGO_URL=mongodb://localhost:27017/simple-directory
+      - CIPHER_PASSWORD=dev-cipher-password-0123456789abcdef
       - STORAGE_TYPE=file
+      - ADMINS=["test_superadmin@test.com","superadmin@test.com","alban.mouton@koumoul.com"]
+      - CONTACT=contact@test.com
+      # tests log in through the API many times per minute
+      - AUTHRATELIMIT_ATTEMPTS=200
+      - AUTHRATELIMIT_DURATION=1
+      - MANAGE_DEPARTMENTS=true
+      - MANAGE_PARTNERS=true
+      - MANAGE_SITES=true
+      - SECRET_SITES=secret-sites
+      - SECRET_EVENTS=secret-events
+      - SECRET_SENDMAILS=secret-sendmails
     volumes:
       - ./dev/resources/users.json:/app/data/users.json
       - ./dev/resources/organizations.json:/app/data/organizations.json
-
-  #####
-  # db
-  #####
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "${SD_PORT}"]
+      interval: 2s
+      timeout: 2s
+      retries: 60
 
   mongo:
-    image: mongo:4.2
+    # production version; later 8.0 patches refuse Ubuntu 7.0 kernels (https://jira.mongodb.org/browse/SERVER-136848)
+    image: mongo:8.0.17
     ports:
-      - 27017:27017
+      - ${MONGO_PORT}:27017
+    # wiredTiger takes half the machine's RAM by default
+    command: ["--wiredTigerCacheSizeGB", "0.25"]
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      # 2 s probes while starting, then one per minute: a mongosh probe costs ~1.3 s of CPU
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 3m
+      start_interval: 2s
 
 volumes:
   mongo-data:

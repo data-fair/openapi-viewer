@@ -1,0 +1,19 @@
+{
+  "ports": [
+    "NGINX_PORT",
+    "DEV_API_PORT",
+    "DEV_UI_PORT",
+    "DEV_UI_HMR_PORT",
+    "MONGO_PORT",
+    "SD_PORT"
+  ],
+  "panes": {
+    "api": {
+      "ready": "http://localhost:${DEV_API_PORT}/api/ping"
+    },
+    "ui": {
+      "ready": "http://localhost:${DEV_UI_PORT}/openapi-viewer/"
+    }
+  },
+  "url": "http://${DEV_HOST}:${NGINX_PORT}/openapi-viewer/dev"
+}

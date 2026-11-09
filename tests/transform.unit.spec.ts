@@ -51,4 +51,18 @@ test.describe('getVJSFSchema — parameters', () => {
     expect(schema.properties.header).toBeUndefined()
     expect(schema.properties.path).toBeUndefined()
   })
+
+  test('removes null from parameter enums without mutating the spec', () => {
+    initTransformer(specs([]))
+    const collapse = { type: 'string', enum: [null, 'nom', 'adresse'] }
+    const schema = getVJSFSchema({
+      parameters: [
+        { name: 'collapse', in: 'query', schema: collapse },
+        { name: 'select', in: 'query', schema: { type: 'array', items: { type: 'string', enum: [null, 'nom'] } } }
+      ]
+    } as any, [])
+    expect(schema.properties.query.properties.collapse.enum).toEqual(['nom', 'adresse'])
+    expect(schema.properties.query.properties.select.items.enum).toEqual(['nom'])
+    expect(collapse.enum).toEqual([null, 'nom', 'adresse'])
+  })
 })

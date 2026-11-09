@@ -54,12 +54,19 @@ export const getVJSFSchema = (operation: Operation, pathItemParameters: Paramete
       else paramSchema.examples = examples
     }
 
-    schema.properties[param.in].properties[param.name] = {
+    const fieldSchema: Record<string, any> = {
       ...paramSchema,
       type: paramSchema.type || 'string',
       description: param.description,
       deprecated: paramSchema.deprecated || param.deprecated || false,
     }
+    // null in an enum means "no value", which an empty optional field already expresses;
+    // as a select item it crashes vjsf (data-fair's collapse and sampling parameters)
+    if (Array.isArray(fieldSchema.enum)) fieldSchema.enum = fieldSchema.enum.filter((v: unknown) => v !== null)
+    if (Array.isArray(fieldSchema.items?.enum)) {
+      fieldSchema.items = { ...fieldSchema.items, enum: fieldSchema.items.enum.filter((v: unknown) => v !== null) }
+    }
+    schema.properties[param.in].properties[param.name] = fieldSchema
   }
 
   // Transform requestBody

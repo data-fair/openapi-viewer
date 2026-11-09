@@ -37,7 +37,7 @@ export default defineConfig(({ command, isPreview }) => ({
       },
     }),
     VueRouter({
-      dts: './dts/route-map.d.ts',
+      dts: './dts/typed-router.d.ts',
       exclude: command === 'build' ? ['src/pages/dev.vue', 'src/pages/dev-embed.vue'] : []
     }),
     Vue({ template: { compilerOptions: { isCustomElement: (tag) => ['d-frame'].includes(tag) } } }),

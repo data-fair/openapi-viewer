@@ -22,7 +22,21 @@ const envPort = (name: string) => {
 // https://vitejs.dev/config/
 export default defineConfig(({ command, isPreview }) => ({
   base: '/openapi-viewer',
-  optimizeDeps: { include: ['debug', ...commonjsDeps] },
+  optimizeDeps: {
+    // no discovery: a dependency found while browsing reloads the page, which breaks cold e2e runs;
+    // ESM dependencies are served as is, only the commonjs ones must be listed here, with the
+    // exact import specifier
+    noDiscovery: true,
+    include: [
+      'debug',
+      ...commonjsDeps,
+      'prismjs',
+      'prismjs/components/prism-bash.min.js',
+      'prismjs/components/prism-json.min.js',
+      'prismjs/components/prism-yaml.min.js',
+      'statuses'
+    ]
+  },
   resolve: {
     alias: {
       '~': path.resolve(import.meta.dirname, 'src/')

@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "NODE_CONFIG_DIR=../api/config/ vite --port 3000",
     "build": "vite build",
     "preview": "vite preview",
     "check-types": "vue-tsc",

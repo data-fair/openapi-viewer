@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   defaultUrl: undefined,
   allowedUrls: {},
   port: 8080,

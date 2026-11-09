@@ -12,13 +12,20 @@ import microTemplate from '@data-fair/lib-utils/micro-template.js'
 import { autoImports, settingsPath } from '@data-fair/lib-vuetify/vite.js'
 import { commonjsDeps } from '@koumoul/vjsf/utils/build.js'
 
+// dev ports come from .env (declared in dev/dev.json), checked so a missing variable never becomes NaN
+const envPort = (name: string) => {
+  const port = Number(process.env[name])
+  if (!Number.isInteger(port) || port <= 0) throw new Error(`${name} must be set to a port number, run "npx --no df-dev setup"`)
+  return port
+}
+
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, isPreview }) => ({
   base: '/openapi-viewer',
   optimizeDeps: { include: ['debug', ...commonjsDeps] },
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, 'src/')
+      '~': path.resolve(import.meta.dirname, 'src/')
     },
   },
   plugins: [
@@ -81,5 +88,8 @@ export default defineConfig(({ command }) => ({
       return { relative: true }
     }
   },
-  server: { hmr: { port: 7200 } }
+  // vite preview also runs as serve and must not require the dev ports
+  ...(command === 'serve' && !isPreview
+    ? { server: { port: envPort('DEV_UI_PORT'), strictPort: true, hmr: { port: envPort('DEV_UI_HMR_PORT') } } }
+    : {})
 }))

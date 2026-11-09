@@ -2,9 +2,7 @@
   "name": "api",
   "main": "index.ts",
   "type": "module",
-  "scripts": {
-    "dev": "NODE_ENV=development node --watch --experimental-strip-types index.ts"
-  },
+  "scripts": {},
   "imports": {
     "#config": "./src/config.ts"
   },

@@ -1,0 +1,70 @@
+# Dev reverse proxy of the data-fair stack. This head is identical in every service repo
+# (data-fair-service skill, references/nginx.md) and mirrors the production ingress-nginx config,
+# minus the shared cache and gzip. The nginx image entrypoint substitutes the env vars and
+# includes the result in the http block.
+
+# websocket support (realtime channels, Vite HMR): upgrade only the requests that ask for it
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  '' close;
+}
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection $connection_upgrade;
+
+# Transmit host, protocol and user ip, we use it for routing, rate limiting, etc.
+proxy_set_header Host $http_host;
+proxy_set_header X-Forwarded-Host $http_host;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Forwarded-For $remote_addr;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Client-IP $remote_addr;
+# the relay secret proves a forwarded client IP to the ingress; services never see it
+proxy_set_header X-Trusted-Forwarder "";
+proxy_set_header X-Forwarded-Path $request_uri;
+# Headers data-fair uses for better private caching
+proxy_set_header X-Private-If-Modified-Since $http_if_modified_since;
+proxy_set_header X-Private-If-None-Match $http_if_none_match;
+# range requests support (pmtiles)
+proxy_set_header Range $http_range;
+
+# accept some occasional long queries
+proxy_read_timeout 600s;
+# body size limits are implemented by services themselves
+client_max_body_size 0;
+# direct streaming of uploads
+proxy_request_buffering off;
+# direct streaming of downloads, enabled on-demand by services using x-accel-buffering header
+proxy_buffering off;
+# allow large response headers (setCookies with large session token)
+proxy_buffer_size 32k;
+proxy_buffers 4 32k;
+
+# No server or location below sets proxy_set_header: it would drop every header above.
+
+server {
+  listen ${NGINX_PORT};
+  server_name ${DEV_HOST};
+
+  # add the trailing slash to the service prefixes
+  rewrite ^(/openapi-viewer|/simple-directory)$ $1/ redirect;
+
+  location = / {
+    return 302 /openapi-viewer/dev;
+  }
+
+  # API routes served by the API server
+  location /openapi-viewer/api/ {
+    proxy_pass http://localhost:${DEV_API_PORT};
+  }
+
+  # UI served by the Vite dev server, long timeout for the HMR websocket
+  location /openapi-viewer/ {
+    proxy_read_timeout 86400s;
+    proxy_pass http://localhost:${DEV_UI_PORT};
+  }
+
+  location /simple-directory/ {
+    proxy_pass http://localhost:${SD_PORT};
+  }
+}

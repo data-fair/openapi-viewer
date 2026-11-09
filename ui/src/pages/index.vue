@@ -62,9 +62,13 @@ import type { OpenAPISpecs, Operation } from '#api/types'
 import type { Parameter } from '~/utils/transform'
 
 import { dereference } from '@apidevtools/json-schema-ref-parser'
+import { Buffer } from 'buffer'
 import { computedAsync } from '@vueuse/core'
 import * as urlTemplate from 'url-template'
 import * as YAML from 'js-yaml'
+
+// json-schema-ref-parser calls the Node global Buffer.isBuffer, even in the browser
+;(globalThis as any).Buffer ??= Buffer
 
 const { t } = useI18n()
 const route = useRoute()

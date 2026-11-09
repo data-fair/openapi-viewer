@@ -15,6 +15,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api/admin', adminRouter)
 
+// no dependency to check: answering is enough (dev readiness, container healthcheck)
+app.get('/api/ping', (req, res) => {
+  res.send('ok')
+})
+
 if (config.serveUi) {
   app.use(await createSpaMiddleware(resolve(import.meta.dirname, '../../ui/dist'), uiConfig, {
     extraHtmlTemplateParams: { SITE_RESOURCES: siteResourcesHtml },

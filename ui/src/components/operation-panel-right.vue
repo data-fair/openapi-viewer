@@ -146,7 +146,7 @@
 
 <script setup lang="ts">
 import type { Operation } from '#api/types'
-import YAML from 'js-yaml'
+import * as YAML from 'js-yaml'
 import status from 'statuses'
 
 const { operation, method, responseData, loading, isValid } = defineProps<{

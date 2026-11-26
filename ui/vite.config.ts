@@ -11,10 +11,10 @@ import microTemplate from '@data-fair/lib-utils/micro-template.js'
 import { autoImports, settingsPath } from '@data-fair/lib-vuetify/vite.js'
 import { commonjsDeps } from '@koumoul/vjsf/utils/build.js'
 
-// dev ports come from .env (declared in dev/dev.json), checked so a missing variable never becomes NaN
+// dev ports come from the environment (the keys of dev/default.env), checked so a missing variable never becomes NaN
 const envPort = (name: string) => {
   const port = Number(process.env[name])
-  if (!Number.isInteger(port) || port <= 0) throw new Error(`${name} must be set to a port number, run "npx --no df-dev setup"`)
+  if (!Number.isInteger(port) || port <= 0) throw new Error(`missing ${name} env variable, export the variables of .env (npm run dev does)`)
   return port
 }
 

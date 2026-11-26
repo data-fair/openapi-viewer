@@ -14,7 +14,8 @@ services:
 
   # theme, language and admin session of the integrated mode (useSimpleDirectory in the dev config)
   simple-directory:
-    image: ghcr.io/data-fair/simple-directory:master
+    # SD_IMAGE: a local build of simple-directory
+    image: ${SD_IMAGE:-ghcr.io/data-fair/simple-directory:master}
     network_mode: host
     depends_on:
       mongo:
@@ -25,21 +26,14 @@ services:
       - MONGO_URL=mongodb://localhost:${MONGO_PORT}/simple-directory
       - OBSERVER_ACTIVE=false
       - CIPHER_PASSWORD=dev-cipher-password-0123456789abcdef
-      - STORAGE_TYPE=file
-      - ADMINS=["test_superadmin@test.com","superadmin@test.com","alban.mouton@koumoul.com"]
+      # accounts in mongo, none by default: the tests do not log in. An account for the admin session of the
+      # dev page can be seeded through the test API (POST /simple-directory/api/test-env/seed)
+      - STORAGE_TYPE=mongo
+      - ENABLE_TEST_API=1
+      # the test API needs NODE_ENV=development, the configuration stays the image's production one
+      - NODE_ENV=development
+      - NODE_CONFIG_ENV=production
       - CONTACT=contact@test.com
-      # tests log in through the API many times per minute
-      - AUTHRATELIMIT_ATTEMPTS=200
-      - AUTHRATELIMIT_DURATION=1
-      - MANAGE_DEPARTMENTS=true
-      - MANAGE_PARTNERS=true
-      - MANAGE_SITES=true
-      - SECRET_SITES=secret-sites
-      - SECRET_EVENTS=secret-events
-      - SECRET_SENDMAILS=secret-sendmails
-    volumes:
-      - ./dev/resources/users.json:/app/data/users.json
-      - ./dev/resources/organizations.json:/app/data/organizations.json
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "${SD_PORT}"]
       interval: 2s

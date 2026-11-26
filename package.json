@@ -5,18 +5,22 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "dev": "bash dev/run.sh",
+    "dev-deps": "bash dev/deps.sh",
+    "dev-setup": "bash dev/setup.sh",
+    "dev:api": "cd api && FORCE_COLOR=1 NODE_ENV=development exec ../node_modules/.bin/nodemon -e js,mjs,ts,json index.ts",
+    "dev:ui": "cd ui && FORCE_COLOR=1 NODE_CONFIG_DIR=../api/config/ NODE_ENV=development exec ../node_modules/.bin/vite --port ${DEV_UI_PORT}",
     "build-types": "df-build-types ./",
     "check-types": "tsc && npm -w ui run check-types",
-    "dev-zellij": "df-dev zellij",
     "lint": "eslint . && npm -w ui run lint",
     "lint-fix": "eslint --fix . && npm -w ui run lint-fix",
     "prepare": "husky || true",
     "stop-dev-deps": "docker compose --profile '*' stop",
-    "test": "playwright test --project unit",
+    "test": "playwright test --project unit --project e2e",
     "test-unit": "playwright test --project unit",
     "test-e2e": "playwright test --project e2e",
     "test-snapshot": "playwright test --project snapshot",
-    "quality": "npm run lint && npm run build-types && npm -w ui run build && npm run check-types && npm run test-unit && npm audit --omit=dev --audit-level=critical"
+    "quality": "npm run lint && npm run build-types && npm -w ui run build && npm run check-types && npm run test && npm audit --omit=dev --audit-level=critical"
   },
   "author": "",
   "license": "MIT",
@@ -37,7 +41,6 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
-    "@data-fair/lib-dev": "^0.1.1",
     "@data-fair/lib-utils": "^1.14.2",
     "@playwright/test": "^1.60.0",
     "dotenv": "^18.0.10",

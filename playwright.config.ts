@@ -7,7 +7,8 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  reporter: process.env.CI ? 'dot' : 'html',
+  // the html report never opens on its own (npx playwright show-report)
+  reporter: process.env.CI ? 'dot' : [['dot'], ['html', { open: 'never' }]],
   timeout: 30_000,
   expect: { timeout: 10_000 },
   use: {

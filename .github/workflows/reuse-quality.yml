@@ -14,9 +14,74 @@ jobs:
       with:
         node-version-file: .nvmrc
         cache: 'npm'
-    
+
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --no-audit --no-fund
+
+    # only the browser binaries are cached, keyed on the installed playwright version;
+    # the system packages they need are installed on every run
+    - name: Read the playwright version
+      id: playwright
+      run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+    - name: Cache playwright browsers
+      id: playwright-cache
+      uses: actions/cache@v5
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+    - name: Install playwright browser
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps chromium
+
+    - name: Install playwright system dependencies
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      run: npx playwright install-deps chromium
+
+    - name: Init .env
+      run: cp dev/default.env .env
+
+    # every later step gets the variables of .env, as npm run dev exports them to its processes
+    - name: Export .env to the next steps
+      run: grep -vE '^\s*(#|$)' .env >> "$GITHUB_ENV" # GITHUB_ENV accepts only NAME=value lines, no comments
+
+    # dev-setup builds the types the API validates its config with
+    - name: Start dev dependencies
+      run: npm run dev-deps
+
+    # the processes of npm run dev, logs in dev/logs for the upload below
+    - name: Start dev UI and API
+      run: |
+        mkdir -p dev/logs
+        npm run dev:ui > dev/logs/ui.log 2>&1 &
+        npm run dev:api > dev/logs/api.log 2>&1 &
+
+    - name: Wait for the dev API and UI to be ready
+      run: |
+        for i in $(seq 1 30); do
+          if curl -sf "http://localhost:${DEV_API_PORT}/api/ping" >/dev/null \
+            && curl -sf "http://localhost:${DEV_UI_PORT}/openapi-viewer/" >/dev/null; then
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "dev API or UI did not become ready" >&2
+        tail -n 100 dev/logs/*.log
+        exit 1
 
     - name: Run quality checks
       run: npm run quality
+
+    - name: Containers logs
+      if: failure()
+      run: docker compose --profile '*' logs
+
+    - name: Upload process logs and test results
+      if: failure()
+      uses: actions/upload-artifact@v7
+      with:
+        name: dev-logs
+        path: |
+          dev/logs/
+          test-results/
